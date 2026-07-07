@@ -1,84 +1,88 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    function handleScroll() {
       setScrolled(window.scrollY > 20);
-    };
+    }
+
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <main className="min-h-screen relative overflow-hidden">
-
-      {/* BACKGROUND */}
+    <main className="relative min-h-screen overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#dbeafe] via-[#e9d5ff] to-[#fde68a]" />
 
       <Image
         src="/clouds-bg.png"
-        alt="bg"
+        alt="Ciel pastel avec des nuages doux"
         fill
         priority
-        className="object-cover opacity-40 -z-10"
+        className="-z-10 object-cover opacity-40"
       />
 
-      {/* 🔥 NAVBAR PREMIUM */}
       <header
-        className={`fixed top-0 left-0 w-full z-50 flex items-center justify-between px-12 py-4 transition-all duration-300 ${scrolled ? "navbar-scrolled" : "bg-transparent"
-          }`}
+        className={`fixed left-0 top-0 z-50 flex w-full items-center justify-between px-6 py-4 transition-all duration-300 md:px-12 ${
+          scrolled ? "navbar-scrolled" : "bg-transparent"
+        }`}
       >
-        {/* LOGO */}
         <Image
           src="/renard.png"
-          alt="logo"
+          alt="Logo ZouuSafe avec un renard protecteur"
           width={220}
           height={100}
           priority
-          className="drop-shadow-[0_10px_30px_rgba(0,0,0,0.25)] hover:scale-105 transition"
+          className="drop-shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition hover:scale-105"
         />
 
-        {/* NAV */}
-        <nav className="flex items-center gap-6 text-sm font-medium text-gray-700">
-          <a className="hover:text-black" href="#">À propos</a>
-          <a className="hover:text-black" href="#">Contrôle Parental</a>
-          <button className="bg-gradient-to-r from-green-400 to-green-500 text-white px-5 py-2 rounded-full shadow-md hover:scale-105 transition">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-gray-700 md:flex">
+          <a className="hover:text-black" href="#about">
+            À propos
+          </a>
+
+          <a className="hover:text-black" href="#security">
+            Contrôle parental
+          </a>
+
+          <Link
+            href="/login"
+            className="rounded-full bg-gradient-to-r from-green-400 to-green-500 px-5 py-2 text-white shadow-md transition hover:scale-105"
+          >
             Pour Parents
-          </button>
+          </Link>
         </nav>
       </header>
 
-      {/* HERO */}
-      <section className="relative flex flex-col items-center text-center pt-40 pb-28">
-
-        {/* 👧 */}
+      <section className="relative flex flex-col items-center px-6 pb-20 pt-40 text-center md:pb-28">
         <div className="absolute left-24 top-48 hidden md:block">
           <Image
             src="/girl.png"
-            alt="girl"
-            width={260}
-            height={260}
-            className="drop-shadow-2xl float"
+            alt="Enfant qui utilise une tablette en sécurité"
+            width={360}
+            height={360}
+            className="float drop-shadow-2xl"
           />
         </div>
 
-        {/* 🤖 */}
         <div className="absolute right-28 top-40 hidden md:block">
           <Image
             src="/robot.png"
-            alt="robot"
+            alt="Petit robot assistant qui accompagne les enfants"
             width={220}
             height={220}
-            className="drop-shadow-2xl float"
+            className="float drop-shadow-2xl"
           />
         </div>
 
-        <h1 className="text-5xl font-bold mb-6 leading-tight text-gray-800">
+        <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-800 md:text-5xl">
           <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             Explore internet
           </span>
@@ -86,13 +90,21 @@ export default function Home() {
           en toute sécurité
         </h1>
 
-        {/* SEARCH */}
-        <div className="bg-white/80 backdrop-blur-md rounded-full shadow-xl px-6 py-3 flex items-center w-full max-w-xl border border-white/50">
+        <p className="mb-8 max-w-xl text-sm text-gray-700 md:text-base">
+          ZouuSafe aide les enfants à découvrir internet dans un environnement
+          simple, rassurant et contrôlé par les parents.
+        </p>
+
+        <div className="flex w-full max-w-xl items-center rounded-full border border-white/50 bg-white/80 px-4 py-3 shadow-xl backdrop-blur-md md:px-6">
           <input
-            className="flex-1 outline-none bg-transparent"
+            className="flex-1 bg-transparent text-sm outline-none"
             placeholder="Que veux-tu chercher ?"
           />
-          <button className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-5 py-2 rounded-full hover:scale-105 transition">
+
+          <button
+            type="button"
+            className="rounded-full bg-gradient-to-r from-blue-400 to-blue-600 px-5 py-2 text-white transition hover:scale-105"
+          >
             🔍
           </button>
         </div>
@@ -102,80 +114,108 @@ export default function Home() {
         </p>
       </section>
 
-      {/* CONTENT */}
-      <section className="px-10 grid md:grid-cols-2 gap-8">
-
-        {/* LEFT */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-3xl p-8 border border-white/50 shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition">
-
-          <div className="flex justify-between mb-6">
+      <section className="grid gap-8 px-6 md:grid-cols-2 md:px-10">
+        <div
+          id="about"
+          className="rounded-3xl border border-white/50 bg-white/60 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] backdrop-blur-2xl transition hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
+        >
+          <div className="mb-6 flex justify-between">
             <h2 className="text-xl font-semibold">Petits Explorateurs</h2>
-            <span className="bg-yellow-200 px-3 py-1 rounded-full text-xs">
+
+            <span className="rounded-full bg-yellow-200 px-3 py-1 text-xs">
               3-7 ans
             </span>
           </div>
 
-          <div className="flex gap-4 mb-6">
-            <div className="bg-yellow-100 p-4 rounded-xl flex-1 text-center hover:scale-110 transition">
+          <div className="mb-6 grid gap-4 md:grid-cols-3">
+            <button
+              type="button"
+              className="rounded-xl bg-yellow-100 p-4 text-center transition hover:scale-105"
+            >
               🐾 Animaux
-            </div>
-            <div className="bg-green-100 p-4 rounded-xl flex-1 text-center hover:scale-110 transition">
+            </button>
+
+            <button
+              type="button"
+              className="rounded-xl bg-green-100 p-4 text-center transition hover:scale-105"
+            >
               💡 Apprendre
-            </div>
-            <div className="bg-blue-100 p-4 rounded-xl flex-1 text-center hover:scale-110 transition">
+            </button>
+
+            <button
+              type="button"
+              className="rounded-xl bg-blue-100 p-4 text-center transition hover:scale-105"
+            >
               ▶️ Vidéos
-            </div>
+            </button>
           </div>
 
-          <button className="w-full bg-gray-200 py-3 rounded-xl mb-6">
-            Démarrer Recherches
+          <button
+            type="button"
+            className="mb-6 w-full rounded-xl bg-gray-200 py-3 transition hover:bg-gray-300"
+          >
+            Démarrer la recherche
           </button>
 
           <div className="flex justify-center">
-            <Image src="/kids.png" alt="kids" width={420} height={420} />
+            <Image
+              src="/kids.png"
+              alt="Groupe d'enfants qui découvrent internet"
+              width={420}
+              height={420}
+            />
           </div>
         </div>
 
-        {/* RIGHT */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-3xl p-8 border border-white/50 shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition">
-
-          <h2 className="font-semibold mb-3">
+        <div className="rounded-3xl border border-white/50 bg-white/60 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] backdrop-blur-2xl transition hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
+          <h2 className="mb-3 font-semibold">
             Qu'est-ce qu'un <span className="text-blue-600">dinosaure</span> ?
           </h2>
 
           <Image
             src="/dino.png"
-            alt="dino"
+            alt="Dinosaures dans un paysage naturel"
             width={520}
             height={260}
-            className="rounded-xl mb-4"
+            className="mb-4 rounded-xl"
           />
 
-          <p className="text-sm text-gray-600 mb-4">
-            Les dinosaures étaient des très grands animaux qui vivaient il y a très longtemps !
+          <p className="mb-4 text-sm text-gray-600">
+            Les dinosaures étaient de très grands animaux qui vivaient il y a
+            très longtemps.
           </p>
 
-          <button className="bg-white shadow px-4 py-2 rounded-lg">
+          <button
+            type="button"
+            className="rounded-lg bg-white px-4 py-2 shadow transition hover:scale-105"
+          >
             En savoir plus →
           </button>
         </div>
       </section>
 
-      {/* SECURITY */}
-      <section className="px-10 mt-14">
-        <div className="bg-white/60 backdrop-blur-2xl rounded-3xl p-6 border border-white/50 flex items-center gap-4">
-          <Image src="/renard-shield.png" alt="shield" width={80} height={80} />
+      <section id="security" className="mt-14 px-6 md:px-10">
+        <div className="flex items-center gap-4 rounded-3xl border border-white/50 bg-white/60 p-6 backdrop-blur-2xl">
+          <Image
+            src="/renard-shield.png"
+            alt="Renard protecteur avec un bouclier"
+            width={80}
+            height={80}
+          />
+
           <div>
             <h3 className="font-semibold">Recherche 100% sécurisée</h3>
+
             <p className="text-sm text-gray-600">
-              Toutes les recherches sont filtrées pour protéger les enfants.
+              Les recherches sont filtrées pour protéger les enfants et
+              rassurer les parents.
             </p>
           </div>
         </div>
       </section>
 
-      <footer className="text-center text-sm text-gray-600 mt-14 pb-6">
-        ZouuSafe © 2024
+      <footer className="mt-14 pb-6 text-center text-sm text-gray-600">
+        ZouuSafe © 2026
       </footer>
     </main>
   );
