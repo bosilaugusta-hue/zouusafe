@@ -1,106 +1,58 @@
-export default function ParentDashboardPage() {
+import AlertsCard from "@/components/dashboard/AlertsCard";
+import ChildCard from "@/components/dashboard/ChildCard";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import HistoryCard from "@/components/dashboard/HistoryCard";
+import QuickSettings from "@/components/dashboard/QuickSettings";
+import Sidebar from "@/components/dashboard/Sidebar";
+import StatsCards from "@/components/dashboard/StatsCards";
+
+async function getDashboardData() {
+  const response = await fetch("http://localhost:3000/api/dashboard", {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Impossible de récupérer les données du dashboard.");
+  }
+
+  return response.json();
+}
+
+export default async function ParentDashboardPage() {
+  const dashboard = await getDashboardData();
+
+  const child = dashboard.children[0] ?? {
+    first_name: "Zoé",
+    avatar_url: "kids1.png",
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#dbeafe] via-[#f3e8ff] to-[#fef3c7] px-6 py-8">
-      <section className="mx-auto max-w-7xl">
-        <header className="mb-8 flex items-center justify-between rounded-3xl border border-white/60 bg-white/70 p-5 shadow-lg backdrop-blur-xl">
-          <div>
-            <p className="text-sm text-gray-500">Espace parent</p>
-            <h1 className="text-3xl font-bold text-gray-800">
-              Bonjour, Maman 👋
-            </h1>
-          </div>
+    <main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
+      <section className="mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_1fr]">
+        <Sidebar />
 
-          <button
-            type="button"
-            className="rounded-full bg-gradient-to-r from-blue-400 to-purple-500 px-5 py-2 text-white shadow-md transition hover:scale-105"
-          >
-            Ajouter un enfant
-          </button>
-        </header>
+        <section className="space-y-6">
+          <DashboardHeader
+            parentName={dashboard.parent?.first_name ?? "Augusta"}
+            childName={child.first_name}
+          />
 
-        <section className="mb-8 grid gap-5 md:grid-cols-4">
-          <div className="rounded-3xl bg-white/70 p-5 shadow-md backdrop-blur-xl">
-            <p className="text-sm text-gray-500">Enfants suivis</p>
-            <strong className="text-3xl text-gray-800">2</strong>
-          </div>
+          <StatsCards
+            childrenCount={dashboard.stats.children}
+            searchesCount={dashboard.stats.searches}
+            blockedCount={dashboard.stats.blockedSites}
+            screenTime={dashboard.stats.screenTime}
+          />
 
-          <div className="rounded-3xl bg-white/70 p-5 shadow-md backdrop-blur-xl">
-            <p className="text-sm text-gray-500">Recherches aujourd’hui</p>
-            <strong className="text-3xl text-gray-800">12</strong>
-          </div>
+          <section className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
+            <ChildCard firstName={child.first_name} avatar={child.avatar_url} />
+            <AlertsCard alerts={dashboard.alerts} />
+          </section>
 
-          <div className="rounded-3xl bg-white/70 p-5 shadow-md backdrop-blur-xl">
-            <p className="text-sm text-gray-500">Sites bloqués</p>
-            <strong className="text-3xl text-gray-800">4</strong>
-          </div>
-
-          <div className="rounded-3xl bg-white/70 p-5 shadow-md backdrop-blur-xl">
-            <p className="text-sm text-gray-500">Temps d’écran</p>
-            <strong className="text-3xl text-gray-800">1h20</strong>
-          </div>
-        </section>
-
-        <section className="grid gap-8 lg:grid-cols-2">
-          <div className="rounded-3xl border border-white/60 bg-white/70 p-6 shadow-lg backdrop-blur-xl">
-            <h2 className="mb-5 text-xl font-bold text-gray-800">
-              Mes enfants
-            </h2>
-
-            <div className="space-y-4">
-              <article className="flex items-center justify-between rounded-2xl bg-blue-50 p-4">
-                <div>
-                  <h3 className="font-semibold text-gray-800">Lina</h3>
-                  <p className="text-sm text-gray-500">6 ans · Profil actif</p>
-                </div>
-
-                <button
-                  type="button"
-                  className="rounded-full bg-white px-4 py-2 text-sm shadow"
-                >
-                  Voir
-                </button>
-              </article>
-
-              <article className="flex items-center justify-between rounded-2xl bg-purple-50 p-4">
-                <div>
-                  <h3 className="font-semibold text-gray-800">Noah</h3>
-                  <p className="text-sm text-gray-500">8 ans · Profil actif</p>
-                </div>
-
-                <button
-                  type="button"
-                  className="rounded-full bg-white px-4 py-2 text-sm shadow"
-                >
-                  Voir
-                </button>
-              </article>
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-white/60 bg-white/70 p-6 shadow-lg backdrop-blur-xl">
-            <h2 className="mb-5 text-xl font-bold text-gray-800">
-              Historique récent
-            </h2>
-
-            <div className="space-y-4">
-              <article className="rounded-2xl bg-white p-4 shadow-sm">
-                <p className="font-medium text-gray-800">Recherche : dinosaures</p>
-                <p className="text-sm text-gray-500">Lina · Aujourd’hui à 10:15</p>
-              </article>
-
-              <article className="rounded-2xl bg-white p-4 shadow-sm">
-                <p className="font-medium text-gray-800">Recherche : animaux marins</p>
-                <p className="text-sm text-gray-500">Noah · Aujourd’hui à 09:40</p>
-              </article>
-
-              <article className="rounded-2xl bg-red-50 p-4 shadow-sm">
-                <p className="font-medium text-red-700">Contenu bloqué</p>
-                <p className="text-sm text-gray-500">
-                  Site non adapté · Aujourd’hui à 09:10
-                </p>
-              </article>
-            </div>
-          </div>
+          <section className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
+            <HistoryCard history={dashboard.history} />
+            <QuickSettings settings={dashboard.settings} />
+          </section>
         </section>
       </section>
     </main>

@@ -2,7 +2,69 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Bell,
+  Clock,
+  LayoutDashboard,
+  Search,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 import { useEffect, useState } from "react";
+
+const features = [
+  {
+    title: "Recherche sécurisée",
+    text: "Tous les contenus sensibles sont filtrés avant d’être affichés.",
+    icon: ShieldCheck,
+    color: "border-violet-400 bg-violet-50 text-violet-600",
+  },
+  {
+    title: "Dashboard parent",
+    text: "Suivez l’activité de votre enfant en temps réel.",
+    icon: LayoutDashboard,
+    color: "border-blue-400 bg-blue-50 text-blue-600",
+  },
+  {
+    title: "Temps d’écran",
+    text: "Fixez des limites et gérez le temps d’utilisation facilement.",
+    icon: Clock,
+    color: "border-green-400 bg-green-50 text-green-600",
+  },
+  {
+    title: "Alertes intelligentes",
+    text: "Soyez informé si un contenu est bloqué.",
+    icon: Bell,
+    color: "border-orange-400 bg-orange-50 text-orange-600",
+  },
+];
+
+const steps = [
+  {
+    number: "1",
+    title: "Le parent crée un compte",
+    text: "Inscription rapide et sécurisée.",
+    icon: UserRound,
+  },
+  {
+    number: "2",
+    title: "Il ajoute son enfant",
+    text: "Un profil adapté à son âge est créé.",
+    icon: UserRound,
+  },
+  {
+    number: "3",
+    title: "L’enfant explore",
+    text: "Il effectue ses recherches en toute sécurité.",
+    icon: Search,
+  },
+  {
+    number: "4",
+    title: "ZouuSafe protège",
+    text: "Les contenus dangereux sont filtrés et signalés.",
+    icon: ShieldCheck,
+  },
+];
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
@@ -18,204 +80,226 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="relative min-h-screen overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#dbeafe] via-[#e9d5ff] to-[#fde68a]" />
-
-      <Image
-        src="/clouds-bg.png"
-        alt="Ciel pastel avec des nuages doux"
-        fill
-        priority
-        className="-z-10 object-cover opacity-40"
-      />
-
-      <header
-        className={`fixed left-0 top-0 z-50 flex w-full items-center justify-between px-6 py-4 transition-all duration-300 md:px-12 ${
-          scrolled ? "navbar-scrolled" : "bg-transparent"
-        }`}
-      >
+    <main className="relative min-h-screen overflow-hidden bg-white text-slate-900">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#eaf2ff] via-[#f7efff] to-[#fff1d6]">
         <Image
-          src="/renard.png"
-          alt="Logo ZouuSafe avec un renard protecteur"
-          width={220}
-          height={100}
+          src="/clouds-bg.png"
+          alt="Ciel pastel avec des nuages doux"
+          fill
           priority
-          className="drop-shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition hover:scale-105"
+          className="-z-0 object-cover opacity-35"
         />
 
-        <nav className="hidden items-center gap-6 text-sm font-medium text-gray-700 md:flex">
-          <a className="hover:text-black" href="#about">
-            À propos
-          </a>
-
-          <a className="hover:text-black" href="#security">
-            Contrôle parental
-          </a>
-
-          <Link
-            href="/login"
-            className="rounded-full bg-gradient-to-r from-green-400 to-green-500 px-5 py-2 text-white shadow-md transition hover:scale-105"
-          >
-            Pour Parents
-          </Link>
-        </nav>
-      </header>
-
-      <section className="relative flex flex-col items-center px-6 pb-20 pt-40 text-center md:pb-28">
-        <div className="absolute left-24 top-48 hidden md:block">
+        <header
+          className={`fixed left-0 top-0 z-50 flex w-full items-center justify-between px-6 py-4 transition-all duration-300 md:px-14 ${
+            scrolled ? "navbar-scrolled" : "bg-white/75 backdrop-blur-xl"
+          }`}
+        >
           <Image
-            src="/girl.png"
-            alt="Enfant qui utilise une tablette en sécurité"
-            width={360}
-            height={360}
-            className="float drop-shadow-2xl"
+            src="/renard.png"
+            alt="Logo ZouuSafe"
+            width={210}
+            height={90}
+            priority
           />
-        </div>
 
-        <div className="absolute right-28 top-40 hidden md:block">
+          <nav className="hidden items-center gap-8 text-sm font-black text-slate-700 md:flex">
+            <a href="#features" className="hover:text-violet-600">
+              Fonctionnalités
+            </a>
+
+            <a href="#steps" className="hover:text-violet-600">
+              Comment ça marche
+            </a>
+
+            <Link
+              href="/login"
+              className="rounded-xl bg-violet-600 px-6 py-4 text-white shadow-lg transition hover:scale-105"
+            >
+              Connexion parent
+            </Link>
+          </nav>
+        </header>
+
+        <section className="relative z-10 flex min-h-screen items-center justify-center px-6 pt-28 text-center">
+          <Image
+            src="/Fille_tablette.png"
+            alt="Enfant utilisant une tablette"
+            width={380}
+            height={380}
+            className="float absolute left-14 top-56 hidden drop-shadow-2xl xl:block"
+          />
+
           <Image
             src="/robot.png"
-            alt="Petit robot assistant qui accompagne les enfants"
-            width={220}
-            height={220}
-            className="float drop-shadow-2xl"
-          />
-        </div>
-
-        <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-800 md:text-5xl">
-          <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-            Explore internet
-          </span>
-          <br />
-          en toute sécurité
-        </h1>
-
-        <p className="mb-8 max-w-xl text-sm text-gray-700 md:text-base">
-          ZouuSafe aide les enfants à découvrir internet dans un environnement
-          simple, rassurant et contrôlé par les parents.
-        </p>
-
-        <div className="flex w-full max-w-xl items-center rounded-full border border-white/50 bg-white/80 px-4 py-3 shadow-xl backdrop-blur-md md:px-6">
-          <input
-            className="flex-1 bg-transparent text-sm outline-none"
-            placeholder="Que veux-tu chercher ?"
+            alt="Robot assistant ZouuSafe"
+            width={270}
+            height={270}
+            className="float absolute right-24 top-52 hidden drop-shadow-2xl xl:block"
           />
 
-          <button
-            type="button"
-            className="rounded-full bg-gradient-to-r from-blue-400 to-blue-600 px-5 py-2 text-white transition hover:scale-105"
-          >
-            🔍
-          </button>
-        </div>
-
-        <p className="mt-4 text-sm text-gray-700">
-          ✅ Recherche sécurisée validée pour les enfants
-        </p>
-      </section>
-
-      <section className="grid gap-8 px-6 md:grid-cols-2 md:px-10">
-        <div
-          id="about"
-          className="rounded-3xl border border-white/50 bg-white/60 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] backdrop-blur-2xl transition hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
-        >
-          <div className="mb-6 flex justify-between">
-            <h2 className="text-xl font-semibold">Petits Explorateurs</h2>
-
-            <span className="rounded-full bg-yellow-200 px-3 py-1 text-xs">
-              3-7 ans
-            </span>
-          </div>
-
-          <div className="mb-6 grid gap-4 md:grid-cols-3">
-            <button
-              type="button"
-              className="rounded-xl bg-yellow-100 p-4 text-center transition hover:scale-105"
-            >
-              🐾 Animaux
-            </button>
-
-            <button
-              type="button"
-              className="rounded-xl bg-green-100 p-4 text-center transition hover:scale-105"
-            >
-              💡 Apprendre
-            </button>
-
-            <button
-              type="button"
-              className="rounded-xl bg-blue-100 p-4 text-center transition hover:scale-105"
-            >
-              ▶️ Vidéos
-            </button>
-          </div>
-
-          <button
-            type="button"
-            className="mb-6 w-full rounded-xl bg-gray-200 py-3 transition hover:bg-gray-300"
-          >
-            Démarrer la recherche
-          </button>
-
-          <div className="flex justify-center">
-            <Image
-              src="/kids.png"
-              alt="Groupe d'enfants qui découvrent internet"
-              width={420}
-              height={420}
-            />
-          </div>
-        </div>
-
-        <div className="rounded-3xl border border-white/50 bg-white/60 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] backdrop-blur-2xl transition hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
-          <h2 className="mb-3 font-semibold">
-            Qu'est-ce qu'un <span className="text-blue-600">dinosaure</span> ?
-          </h2>
-
-          <Image
-            src="/dino.png"
-            alt="Dinosaures dans un paysage naturel"
-            width={520}
-            height={260}
-            className="mb-4 rounded-xl"
-          />
-
-          <p className="mb-4 text-sm text-gray-600">
-            Les dinosaures étaient de très grands animaux qui vivaient il y a
-            très longtemps.
-          </p>
-
-          <button
-            type="button"
-            className="rounded-lg bg-white px-4 py-2 shadow transition hover:scale-105"
-          >
-            En savoir plus →
-          </button>
-        </div>
-      </section>
-
-      <section id="security" className="mt-14 px-6 md:px-10">
-        <div className="flex items-center gap-4 rounded-3xl border border-white/50 bg-white/60 p-6 backdrop-blur-2xl">
-          <Image
-            src="/renard-shield.png"
-            alt="Renard protecteur avec un bouclier"
-            width={80}
-            height={80}
-          />
-
-          <div>
-            <h3 className="font-semibold">Recherche 100% sécurisée</h3>
-
-            <p className="text-sm text-gray-600">
-              Les recherches sont filtrées pour protéger les enfants et
-              rassurer les parents.
+          <section className="max-w-3xl">
+            <p className="mx-auto mb-5 w-fit rounded-full border border-violet-200 bg-white/70 px-5 py-2 text-sm font-black text-violet-600 shadow-sm">
+              🛡️ Le copilote numérique des familles
             </p>
-          </div>
-        </div>
+
+            <h1 className="text-5xl font-black leading-tight md:text-7xl">
+              Internet sécurisé
+              <br />
+              <span className="bg-gradient-to-r from-blue-500 to-violet-500 bg-clip-text text-transparent">
+                pour les enfants
+              </span>
+            </h1>
+
+            <p className="mx-auto mt-6 max-w-2xl text-base text-slate-700 md:text-lg">
+              Un moteur de recherche sécurisé avec contrôle parental. Pour que
+              vos enfants explorent, apprennent et grandissent en toute
+              sérénité.
+            </p>
+
+            <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
+              <Link
+                href="/register"
+                className="rounded-xl bg-gradient-to-r from-violet-600 to-blue-500 px-9 py-4 font-black text-white shadow-xl transition hover:scale-105"
+              >
+                Créer un compte
+              </Link>
+
+              <a
+                href="#features"
+                className="rounded-xl border border-violet-300 bg-white px-9 py-4 font-black text-slate-800 shadow-xl transition hover:scale-105"
+              >
+                Découvrir ZouuSafe
+              </a>
+            </div>
+          </section>
+        </section>
       </section>
 
-      <footer className="mt-14 pb-6 text-center text-sm text-gray-600">
-        ZouuSafe © 2026
+      <section id="features" className="px-6 py-16 md:px-14">
+        <section className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {features.map((feature) => {
+            const Icon = feature.icon;
+
+            return (
+              <article
+                key={feature.title}
+                className={`rounded-2xl border-t-4 bg-white p-7 shadow-xl ${feature.color}`}
+              >
+                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-sm">
+                  <Icon size={30} />
+                </span>
+
+                <h2 className="mt-6 text-2xl font-black text-slate-900">
+                  {feature.title}
+                </h2>
+
+                <p className="mt-4 text-sm leading-6 text-slate-600">
+                  {feature.text}
+                </p>
+
+                <span className="mt-6 inline-block text-2xl font-black">
+                  →
+                </span>
+              </article>
+            );
+          })}
+        </section>
+      </section>
+
+      <section id="steps" className="px-6 py-10 md:px-14">
+        <h2 className="text-center text-4xl font-black">
+          Comment fonctionne ZouuSafe ?
+        </h2>
+
+        <section className="mx-auto mt-12 grid max-w-7xl gap-8 md:grid-cols-4">
+          {steps.map((step) => {
+            const Icon = step.icon;
+
+            return (
+              <article
+                key={step.number}
+                className="relative rounded-2xl bg-white p-6 text-center shadow-lg"
+              >
+                <span className="absolute -top-4 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-violet-600 text-sm font-black text-white">
+                  {step.number}
+                </span>
+
+                <span className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-violet-50 text-violet-600">
+                  <Icon size={34} />
+                </span>
+
+                <h3 className="mt-5 font-black">{step.title}</h3>
+
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  {step.text}
+                </p>
+              </article>
+            );
+          })}
+        </section>
+      </section>
+
+      <section className="px-6 py-20 md:px-14">
+        <section className="mx-auto grid max-w-7xl gap-10 rounded-3xl bg-violet-50 p-8 shadow-xl lg:grid-cols-[0.8fr_1.2fr]">
+          <article>
+            <h2 className="text-4xl font-black">
+              Découvrez votre espace parent
+            </h2>
+
+            <p className="mt-5 max-w-md leading-7 text-slate-600">
+              Un tableau de bord simple pour garder le contrôle et accompagner
+              votre enfant au quotidien.
+            </p>
+
+            <ul className="mt-8 space-y-4 text-sm font-bold text-slate-700">
+              <li>✅ Activité en temps réel</li>
+              <li>✅ Statistiques claires</li>
+              <li>✅ Gestion facile et rapide</li>
+            </ul>
+          </article>
+
+          <article className="rounded-2xl bg-white p-6 shadow-lg">
+            <div className="grid gap-4 md:grid-cols-3">
+              <section className="rounded-2xl bg-violet-50 p-4">
+                <p className="text-sm text-slate-500">Recherches</p>
+                <strong className="text-3xl">12</strong>
+              </section>
+
+              <section className="rounded-2xl bg-green-50 p-4">
+                <p className="text-sm text-slate-500">Temps d’écran</p>
+                <strong className="text-3xl">1h25</strong>
+              </section>
+
+              <section className="rounded-2xl bg-red-50 p-4">
+                <p className="text-sm text-slate-500">Alertes</p>
+                <strong className="text-3xl">2</strong>
+              </section>
+            </div>
+
+            <section className="mt-5 rounded-2xl border border-slate-100 p-5">
+              <p className="font-black">Activité récente</p>
+              <p className="mt-3 text-sm text-slate-600">
+                Zoé a recherché : “dinosaures”
+              </p>
+              <p className="mt-2 text-sm text-green-600">
+                Recherche autorisée
+              </p>
+            </section>
+          </article>
+        </section>
+      </section>
+
+      <section className="border-t border-slate-100 px-6 py-10 md:px-14">
+        <section className="mx-auto grid max-w-7xl gap-6 text-center md:grid-cols-3">
+          <p className="font-bold">🛡️ 100% sécurisé</p>
+          <p className="font-bold">💗 Conçu pour les enfants</p>
+          <p className="font-bold">🔐 Contrôle total pour les parents</p>
+        </section>
+      </section>
+
+      <footer className="bg-violet-600 px-6 py-6 text-center text-sm font-bold text-white">
+        ZouuSafe © 2026 · Tous droits réservés
       </footer>
     </main>
   );
