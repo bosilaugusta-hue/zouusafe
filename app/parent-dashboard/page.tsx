@@ -23,7 +23,7 @@ export default async function ParentDashboardPage() {
 
   const child = dashboard.children[0] ?? {
     first_name: "Zoé",
-    avatar_url: "kids1.png",
+    avatar_url: "zoe.png",
   };
 
   return (
