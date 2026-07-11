@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 type ChildCardProps = {
 	firstName: string;
@@ -11,12 +12,12 @@ export default function ChildCard({ firstName, avatar }: ChildCardProps) {
 			<div className="mb-5 flex items-center justify-between">
 				<h2 className="text-2xl font-black">Mes enfants</h2>
 
-				<button
-					type="button"
-					className="rounded-full border border-violet-300 px-4 py-2 text-sm font-black text-violet-600"
-				>
-					+ Ajouter
-				</button>
+				<Link
+  href="/parent-dashboard/children/new"
+  className="rounded-full border border-violet-300 px-4 py-2 text-sm font-black text-violet-600 transition hover:bg-violet-50"
+>
+  + Ajouter
+</Link>
 			</div>
 
 			<section className="rounded-3xl border border-pink-100 bg-pink-50 p-5">
