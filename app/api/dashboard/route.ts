@@ -1,19 +1,58 @@
-import { db } from "@/lib/db";
+import { jwtVerify } from "jose";
 import type { RowDataPacket } from "mysql2";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
+
+type SessionPayload = {
+	parentId: number;
+	firstName: string;
+};
+
+function getSecretKey() {
+	const secret = process.env.AUTH_SECRET;
+
+	if (!secret) {
+		throw new Error("AUTH_SECRET est absent de .env.local.");
+	}
+
+	return new TextEncoder().encode(secret);
+}
 
 type CountRow = RowDataPacket & {
-  total: number;
+	total: number;
 };
 
 type SafetySettingRow = RowDataPacket & {
-  screen_time_limit: number;
-  screen_time_used: number;
-  filter_level: string;
-  safe_search: boolean;
+	screen_time_limit: number;
+	screen_time_used: number;
+	filter_level: string;
+	safe_search: boolean;
 };
 
 export async function GET() {
-  const parentId = 1;
+  try {
+    const cookieStore = await cookies();
+
+    const token =
+      cookieStore.get("zouusafe_session")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { message: "Non authentifié" },
+        { status: 401 }
+      );
+    }
+
+    const { payload } = await jwtVerify(
+      token,
+      getSecretKey()
+    );
+
+    const session = payload as SessionPayload;
+
+    const parentId = session.parentId;
+  
 
   const [parents] = await db.query<RowDataPacket[]>(
     `SELECT first_name

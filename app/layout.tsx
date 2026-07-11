@@ -1,15 +1,16 @@
 import "./globals.css";
+import type { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "ZouuSafe",
-  description: "Explore internet en toute sécurité",
+  description: "Internet sécurisé pour les enfants",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="fr">
       <body>{children}</body>
