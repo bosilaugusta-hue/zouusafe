@@ -1,3 +1,4 @@
+import ChildForm from "@/components/children/ChildForm";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -30,56 +31,7 @@ export default function NewChildPage() {
           </p>
         </header>
 
-        <form className="mt-8 space-y-5">
-          <label className="block">
-            <span className="mb-2 block text-sm font-bold text-slate-700">
-              Prénom
-            </span>
-
-            <input
-              type="text"
-              name="firstName"
-              placeholder="Prénom de l’enfant"
-              required
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-violet-400 focus:ring-4 focus:ring-violet-100"
-            />
-          </label>
-
-          <label className="block">
-            <span className="mb-2 block text-sm font-bold text-slate-700">
-              Date de naissance
-            </span>
-
-            <input
-              type="date"
-              name="birthDate"
-              required
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-violet-400 focus:ring-4 focus:ring-violet-100"
-            />
-          </label>
-
-          <label className="block">
-            <span className="mb-2 block text-sm font-bold text-slate-700">
-              Avatar
-            </span>
-
-            <select
-              name="avatar"
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-violet-400 focus:ring-4 focus:ring-violet-100"
-            >
-              <option value="zoe.png">Avatar Zoé</option>
-              <option value="Fille_tablette.png">Fille tablette</option>
-              <option value="kids.png">Explorateur</option>
-            </select>
-          </label>
-
-          <button
-            type="submit"
-            className="w-full rounded-2xl bg-gradient-to-r from-violet-400 to-violet-600 py-3.5 font-bold text-white shadow-lg transition hover:-translate-y-0.5"
-          >
-            Ajouter l’enfant
-          </button>
-        </form>
+        <ChildForm />
       </section>
     </main>
   );

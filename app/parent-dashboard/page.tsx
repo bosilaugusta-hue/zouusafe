@@ -6,6 +6,7 @@ import QuickSettings from "@/components/dashboard/QuickSettings";
 import Sidebar from "@/components/dashboard/Sidebar";
 import StatsCards from "@/components/dashboard/StatsCards";
 
+
 async function getDashboardData() {
 	const response = await fetch("http://localhost:3000/api/dashboard", {
 		cache: "no-store",
