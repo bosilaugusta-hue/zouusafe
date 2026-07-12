@@ -156,4 +156,17 @@ export async function GET() {
     history,
     settings: settingsRows[0] ?? null,
   });
+    
+  } catch (error) {
+    console.error("Erreur dashboard :", error);
+
+    return NextResponse.json(
+      {
+        message: "Session invalide ou erreur serveur",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
 }
