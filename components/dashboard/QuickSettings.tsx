@@ -1,32 +1,45 @@
 import { Clock, SearchCheck, Shield, Timer } from "lucide-react";
 
-type QuickSettingsProps = {
-	settings: {
-		screen_time_limit: number;
-		screen_time_used: number;
-		filter_level: string;
-		safe_search: number;
-	};
+type SafetySettings = {
+	screen_time_limit: number;
+	screen_time_used: number;
+	filter_level: string;
+	safe_search: boolean;
 };
 
-export default function QuickSettings({ settings }: QuickSettingsProps) {
-	const safeSearchLabel = settings.safe_search ? "Activée" : "Désactivée";
+type QuickSettingsProps = {
+	settings: SafetySettings | null;
+};
+
+export default function QuickSettings({
+	settings,
+}: QuickSettingsProps) {
+	const safeSearchEnabled = settings?.safe_search ?? true;
+	const filterLevel = settings?.filter_level ?? "Modéré";
+	const screenTimeLimit = settings?.screen_time_limit ?? 120;
+	const screenTimeUsed = settings?.screen_time_used ?? 0;
+
+	const safeSearchLabel = safeSearchEnabled
+		? "Activée"
+		: "Désactivée";
 
 	return (
 		<article className="rounded-3xl bg-white/95 p-6 shadow-xl">
-			<h2 className="mb-5 text-2xl font-black">Paramètres rapides</h2>
+			<h2 className="mb-5 text-2xl font-black">
+				Paramètres rapides
+			</h2>
 
 			<section className="grid gap-4 sm:grid-cols-2">
 				<SettingItem
 					icon={<Shield size={24} />}
 					title="Filtres de contenu"
-					text={`Niveau : ${settings.filter_level}`}
+					text={`Niveau : ${filterLevel}`}
 				/>
 
 				<SettingItem
 					icon={<Timer size={24} />}
 					title="Limite de temps"
-					text={`${settings.screen_time_limit} min par jour`}
+					text={`${screenTimeLimit} min par jour`}
 				/>
 
 				<SettingItem
@@ -38,7 +51,7 @@ export default function QuickSettings({ settings }: QuickSettingsProps) {
 				<SettingItem
 					icon={<Clock size={24} />}
 					title="Temps utilisé"
-					text={`${settings.screen_time_used} min`}
+					text={`${screenTimeUsed} min`}
 				/>
 			</section>
 		</article>

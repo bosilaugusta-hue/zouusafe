@@ -5,14 +5,31 @@ import HistoryCard from "@/components/dashboard/HistoryCard";
 import QuickSettings from "@/components/dashboard/QuickSettings";
 import Sidebar from "@/components/dashboard/Sidebar";
 import StatsCards from "@/components/dashboard/StatsCards";
-
+import { cookies } from "next/headers";
 
 async function getDashboardData() {
+	const cookieStore = await cookies();
+	const sessionCookie = cookieStore.get("zouusafe_session");
+
+	if (!sessionCookie) {
+		throw new Error("Session utilisateur introuvable.");
+	}
+
 	const response = await fetch("http://localhost:3000/api/dashboard", {
 		cache: "no-store",
+		headers: {
+			Cookie: `zouusafe_session=${sessionCookie.value}`,
+		},
 	});
 
 	if (!response.ok) {
+		const errorData = await response.json().catch(() => null);
+
+		console.error("Erreur API dashboard :", {
+			status: response.status,
+			data: errorData,
+		});
+
 		throw new Error("Impossible de récupérer les données du dashboard.");
 	}
 
@@ -22,10 +39,8 @@ async function getDashboardData() {
 export default async function ParentDashboardPage() {
 	const dashboard = await getDashboardData();
 
-	const child = dashboard.children[0] ?? {
-		first_name: "Zoé",
-		avatar_url: "zoe.png",
-	};
+	const firstChildName =
+		dashboard.children[0]?.first_name ?? "votre enfant";
 
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
@@ -35,7 +50,7 @@ export default async function ParentDashboardPage() {
 				<section className="space-y-6">
 					<DashboardHeader
 						parentName={dashboard.parent?.first_name ?? "Augusta"}
-						childName={child.first_name}
+						childName={firstChildName}
 					/>
 
 					<StatsCards
@@ -46,7 +61,7 @@ export default async function ParentDashboardPage() {
 					/>
 
 					<section className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
-						<ChildCard firstName={child.first_name} avatar={child.avatar_url} />
+						<ChildCard children={dashboard.children} />
 						<AlertsCard alerts={dashboard.alerts} />
 					</section>
 

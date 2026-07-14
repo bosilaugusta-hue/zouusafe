@@ -15,11 +15,14 @@ export default function ForgotPasswordForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    const form = event.currentTarget;
+
     setMessage("");
     setError("");
     setIsLoading(true);
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
+
     const email = String(formData.get("email") ?? "")
       .trim()
       .toLowerCase();
@@ -38,20 +41,21 @@ export default function ForgotPasswordForm() {
       if (!response.ok) {
         setError(
           result.message ??
-            "Impossible de traiter votre demande pour le moment.",
+          "Impossible de traiter votre demande pour le moment.",
         );
         return;
       }
 
       setMessage(
         result.message ??
-          "Si un compte correspond à cette adresse, un lien de réinitialisation a été envoyé.",
+        "Si un compte correspond à cette adresse, un lien de réinitialisation a été envoyé.",
       );
 
-      event.currentTarget.reset();
+      form.reset();
     } catch (error) {
       console.error("Erreur mot de passe oublié :", error);
 
+      setMessage("");
       setError(
         "Impossible de contacter le serveur. Veuillez réessayer dans quelques instants.",
       );
