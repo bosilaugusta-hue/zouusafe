@@ -7,11 +7,11 @@ import { type FormEvent, useState } from "react";
 const avatars: string[] = [
   ...Array.from(
     { length: 15 },
-    (_, index) => `/avatars_profil/fille_${index + 1}.png`,
+    (_, index) => `/avatars-profil/fille-${index + 1}.png`,
   ),
   ...Array.from(
     { length: 15 },
-    (_, index) => `/avatars_profil/garcon_${index + 16}.png`,
+    (_, index) => `/avatars-profil/boy-${index + 16}.png`,
   ),
 ];
 
