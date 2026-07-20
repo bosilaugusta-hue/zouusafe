@@ -15,7 +15,7 @@ export default function DashboardHeader({
 			<section className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 				<section className="flex items-center gap-5">
 					<Image
-						src="/Bonjour_robot.png"
+						src="/mascottes/Bonjour-robot.png"
 						alt="Robot ZouuSafe qui salue le parent"
 						width={110}
 						height={135}
@@ -63,7 +63,7 @@ export default function DashboardHeader({
 
 					<section className="flex items-center gap-3 rounded-2xl bg-white px-4 py-2 shadow-md">
 						<Image
-							src="/Bosila.png"
+							src="/avatars-profil/Maman-Bosila.png"
 							alt={`Photo de ${parentName}`}
 							width={46}
 							height={46}

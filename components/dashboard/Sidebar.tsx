@@ -24,7 +24,7 @@ export default function Sidebar() {
 	return (
 		<aside className="sticky top-6 flex h-[calc(100vh-3rem)] w-[280px] flex-col rounded-3xl bg-white/95 p-6 shadow-2xl">
 			<Image
-				src="/Renard_logo.png"
+				src="/logos/Renard-logo.png"
 				alt="Logo ZouuSafe"
 				width={230}
 				height={95}
@@ -59,7 +59,7 @@ export default function Sidebar() {
 
 			<section className="mt-auto rounded-3xl border border-violet-100 bg-white p-4 text-center shadow-sm">
 				<Image
-					src="/renard-shield.png"
+					src="/mascottes/renard-shield.png"
 					alt="Protection ZouuSafe"
 					width={150}
 					height={150}

@@ -9,7 +9,7 @@ export default function HeroSection() {
 			className="relative min-h-[760px] overflow-hidden bg-gradient-to-br from-[#eef4ff] via-[#f8efff] to-[#fff3e7] pt-28"
 		>
 			<Image
-				src="/clouds-bg.png"
+				src="/backgrounds/clouds-bg.png"
 				alt=""
 				fill
 				priority
@@ -17,7 +17,7 @@ export default function HeroSection() {
 			/>
 
 			<Image
-				src="/bulle_recherche.png"
+				src="/icones/bulle-recherche.png"
 				alt=""
 				width={82}
 				height={82}
@@ -25,7 +25,7 @@ export default function HeroSection() {
 			/>
 
 			<Image
-				src="/bulle_etoile.png"
+				src="/icones/bulle-etoile.png"
 				alt=""
 				width={82}
 				height={82}
@@ -33,7 +33,7 @@ export default function HeroSection() {
 			/>
 
 			<Image
-				src="/bulle_protection.png"
+				src="/icones/bulle-protection.png"
 				alt=""
 				width={82}
 				height={82}
@@ -43,7 +43,7 @@ export default function HeroSection() {
 			<section className="relative z-10 mx-auto grid min-h-[650px] max-w-[1500px] items-center gap-8 px-6 pb-8 pt-16 lg:grid-cols-[0.8fr_1.35fr_0.8fr] lg:px-10">
 				<div className="hidden justify-center lg:flex">
 					<Image
-						src="/Fille_tablette.png"
+						src="/enfants/Fille-tablette.png"
 						alt="Petite fille utilisant une tablette"
 						width={430}
 						height={560}
@@ -109,7 +109,7 @@ export default function HeroSection() {
 
 				<div className="hidden justify-center lg:flex">
 					<Image
-						src="/Robot_protecteur.png"
+						src="/mascottes/Robot-protecteur.png"
 						alt="Robot protecteur ZouuSafe"
 						width={430}
 						height={560}

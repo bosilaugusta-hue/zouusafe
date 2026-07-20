@@ -8,7 +8,7 @@ export default function HomeFooter() {
 			<section className="mx-auto grid max-w-[1450px] gap-10 sm:grid-cols-2 lg:grid-cols-5">
 				<article>
 					<Image
-						src="/Renard_logo.png"
+						src="/logos/Renard-logo.png"
 						alt="Logo ZouuSafe"
 						width={190}
 						height={80}

@@ -49,7 +49,7 @@ export default function StepsSection() {
 
 				<div className="flex items-end justify-center">
 					<Image
-						src="/kids.png"
+						src="/enfants/kids.png"
 						alt="Enfants explorateurs ZouuSafe"
 						width={620}
 						height={430}

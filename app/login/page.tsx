@@ -6,7 +6,7 @@ export default function LoginPage() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-12">
       <Image
-        src="/clouds-bg.png"
+        src="/backgrounds/clouds-bg.png"
         alt=""
         fill
         priority
@@ -16,7 +16,7 @@ export default function LoginPage() {
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-violet-500/10 via-pink-300/10 to-orange-200/10" />
 
       <Image
-        src="/Bonjour_renard.png"
+        src="/mascottes/Bonjour-renard.png"
         alt="Renard ZouuSafe"
         width={350}
         height={350}
@@ -24,7 +24,7 @@ export default function LoginPage() {
       />
 
       <Image
-        src="/Bonjour_robot.png"
+        src="/mascottes/Bonjour-robot.png"
         alt="Robot protecteur ZouuSafe"
         width={300}
         height={350}
@@ -38,7 +38,7 @@ export default function LoginPage() {
       <section className="relative z-10 w-full max-w-md rounded-[2rem] border border-white/70 bg-white/90 p-8 shadow-2xl backdrop-blur-xl">
         <Link href="/">
           <Image
-            src="/Renard_logo.png"
+            src="/logos/Renard-logo.png"
             alt="Logo ZouuSafe"
             width={250}
             height={100}

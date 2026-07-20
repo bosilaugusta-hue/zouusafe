@@ -57,7 +57,7 @@ export default function ChildCard({
 			{children.length === 0 ? (
 				<section className="rounded-3xl border border-dashed border-violet-200 bg-violet-50/60 px-6 py-10 text-center">
 					<Image
-						src="/Robot_zen.png"
+						src="/mascottes/Robot-zen.png"
 						alt="Robot ZouuSafe"
 						width={125}
 						height={125}

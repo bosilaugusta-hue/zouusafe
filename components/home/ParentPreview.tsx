@@ -50,7 +50,7 @@ export default function ParentPreview() {
 					<section className="grid min-h-[430px] md:grid-cols-[165px_1fr]">
 						<aside className="hidden bg-gradient-to-b from-violet-50 to-white p-5 md:block">
 							<Image
-								src="/logo_zouusafe.png"
+								src="/logos/logo-zouusafe.png"
 								alt="Logo ZouuSafe"
 								width={80}
 								height={80}

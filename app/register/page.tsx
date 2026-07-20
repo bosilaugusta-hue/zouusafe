@@ -6,7 +6,7 @@ export default function RegisterPage() {
 	return (
 		<main className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-10">
 			<Image
-				src="/clouds-bg.png"
+				src="/backgrounds/clouds-bg.png"
 				alt=""
 				fill
 				priority
@@ -16,7 +16,7 @@ export default function RegisterPage() {
 			<div className="absolute inset-0 -z-10 bg-gradient-to-br from-violet-500/10 via-pink-300/10 to-orange-200/10" />
 
 			<Image
-				src="/kids.png"
+				src="/enfants/kids.png"
 				alt="Enfants explorateurs ZouuSafe"
 				width={470}
 				height={470}
@@ -24,7 +24,7 @@ export default function RegisterPage() {
 			/>
 
 			<Image
-				src="/Robot_protecteur.png"
+				src="/mascottes/Robot-protecteur.png"
 				alt="Robot protecteur ZouuSafe"
 				width={300}
 				height={380}
@@ -38,7 +38,7 @@ export default function RegisterPage() {
 			<section className="relative z-10 w-full max-w-md rounded-[2rem] border border-white/70 bg-white/80 p-8 shadow-2xl backdrop-blur-xl">
 				<Link href="/" aria-label="Retour à l’accueil">
 					<Image
-						src="/Renard_logo.png"
+						src="/logos/Renard-logo.png"
 						alt="Logo ZouuSafe"
 						width={260}
 						height={100}

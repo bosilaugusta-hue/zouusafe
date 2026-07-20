@@ -29,7 +29,7 @@ export default function HomeHeader() {
 			<section className="mx-auto flex max-w-[1500px] items-center justify-between px-5 py-3 md:px-10">
 				<Link href="/" aria-label="Accueil ZouuSafe">
 					<Image
-						src="/Renard_logo.png"
+						src="/logos/Renard-logo.png"
 						alt="Logo ZouuSafe"
 						width={230}
 						height={90}

@@ -6,7 +6,7 @@ export default function ForgotPasswordPage() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-12">
       <Image
-        src="/clouds-bg.png"
+        src="/backgrounds/clouds-bg.png"
         alt=""
         fill
         priority
@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-violet-500/10 via-pink-300/10 to-orange-200/10" />
 
       <Image
-        src="/Renard_telephone.png"
+        src="/mascottes/Renard-telephone.png"
         alt="Renard ZouuSafe avec un téléphone"
         width={340}
         height={340}
@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
       />
 
       <Image
-        src="/Robot_ordinateur.png"
+        src="/mascottes/Robot-ordinateur.png"
         alt="Robot ZouuSafe assistant le parent"
         width={300}
         height={340}
@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
       <section className="relative z-10 w-full max-w-md rounded-[2rem] border border-white/70 bg-white/90 p-8 shadow-2xl backdrop-blur-xl">
         <Link href="/" aria-label="Retour à l’accueil">
           <Image
-            src="/Renard_logo.png"
+            src="/logos/Renard-logo.png"
             alt="Logo ZouuSafe"
             width={250}
             height={100}
