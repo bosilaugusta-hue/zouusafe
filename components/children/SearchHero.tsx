@@ -2,11 +2,13 @@ import Image from "next/image";
 import SearchBar from "./SearchBar";
 
 type SearchHeroProps = {
+	childId: number;
 	childName: string;
 	standingAvatar: string;
 };
 
 export default function SearchHero({
+	childId,
 	childName,
 	standingAvatar,
 }: SearchHeroProps) {
@@ -41,7 +43,7 @@ export default function SearchHero({
 				</p>
 
 				<div className="mt-8 w-full">
-					<SearchBar />
+					<SearchBar childId={childId} />
 				</div>
 
 				<p className="mt-5 text-sm font-medium text-violet-600">

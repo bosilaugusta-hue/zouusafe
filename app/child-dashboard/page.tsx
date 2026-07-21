@@ -40,9 +40,10 @@ export default async function ChildDashboardPage({
 				/>
 
 				<SearchHero
-					childName={child.name}
-					standingAvatar={child.standingAvatar}
-				/>
+	childId={child.id}
+	childName={child.name}
+	standingAvatar={child.standingAvatar}
+/>
 			</div>
 
 			<SearchCategories childId={child.id} />
