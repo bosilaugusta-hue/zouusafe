@@ -1,21 +1,33 @@
 import { NextResponse } from "next/server";
+import type { RowDataPacket } from "mysql2";
+
 import { db } from "@/lib/db";
 
-type SearchBody = {
+type SearchHistoryBody = {
 	childId?: number;
 	query?: string;
 };
 
+type SearchHistoryRow = RowDataPacket & {
+	search_history_id: number;
+	search_query: string;
+	created_at: string;
+	child_id: number;
+	child_name: string;
+};
+
 export async function POST(request: Request) {
 	try {
-		const body = (await request.json()) as SearchBody;
+		const body = (await request.json()) as SearchHistoryBody;
 
-		const childId = body.childId;
+		const childId = Number(body.childId);
 		const query = body.query?.trim();
 
 		if (!childId || !query) {
 			return NextResponse.json(
-				{ message: "Données invalides." },
+				{
+					error: "Paramètres invalides.",
+				},
 				{ status: 400 },
 			);
 		}
@@ -23,22 +35,81 @@ export async function POST(request: Request) {
 		await db.execute(
 			`
 				INSERT INTO search_history (
-					search_query,
-					child_id
+					child_id,
+					search_query
 				)
 				VALUES (?, ?)
 			`,
-			[query, childId],
+			[childId, query],
+		);
+
+		return NextResponse.json(
+			{
+				success: true,
+			},
+			{ status: 201 },
+		);
+	} catch (error) {
+		console.error(
+			"Erreur pendant l'enregistrement de l'historique :",
+			error,
+		);
+
+		return NextResponse.json(
+			{
+				error: "Erreur serveur.",
+			},
+			{ status: 500 },
+		);
+	}
+}
+
+export async function GET(request: Request) {
+	try {
+		const { searchParams } = new URL(request.url);
+
+		const childId = Number(searchParams.get("childId"));
+
+		if (!childId) {
+			return NextResponse.json(
+				{
+					error: "L'identifiant de l'enfant est obligatoire.",
+				},
+				{ status: 400 },
+			);
+		}
+
+		const [rows] = await db.execute<SearchHistoryRow[]>(
+			`
+				SELECT
+					sh.search_history_id,
+					sh.search_query,
+					sh.created_at,
+					sh.child_id,
+					c.first_name AS child_name
+				FROM search_history AS sh
+				INNER JOIN child AS c
+					ON c.child_id = sh.child_id
+				WHERE sh.child_id = ?
+				ORDER BY sh.created_at DESC
+				LIMIT 50
+			`,
+			[childId],
 		);
 
 		return NextResponse.json({
-			success: true,
+			history: rows,
 		});
 	} catch (error) {
-		console.error(error);
+		console.error(
+			"Erreur pendant la récupération de l'historique :",
+			error,
+		);
 
 		return NextResponse.json(
-			{ message: "Erreur serveur." },
+			{
+				error: "Impossible de récupérer l'historique.",
+			},
 			{ status: 500 },
 		);
 	}

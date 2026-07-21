@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import {
 	BookOpen,
 	Gamepad2,
@@ -41,10 +43,14 @@ const filters = [
 ];
 
 type SearchFiltersProps = {
+	childId: number;
+	query: string;
 	activeFilter?: string;
 };
 
 export default function SearchFilters({
+	childId,
+	query,
 	activeFilter = "all",
 }: SearchFiltersProps) {
 	return (
@@ -56,10 +62,14 @@ export default function SearchFilters({
 				const Icon = filter.icon;
 				const isActive = activeFilter === filter.value;
 
+				const href = `/child-dashboard/search?childId=${childId}&query=${encodeURIComponent(
+					query,
+				)}&filter=${filter.value}`;
+
 				return (
-					<button
+					<Link
 						key={filter.value}
-						type="button"
+						href={href}
 						className={`flex items-center gap-2 rounded-2xl border px-5 py-3 text-sm font-black shadow-sm transition ${
 							isActive
 								? "border-violet-400 bg-violet-50 text-violet-700"
@@ -76,7 +86,7 @@ export default function SearchFilters({
 						/>
 
 						{filter.label}
-					</button>
+					</Link>
 				);
 			})}
 		</nav>

@@ -5,6 +5,7 @@ import SearchHeader from "@/components/search/SearchHeader";
 import SearchResultCard from "@/components/search/SearchResultCard";
 import SearchSidebar from "@/components/search/SearchSidebar";
 import { searchResults } from "@/data/searchResults";
+import { getChildAssets } from "@/lib/get-child-assets";
 
 type SearchPageProps = {
 	searchParams: Promise<{
@@ -12,6 +13,20 @@ type SearchPageProps = {
 		query?: string;
 		filter?: string;
 	}>;
+};
+
+type Child = {
+	child_id: number;
+	first_name: string;
+	avatar_url: string;
+};
+
+const categoryMap: Record<string, string[]> = {
+	images: ["Image", "Dessin"],
+	videos: ["Vidéo"],
+	stories: ["Histoire", "Lecture"],
+	games: ["Jeu"],
+	coloring: ["Coloriage", "Créatif"],
 };
 
 function normalizeSearch(value: string) {
@@ -22,7 +37,28 @@ function normalizeSearch(value: string) {
 		.trim();
 }
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
+async function getChild(childId: number): Promise<Child | null> {
+	const response = await fetch(
+		`http://localhost:3000/api/children/${childId}`,
+		{
+			cache: "no-store",
+		},
+	);
+
+	if (!response.ok) {
+		return null;
+	}
+
+	const data = (await response.json()) as {
+		child: Child;
+	};
+
+	return data.child;
+}
+
+export default async function SearchPage({
+	searchParams,
+}: SearchPageProps) {
 	const {
 		childId: childIdParam,
 		query: queryParam,
@@ -33,22 +69,45 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 	const query = queryParam?.trim() || "Recherche";
 	const activeFilter = filterParam || "all";
 
+	const child = await getChild(childId);
+
+	if (!child) {
+		return (
+			<main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] px-6">
+				<div className="rounded-3xl bg-white p-8 text-center shadow-md">
+					<h1 className="text-2xl font-black text-slate-900">
+						Enfant introuvable
+					</h1>
+
+					<p className="mt-3 text-slate-500">
+						Le profil demandé n&apos;existe pas.
+					</p>
+				</div>
+			</main>
+		);
+	}
+
+	const assets = getChildAssets(child.avatar_url);
 	const normalizedQuery = normalizeSearch(query);
 
 	const matchedKey = Object.keys(searchResults).find((key) =>
 		normalizedQuery.includes(key),
 	);
 
-	const results = matchedKey
+	const allResults = matchedKey
 		? searchResults[matchedKey as keyof typeof searchResults]
 		: [];
 
-	const childName = "Zoé";
-	const standingAvatar = "/enfants/fille15-loupe.png";
+	const results =
+		activeFilter === "all"
+			? allResults
+			: allResults.filter((result) =>
+					categoryMap[activeFilter]?.includes(result.category),
+				);
 
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df]">
-			<SearchHeader childId={childId} query={query} />
+			<SearchHeader childId={child.child_id} query={query} />
 
 			<section className="mx-auto w-full max-w-[1500px] px-4 pt-6 pb-12 sm:px-6 lg:px-8">
 				<div className="overflow-hidden rounded-[32px] border border-white/80 bg-white/60 px-6 py-7 shadow-[0_18px_50px_rgba(88,80,150,0.12)] backdrop-blur-xl md:px-9">
@@ -64,23 +123,31 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
 							<p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
 								Voici des contenus amusants et adaptés à l&apos;âge de{" "}
-								<span className="font-bold text-violet-600">{childName}</span>.
+								<span className="font-bold text-violet-600">
+									{child.first_name}
+								</span>
+								.
 							</p>
 						</div>
 
 						<Image
-							src={standingAvatar}
-							alt={`Avatar de ${childName}`}
+							src={assets.search}
+							alt={`${child.first_name} avec une loupe`}
 							width={260}
 							height={260}
 							className="h-40 w-auto object-contain md:h-48"
+							priority
 						/>
 					</div>
 				</div>
 
-			<div className="mt-6">
-	<SearchFilters activeFilter={activeFilter} />
-</div>
+				<div className="mt-6">
+					<SearchFilters
+						childId={child.child_id}
+						query={query}
+						activeFilter={activeFilter}
+					/>
+				</div>
 
 				<div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
 					<section>
@@ -139,7 +206,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 					</section>
 
 					<aside>
-						<SearchSidebar childId={childId} query={query} />
+						<SearchSidebar
+							childId={child.child_id}
+							query={query}
+						/>
 					</aside>
 				</div>
 			</section>
