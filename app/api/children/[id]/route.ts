@@ -166,3 +166,86 @@ export async function PATCH(
 		);
 	}
 }
+
+export async function DELETE(
+	_request: Request,
+	{ params }: RouteContext,
+) {
+	const connection = await db.getConnection();
+
+	try {
+		const { id } = await params;
+		const childId = Number(id);
+
+		if (!Number.isInteger(childId) || childId <= 0) {
+			return NextResponse.json(
+				{ message: "Identifiant invalide." },
+				{ status: 400 },
+			);
+		}
+
+		await connection.beginTransaction();
+
+
+		await connection.execute(
+			`
+				DELETE FROM search_history
+				WHERE child_id = ?
+			`,
+			[childId],
+		);
+
+		await connection.execute(
+			`
+				DELETE FROM blocked_content
+				WHERE child_id = ?
+			`,
+			[childId],
+		);
+
+		await connection.execute(
+			`
+				DELETE FROM safety_setting
+				WHERE child_id = ?
+			`,
+			[childId],
+		);
+
+		const [result] = await connection.execute<ResultSetHeader>(
+			`
+				DELETE FROM child
+				WHERE child_id = ?
+			`,
+			[childId],
+		);
+
+		if (result.affectedRows === 0) {
+			await connection.rollback();
+
+			return NextResponse.json(
+				{ message: "Enfant introuvable." },
+				{ status: 404 },
+			);
+		}
+
+		await connection.commit();
+
+		return NextResponse.json({
+			message: "Le profil enfant a bien été supprimé.",
+		});
+	} catch (error) {
+		await connection.rollback();
+
+		console.error("DELETE /api/children/[id] :", error);
+
+		return NextResponse.json(
+			{
+				message:
+					"Impossible de supprimer ce profil et ses données associées.",
+			},
+			{ status: 500 },
+		);
+	} finally {
+		connection.release();
+	}
+}

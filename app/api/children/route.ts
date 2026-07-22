@@ -156,3 +156,53 @@ export async function POST(request: Request) {
 		connection.release();
 	}
 }
+export async function GET() {
+	try {
+		const cookieStore = await cookies();
+		const token = cookieStore.get("zouusafe_session")?.value;
+
+		if (!token) {
+			return NextResponse.json(
+				{ message: "Vous devez être connecté." },
+				{ status: 401 },
+			);
+		}
+
+		const { payload } = await jwtVerify(token, getSecretKey());
+		const { parentId } = payload as SessionPayload;
+
+		const [children] = await db.execute(
+			`
+			SELECT
+				c.child_id,
+				c.first_name,
+				c.birth_date,
+				c.avatar_url,
+				s.screen_time_limit,
+				s.screen_time_used,
+				s.filter_level
+			FROM child c
+			LEFT JOIN safety_setting s
+				ON s.child_id = c.child_id
+			WHERE c.parent_id = ?
+			ORDER BY c.first_name
+			`,
+			[parentId],
+		);
+
+		return NextResponse.json({
+			children,
+		});
+	} catch (error) {
+		console.error(error);
+
+		return NextResponse.json(
+			{
+				message: "Erreur serveur.",
+			},
+			{
+				status: 500,
+			},
+		);
+	}
+}

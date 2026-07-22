@@ -1,5 +1,8 @@
+import { Eye, Pencil } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+import DeleteChildButton from "@/components/parent/DeleteChildButton";
 
 type Child = {
 	child_id: number;
@@ -9,7 +12,7 @@ type Child = {
 };
 
 type ChildCardProps = {
-	children: Child[];
+	childList: Child[];
 };
 
 function calculateAge(birthDate: string) {
@@ -18,11 +21,13 @@ function calculateAge(birthDate: string) {
 
 	let age = today.getFullYear() - birth.getFullYear();
 
-	const monthDifference = today.getMonth() - birth.getMonth();
+	const monthDifference =
+		today.getMonth() - birth.getMonth();
 
 	if (
 		monthDifference < 0 ||
-		(monthDifference === 0 && today.getDate() < birth.getDate())
+		(monthDifference === 0 &&
+			today.getDate() < birth.getDate())
 	) {
 		age -= 1;
 	}
@@ -31,7 +36,7 @@ function calculateAge(birthDate: string) {
 }
 
 export default function ChildCard({
-	children,
+	childList,
 }: ChildCardProps) {
 	return (
 		<article className="rounded-3xl bg-white/95 p-6 shadow-xl">
@@ -54,7 +59,7 @@ export default function ChildCard({
 				</Link>
 			</header>
 
-			{children.length === 0 ? (
+			{childList.length === 0 ? (
 				<section className="rounded-3xl border border-dashed border-violet-200 bg-violet-50/60 px-6 py-10 text-center">
 					<Image
 						src="/mascottes/Robot-zen.png"
@@ -69,8 +74,9 @@ export default function ChildCard({
 					</h3>
 
 					<p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-600">
-						Créez le premier profil enfant pour commencer à configurer
-						sa protection, son temps d’écran et ses recherches.
+						Créez le premier profil enfant pour commencer à
+						configurer sa protection, son temps d’écran et ses
+						recherches.
 					</p>
 
 					<Link
@@ -82,11 +88,16 @@ export default function ChildCard({
 				</section>
 			) : (
 				<section className="grid gap-4 md:grid-cols-2">
-					{children.map((child) => {
+					{childList.map((child) => {
 						const age = calculateAge(child.birth_date);
 
 						const avatar =
-							child.avatar_url ?? "avatars_profil/fille_1.png";
+							child.avatar_url ??
+							"/avatars-profil/fille-15.png";
+
+						const avatarSrc = avatar.startsWith("/")
+							? avatar
+							: `/${avatar}`;
 
 						return (
 							<article
@@ -95,11 +106,7 @@ export default function ChildCard({
 							>
 								<div className="flex items-center gap-4">
 									<Image
-										src={
-											avatar.startsWith("/")
-												? avatar
-												: `/${avatar}`
-										}
+										src={avatarSrc}
 										alt={`Avatar de ${child.first_name}`}
 										width={100}
 										height={100}
@@ -121,12 +128,28 @@ export default function ChildCard({
 									</div>
 								</div>
 
-								<Link
-									href={`/parent-dashboard/children/${child.child_id}`}
-									className="mt-5 block rounded-2xl bg-white py-3 text-center font-black shadow-sm transition hover:bg-violet-50"
-								>
-									Voir le profil →
-								</Link>
+								<div className="mt-5 grid grid-cols-3 gap-3">
+									<Link
+										href={`/parent-dashboard/children/${child.child_id}`}
+										className="flex items-center justify-center gap-2 rounded-2xl bg-white py-3 text-sm font-bold shadow-sm transition hover:bg-violet-50"
+									>
+										<Eye size={18} />
+										Voir
+									</Link>
+
+									<Link
+										href={`/parent-dashboard/children/${child.child_id}/edit`}
+										className="flex items-center justify-center gap-2 rounded-2xl bg-violet-100 py-3 text-sm font-bold text-violet-700 transition hover:bg-violet-200"
+									>
+										<Pencil size={18} />
+										Modifier
+									</Link>
+
+									<DeleteChildButton
+										childId={child.child_id}
+										childName={child.first_name}
+									/>
+								</div>
 							</article>
 						);
 					})}
