@@ -1,5 +1,6 @@
 import Image from "next/image";
-import SearchBar from "./SearchBar";
+
+import SecureSearchBar from "@/components/search/SecureSearchBar";
 
 type SearchHeroProps = {
 	childId: number;
@@ -14,7 +15,6 @@ export default function SearchHero({
 }: SearchHeroProps) {
 	return (
 		<section className="relative mx-auto flex min-h-[340px] w-full max-w-[1500px] items-center justify-center px-6">
-			{/* Avatar enfant */}
 			<Image
 				src={standingAvatar}
 				alt={childName}
@@ -24,7 +24,6 @@ export default function SearchHero({
 				className="absolute bottom-0 left-4 hidden h-[380px] w-auto object-contain lg:block"
 			/>
 
-			{/* Robot recherche */}
 			<Image
 				src="/mascottes/robot-recherche.png"
 				alt="Robot de recherche"
@@ -43,7 +42,10 @@ export default function SearchHero({
 				</p>
 
 				<div className="mt-8 w-full">
-					<SearchBar childId={childId} />
+					<SecureSearchBar
+						childId={childId}
+						className="w-full"
+					/>
 				</div>
 
 				<p className="mt-5 text-sm font-medium text-violet-600">

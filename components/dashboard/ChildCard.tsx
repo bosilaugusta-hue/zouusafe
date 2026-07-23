@@ -102,7 +102,7 @@ export default function ChildCard({
 						return (
 							<article
 								key={child.child_id}
-								className="rounded-3xl border border-pink-100 bg-gradient-to-br from-pink-50 to-violet-50 p-5"
+								className="rounded-[32px] border border-white/70 bg-white/75 p-6 shadow-xl backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl"
 							>
 								<div className="flex items-center gap-4">
 									<Image
@@ -110,7 +110,7 @@ export default function ChildCard({
 										alt={`Avatar de ${child.first_name}`}
 										width={100}
 										height={100}
-										className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-md"
+										className="h-24 w-24 rounded-full border-[5px] border-white object-cover shadow-xl"
 									/>
 
 									<div>
@@ -122,9 +122,11 @@ export default function ChildCard({
 											{age} {age > 1 ? "ans" : "an"}
 										</p>
 
-										<span className="mt-2 inline-flex rounded-full bg-green-100 px-3 py-1 text-sm font-black text-green-700">
-											Protection active
-										</span>
+										<span className="mt-2 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-black text-emerald-700">
+	<span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+
+	Protection active
+</span>
 									</div>
 								</div>
 

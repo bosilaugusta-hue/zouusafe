@@ -6,6 +6,7 @@ import SearchCategories from "@/components/children/SearchCategories";
 import SearchHero from "@/components/children/SearchHero";
 import SearchHistory from "@/components/children/SearchHistory";
 import { getChildAssets } from "@/lib/get-child-assets";
+import ScreenTimeTracker from "@/components/children/ScreenTimeTracker";
 
 type ChildDashboardPageProps = {
 	searchParams: Promise<{
@@ -20,6 +21,11 @@ type Child = {
 	gender: string;
 	avatar_url: string;
 	parent_id: number;
+
+	screen_time_limit: number | null;
+	screen_time_used: number | null;
+	filter_level: string | null;
+	safe_search: boolean | null;
 };
 
 async function getChild(childId: number): Promise<Child | null> {
@@ -67,6 +73,47 @@ export default async function ChildDashboardPage({
 
 	const assets = getChildAssets(child.avatar_url);
 
+	const screenLimitReached =
+	child.screen_time_limit !== null &&
+	child.screen_time_used !== null &&
+	child.screen_time_used >= child.screen_time_limit;
+
+	if (screenLimitReached) {
+	return (
+		<main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-blue-50 via-violet-50 to-amber-50 px-6">
+			<div className="max-w-xl rounded-[36px] border border-white/80 bg-white/95 p-10 text-center shadow-2xl">
+				<div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-amber-100 text-5xl">
+					⏰
+				</div>
+
+				<h1 className="mt-6 text-4xl font-black text-slate-900">
+					Temps d'écran terminé
+				</h1>
+
+				<p className="mt-5 text-lg leading-8 text-slate-600">
+					Bravo !
+					<br />
+					Tu as utilisé tout ton temps d'écran pour aujourd'hui.
+				</p>
+
+				<div className="mt-8 rounded-3xl bg-violet-50 p-6">
+					<p className="text-base font-semibold text-violet-700">
+						Limite autorisée
+					</p>
+
+					<p className="mt-2 text-3xl font-black text-violet-900">
+						{child.screen_time_limit} minutes
+					</p>
+				</div>
+
+				<p className="mt-8 text-slate-500">
+					Demande à ton parent si tu souhaites continuer.
+				</p>
+			</div>
+		</main>
+	);
+}
+
 	return (
 		<main className="min-h-screen bg-gradient-to-b from-blue-50 via-violet-50 to-amber-50 text-slate-900">
 			<div
@@ -80,6 +127,10 @@ export default async function ChildDashboardPage({
 					childName={child.first_name}
 					avatarUrl={assets.profile}
 				/>
+
+				<ScreenTimeTracker
+	childId={child.child_id}
+/>
 
 				<SearchHero
 					childId={child.child_id}

@@ -16,6 +16,11 @@ type ChildRow = RowDataPacket & {
 	gender: string;
 	avatar_url: string;
 	parent_id: number;
+
+	screen_time_limit: number | null;
+	screen_time_used: number | null;
+	filter_level: string | null;
+	safe_search: boolean | null;
 };
 
 type UpdateChildBody = {
@@ -45,15 +50,26 @@ export async function GET(
 		const [children] = await db.query<ChildRow[]>(
 			`
 				SELECT
-					child_id,
-					first_name,
-					birth_date,
-					gender,
-					avatar_url,
-					parent_id
-				FROM child
-				WHERE child_id = ?
-				LIMIT 1
+	child.child_id,
+	child.first_name,
+	child.birth_date,
+	child.gender,
+	child.avatar_url,
+	child.parent_id,
+
+	safety_setting.screen_time_limit,
+	safety_setting.screen_time_used,
+	safety_setting.filter_level,
+	safety_setting.safe_search
+
+FROM child
+
+LEFT JOIN safety_setting
+	ON safety_setting.child_id = child.child_id
+
+WHERE child.child_id = ?
+
+LIMIT 1
 			`,
 			[childId],
 		);
@@ -140,15 +156,26 @@ export async function PATCH(
 		const [children] = await db.query<ChildRow[]>(
 			`
 				SELECT
-					child_id,
-					first_name,
-					birth_date,
-					gender,
-					avatar_url,
-					parent_id
-				FROM child
-				WHERE child_id = ?
-				LIMIT 1
+	child.child_id,
+	child.first_name,
+	child.birth_date,
+	child.gender,
+	child.avatar_url,
+	child.parent_id,
+
+	safety_setting.screen_time_limit,
+	safety_setting.screen_time_used,
+	safety_setting.filter_level,
+	safety_setting.safe_search
+
+FROM child
+
+LEFT JOIN safety_setting
+	ON safety_setting.child_id = child.child_id
+
+WHERE child.child_id = ?
+
+LIMIT 1
 			`,
 			[childId],
 		);
