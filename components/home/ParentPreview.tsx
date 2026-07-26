@@ -11,25 +11,36 @@ const benefits = [
 
 export default function ParentPreview() {
 	return (
-		<section id="about" className="bg-white px-5 py-20 md:px-10">
-			<section className="mx-auto grid max-w-[1450px] items-center gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-				<article>
-					<p className="font-bold text-violet-600">Espace parent</p>
+		<section
+			id="about"
+			className="relative overflow-hidden bg-white px-8 py-32 md:px-12"
+		>
+			<div className="absolute -left-28 top-20 h-96 w-96 rounded-full bg-violet-100/70 blur-3xl" />
 
-					<h2 className="mt-3 text-4xl font-black leading-tight">
+			<div className="absolute -right-28 bottom-10 h-96 w-96 rounded-full bg-blue-100/60 blur-3xl" />
+
+			<div className="relative mx-auto grid max-w-[1750px] items-center gap-20 lg:grid-cols-[0.7fr_1.3fr] xl:gap-24">
+				<article>
+					<p className="zouu-eyebrow">Espace parent</p>
+
+					<h2 className="mt-4 text-4xl font-black leading-tight text-slate-900 md:text-5xl">
 						Gardez un œil sur les découvertes de votre enfant
 					</h2>
 
-					<p className="mt-5 max-w-xl leading-7 text-slate-600">
+					<p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-xl md:leading-9">
 						Consultez les recherches, les alertes, les appareils connectés et le
-						temps d’écran depuis un tableau de bord simple et intuitif.
+						temps d’écran depuis un tableau de bord simple, rassurant et
+						intuitif.
 					</p>
 
-					<ul className="mt-7 space-y-3 text-sm font-semibold text-slate-700">
+					<ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
 						{benefits.map((benefit) => (
-							<li key={benefit} className="flex items-center gap-2">
-								<span className="flex h-5 w-5 items-center justify-center rounded-full bg-violet-100 text-violet-600">
-									<Check size={13} />
+							<li
+								key={benefit}
+								className="flex items-center gap-4 text-base font-bold text-slate-700"
+							>
+								<span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-600 shadow-sm">
+									<Check size={18} strokeWidth={3} />
 								</span>
 
 								{benefit}
@@ -39,108 +50,135 @@ export default function ParentPreview() {
 
 					<Link
 						href="/login"
-						className="mt-8 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 px-7 py-4 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
+						className="btn-primary mt-11 px-10 py-5 text-lg"
 					>
 						Découvrir l’espace parent
-						<ArrowRight size={18} />
+						<ArrowRight size={21} />
 					</Link>
 				</article>
 
-				<article className="overflow-hidden rounded-[2rem] border border-violet-100 bg-white shadow-2xl">
-					<section className="grid min-h-[430px] md:grid-cols-[165px_1fr]">
-						<aside className="hidden bg-gradient-to-b from-violet-50 to-white p-5 md:block">
-							<Image
-								src="/logos/logo-zouusafe.png"
-								alt="Logo ZouuSafe"
-								width={80}
-								height={80}
-								className="mx-auto mb-8 h-auto w-[58px]"
-							/>
+				<article className="zouu-card relative overflow-hidden rounded-[2.7rem] p-4 md:p-6">
+					<div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-violet-200/40 blur-3xl" />
 
-							<nav className="space-y-3 text-xs font-bold text-slate-600">
-								<p className="rounded-xl bg-violet-100 px-3 py-3 text-violet-700">
-									Accueil
-								</p>
+					<div className="overflow-hidden rounded-[2.3rem] border border-violet-100 bg-white shadow-2xl shadow-violet-100/70">
+						<div className="grid min-h-[560px] md:grid-cols-[205px_1fr]">
+							<aside className="hidden bg-gradient-to-b from-violet-50 via-white to-white p-7 md:block">
+								<Image
+	src="/logos/zouusafe-renard-tete.png"
+	alt="Logo ZouuSafe"
+	width={170}
+	height={90}
+	className="mx-auto mb-10 h-auto w-[150px]"
+/>
 
-								<p className="px-3 py-2">Activité</p>
-
-								<p className="flex items-center justify-between px-3 py-2">
-									Alertes
-									<span className="rounded-full bg-red-500 px-2 py-0.5 text-[10px] text-white">
-										2
-									</span>
-								</p>
-
-								<p className="px-3 py-2">Temps d’écran</p>
-								<p className="px-3 py-2">Appareils</p>
-								<p className="px-3 py-2">Paramètres</p>
-							</nav>
-						</aside>
-
-						<section className="p-6 md:p-8">
-							<header className="flex flex-wrap items-start justify-between gap-4">
-								<section>
-									<p className="text-sm text-slate-500">Tableau de bord</p>
-
-									<h3 className="mt-1 text-2xl font-black">
-										Bonjour, Parent <span className="wave">👋</span>
-									</h3>
-
-									<p className="mt-1 text-xs text-slate-500">
-										Voici un résumé de l’activité de Zoé aujourd’hui.
+								<nav className="space-y-4 text-sm font-bold text-slate-600">
+									<p className="rounded-2xl bg-violet-100 px-4 py-4 text-violet-700 shadow-sm">
+										Accueil
 									</p>
-								</section>
 
-								<select className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs">
-									<option>Zoé (9 ans)</option>
-								</select>
-							</header>
+									<p className="px-4 py-3">Activité</p>
 
-							<section className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-								<StatCard label="Recherches" value="12" detail="Aujourd’hui" />
-								<StatCard
-									label="Temps d’écran"
-									value="1h 25min"
-									detail="Aujourd’hui"
-								/>
-								<StatCard
-									label="Alertes"
-									value="2"
-									detail="Aujourd’hui"
-									valueClassName="text-red-500"
-								/>
-								<StatCard label="Appareils" value="3" detail="Connectés" />
-							</section>
+									<p className="flex items-center justify-between px-4 py-3">
+										Alertes
 
-							<section className="mt-5 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-								<article className="rounded-xl border border-slate-100 p-4">
-									<h4 className="font-black">Activité récente</h4>
+										<span className="rounded-full bg-red-500 px-2.5 py-1 text-[11px] text-white">
+											2
+										</span>
+									</p>
 
-									<ActivityItem query="dinosaures" />
-									<ActivityItem query="volcan" />
-								</article>
+									<p className="px-4 py-3">Temps d’écran</p>
+									<p className="px-4 py-3">Appareils</p>
+									<p className="px-4 py-3">Paramètres</p>
+								</nav>
+							</aside>
 
-								<article className="rounded-xl border border-slate-100 p-4">
-									<h4 className="font-black">Limite de temps quotidienne</h4>
+							<section className="p-7 md:p-10">
+								<header className="flex flex-wrap items-start justify-between gap-6">
+									<div>
+										<p className="text-base font-semibold text-slate-500">
+											Tableau de bord
+										</p>
 
-									<p className="mt-5 text-lg font-black">1h 30min / 2h</p>
+										<h3 className="mt-2 text-3xl font-black text-slate-900 md:text-4xl">
+											Bonjour, Parent
+										</h3>
 
-									<div className="mt-3 h-2 overflow-hidden rounded-full bg-violet-100">
-										<div className="h-full w-3/4 rounded-full bg-violet-500" />
+										<p className="mt-2 text-sm leading-6 text-slate-500">
+											Voici un résumé de l’activité de Zoé aujourd’hui.
+										</p>
 									</div>
 
-									<button
-										type="button"
-										className="mt-5 w-full rounded-lg border border-violet-200 py-2 text-xs font-bold text-violet-600"
+									<select
+										aria-label="Sélectionner un enfant"
+										className="zouu-input min-h-0 w-auto px-4 py-3 text-sm"
 									>
-										Modifier la limite
-									</button>
-								</article>
+										<option>Zoé (9 ans)</option>
+									</select>
+								</header>
+
+								<div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+									<StatCard
+										label="Recherches"
+										value="12"
+										detail="Aujourd’hui"
+									/>
+
+									<StatCard
+										label="Temps d’écran"
+										value="1h 25min"
+										detail="Aujourd’hui"
+									/>
+
+									<StatCard
+										label="Alertes"
+										value="2"
+										detail="Aujourd’hui"
+										valueClassName="text-red-500"
+									/>
+
+									<StatCard
+										label="Appareils"
+										value="3"
+										detail="Connectés"
+									/>
+								</div>
+
+								<div className="mt-7 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+									<article className="rounded-[1.6rem] border border-slate-100 bg-slate-50/70 p-6">
+										<h4 className="text-lg font-black text-slate-900">
+											Activité récente
+										</h4>
+
+										<ActivityItem query="dinosaures" />
+										<ActivityItem query="volcan" />
+									</article>
+
+									<article className="rounded-[1.6rem] border border-slate-100 bg-slate-50/70 p-6">
+										<h4 className="text-lg font-black text-slate-900">
+											Limite de temps quotidienne
+										</h4>
+
+										<p className="mt-7 text-2xl font-black text-slate-900">
+											1h 30min / 2h
+										</p>
+
+										<div className="mt-4 h-3 overflow-hidden rounded-full bg-violet-100">
+											<div className="h-full w-3/4 rounded-full bg-gradient-to-r from-violet-400 to-violet-600" />
+										</div>
+
+										<button
+											type="button"
+											className="btn-secondary mt-7 min-h-0 w-full px-4 py-3 text-sm"
+										>
+											Modifier la limite
+										</button>
+									</article>
+								</div>
 							</section>
-						</section>
-					</section>
+						</div>
+					</div>
 				</article>
-			</section>
+			</div>
 		</section>
 	);
 }
@@ -159,30 +197,36 @@ function StatCard({
 	valueClassName = "",
 }: StatCardProps) {
 	return (
-		<article className="rounded-xl border border-slate-100 p-4">
-			<p className="text-xs text-slate-500">{label}</p>
+		<article className="rounded-[1.4rem] border border-violet-100 bg-white p-6 shadow-sm">
+			<p className="text-sm font-medium text-slate-500">{label}</p>
 
-			<strong className={`mt-2 block text-2xl ${valueClassName}`}>
+			<strong
+				className={`mt-3 block text-3xl font-black text-slate-900 ${valueClassName}`}
+			>
 				{value}
 			</strong>
 
-			<span className="text-[11px] text-slate-400">{detail}</span>
+			<span className="mt-1 block text-xs text-slate-400">{detail}</span>
 		</article>
 	);
 }
 
 function ActivityItem({ query }: { query: string }) {
 	return (
-		<section className="mt-4 flex items-center gap-3 border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
-			<span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-600">
-				<Search size={17} />
+		<div className="mt-5 flex items-center gap-4 border-b border-slate-100 pb-4 last:border-b-0 last:pb-0">
+			<span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+				<Search size={20} />
 			</span>
 
-			<section>
-				<p className="text-xs font-semibold">Zoé a recherché : {query}</p>
+			<div>
+				<p className="text-sm font-semibold text-slate-700">
+					Zoé a recherché : {query}
+				</p>
 
-				<p className="mt-1 text-[11px] text-green-600">Recherche autorisée</p>
-			</section>
-		</section>
+				<p className="mt-1 text-xs font-bold text-green-600">
+					Recherche autorisée
+				</p>
+			</div>
+		</div>
 	);
 }

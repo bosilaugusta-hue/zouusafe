@@ -164,13 +164,13 @@ export default function LoginForm() {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="w-full rounded-3xl bg-gradient-to-r from-violet-400 to-violet-600 py-3.5 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {isLoading ? "Connexion en cours..." : "Se connecter"}
-      </button>
+     <button
+	type="submit"
+	disabled={isLoading}
+	className="w-full rounded-2xl bg-gradient-to-r from-violet-500 to-violet-600 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
+>
+	{isLoading ? "Connexion en cours..." : "Se connecter"}
+</button>
     </form>
   );
 }

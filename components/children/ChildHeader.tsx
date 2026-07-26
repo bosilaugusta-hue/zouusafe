@@ -1,6 +1,11 @@
 "use client";
 
-import { History, LockKeyhole, Settings, Star } from "lucide-react";
+import {
+	History,
+	LockKeyhole,
+	Settings,
+	Star,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -23,25 +28,33 @@ export default function ChildHeader({
 
 	return (
 		<>
-			<header className="mx-auto flex w-full max-w-[1500px] items-center justify-between px-6 py-5">
-				<Link href="/child-dashboard" className="shrink-0">
+			<header className="mx-auto flex w-full max-w-[1500px] items-center justify-between px-6 pb-3 pt-5 sm:px-8">
+				<Link
+					href={`/child-dashboard?childId=${childId}`}
+					className="shrink-0 xl:ml-4"
+					aria-label="Retour à l’accueil enfant"
+				>
 					<Image
 						src="/logos/Renard-logo.png"
 						alt="Logo ZouuSafe"
-						width={220}
-						height={90}
+						width={260}
+						height={100}
 						priority
-						className="h-auto w-[180px] md:w-[220px]"
+						className="h-auto w-[185px] sm:w-[220px] lg:w-[250px]"
 					/>
 				</Link>
 
-				<nav className="flex items-center gap-3">
+				<nav
+					aria-label="Navigation enfant"
+					className="flex items-center gap-2 lg:gap-3"
+				>
 					<Link
 						href={`/child-dashboard/favorites?childId=${childId}`}
-						className="hidden items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:flex"
+						className="hidden items-center gap-2 rounded-full border border-white/80 bg-white/95 px-5 py-3 text-sm font-bold text-slate-800 shadow-lg backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-xl sm:flex"
 					>
 						<Star
 							size={18}
+							aria-hidden="true"
 							className="text-yellow-500"
 						/>
 						Favoris
@@ -49,10 +62,11 @@ export default function ChildHeader({
 
 					<Link
 						href={`/child-dashboard/history?childId=${childId}`}
-						className="hidden items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:flex"
+						className="hidden items-center gap-2 rounded-full border border-white/80 bg-white/95 px-5 py-3 text-sm font-bold text-slate-800 shadow-lg backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-xl md:flex"
 					>
 						<History
 							size={18}
+							aria-hidden="true"
 							className="text-violet-600"
 						/>
 						Historique
@@ -60,25 +74,26 @@ export default function ChildHeader({
 
 					<Link
 						href={`/child-dashboard/settings?childId=${childId}`}
-						className="hidden items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold shadow-sm transition hover:-translate-y-0.5 hover:shadow-md lg:flex"
+						className="hidden items-center gap-2 rounded-full border border-white/80 bg-white/95 px-5 py-3 text-sm font-bold text-slate-800 shadow-lg backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-xl lg:flex"
 					>
 						<Settings
 							size={18}
+							aria-hidden="true"
 							className="text-violet-600"
 						/>
 						Paramètres
 					</Link>
 
-					<div className="flex items-center gap-2 rounded-full bg-white p-2 pr-2 shadow-sm">
+					<div className="flex items-center gap-2 rounded-full border border-white/80 bg-white/95 p-2 shadow-lg backdrop-blur-sm">
 						<Image
 							src={avatarUrl}
 							alt={`Avatar de ${childName}`}
-							width={42}
-							height={42}
-							className="h-10 w-10 rounded-full object-cover"
+							width={44}
+							height={44}
+							className="h-10 w-10 rounded-full object-cover sm:h-11 sm:w-11"
 						/>
 
-						<span className="px-2 font-black">
+						<span className="hidden px-1 text-sm font-black text-slate-900 sm:inline">
 							{childName}
 						</span>
 
@@ -87,10 +102,15 @@ export default function ChildHeader({
 							onClick={() =>
 								setIsParentModalOpen(true)
 							}
-							className="flex items-center gap-2 rounded-full bg-violet-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-violet-700"
+							className="flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-indigo-500 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:from-violet-700 hover:to-indigo-600 hover:shadow-md"
 						>
-							<LockKeyhole size={16} />
-							Parent
+							<LockKeyhole
+								size={16}
+								aria-hidden="true"
+							/>
+							<span className="hidden sm:inline">
+								Parent
+							</span>
 						</button>
 					</div>
 				</nav>

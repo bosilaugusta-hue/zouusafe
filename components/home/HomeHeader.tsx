@@ -10,7 +10,7 @@ export default function HomeHeader() {
 
 	useEffect(() => {
 		function handleScroll() {
-			setScrolled(window.scrollY > 20);
+			setScrolled(window.scrollY > 15);
 		}
 
 		window.addEventListener("scroll", handleScroll);
@@ -22,52 +22,69 @@ export default function HomeHeader() {
 		<header
 			className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${
 				scrolled
-					? "bg-white/95 shadow-lg backdrop-blur-xl"
-					: "bg-white/85 backdrop-blur-md"
+					? "border-b border-white/70 bg-white/85 shadow-xl backdrop-blur-xl"
+					: "bg-white/55 backdrop-blur-xl"
 			}`}
 		>
-			<section className="mx-auto flex max-w-[1500px] items-center justify-between px-5 py-3 md:px-10">
-				<Link href="/" aria-label="Accueil ZouuSafe">
+			<div className="mx-auto flex h-[90px] max-w-[1500px] items-center justify-between px-8 lg:px-12">
+				<Link
+					href="/"
+					aria-label="Accueil ZouuSafe"
+					className="transition hover:scale-[1.02]"
+				>
 					<Image
 						src="/logos/Renard-logo.png"
 						alt="Logo ZouuSafe"
-						width={230}
-						height={90}
+						width={280}
+						height={100}
 						priority
-						className="h-auto w-[160px] md:w-[205px]"
+						className="h-auto w-[210px] xl:w-[250px]"
 					/>
 				</Link>
 
-				<nav className="hidden items-center gap-8 text-sm font-bold text-slate-700 lg:flex">
+				<nav className="hidden items-center gap-10 lg:flex">
 					<a
 						href="#home"
-						className="border-b-2 border-violet-500 pb-2 text-violet-600"
+						className="border-b-2 border-violet-600 pb-1 text-sm font-bold text-violet-600"
 					>
 						Accueil
 					</a>
 
-					<a href="#features" className="transition hover:text-violet-600">
+					<a
+						href="#features"
+						className="text-sm font-semibold text-slate-700 transition hover:text-violet-600"
+					>
 						Fonctionnalités
 					</a>
 
-					<a href="#steps" className="transition hover:text-violet-600">
+					<a
+						href="#steps"
+						className="text-sm font-semibold text-slate-700 transition hover:text-violet-600"
+					>
 						Comment ça marche
 					</a>
 
-					<a href="#about" className="transition hover:text-violet-600">
+					<a
+						href="#about"
+						className="text-sm font-semibold text-slate-700 transition hover:text-violet-600"
+					>
 						À propos
 					</a>
 				</nav>
 
 				<Link
 					href="/login"
-					className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl md:px-6"
+					className="btn-primary"
 				>
-					<UserRound size={17} />
-					<span className="hidden sm:inline">Connexion parent</span>
-					<ArrowRight size={17} />
+					<UserRound size={18} />
+
+					<span className="hidden sm:inline">
+						Connexion parent
+					</span>
+
+					<ArrowRight size={18} />
 				</Link>
-			</section>
+			</div>
 		</header>
 	);
 }

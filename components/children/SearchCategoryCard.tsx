@@ -18,22 +18,25 @@ export default function SearchCategoryCard({
 }: SearchCategoryCardProps) {
 	return (
 		<Link
-			href={`/child-dashboard/search?childId=${childId}&query=${encodeURIComponent(title)}`}
-			className={`group overflow-hidden rounded-[1.75rem] border border-white p-4 text-center shadow-sm transition hover:-translate-y-2 hover:shadow-xl ${background}`}
+			href={`/child-dashboard/search?childId=${childId}&query=${encodeURIComponent(
+				title,
+			)}`}
+			aria-label={`Découvrir la catégorie ${title}`}
+			className={`group flex min-h-[205px] flex-col overflow-hidden rounded-[22px] border border-white/80 ${background} px-3 pb-4 pt-3 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg`}
 		>
-			<Image
-				src={image}
-				alt={`Mascotte ${title}`}
-				width={180}
-				height={180}
-				className="mx-auto h-32 w-full object-contain transition group-hover:scale-105"
-			/>
+			<h3 className="sr-only">{title}</h3>
 
-			<h2 className="mt-2 text-lg font-black text-slate-900">
-				{title}
-			</h2>
+			<div className="flex h-[125px] items-center justify-center">
+				<Image
+					src={image}
+					alt={`Illustration de la catégorie ${title}`}
+					width={170}
+					height={150}
+					className="h-[120px] w-full object-contain transition-transform duration-300 group-hover:scale-105"
+				/>
+			</div>
 
-			<p className="mt-1 text-sm leading-5 text-slate-600">
+			<p className="mt-2 line-clamp-3 text-center text-xs font-medium leading-4 text-slate-600">
 				{description}
 			</p>
 		</Link>

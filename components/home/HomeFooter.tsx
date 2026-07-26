@@ -4,18 +4,18 @@ import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function HomeFooter() {
 	return (
-		<footer className="border-t border-slate-100 bg-white px-5 py-10 md:px-10">
-			<section className="mx-auto grid max-w-[1450px] gap-10 sm:grid-cols-2 lg:grid-cols-5">
+		<footer className="border-t border-slate-100 bg-white px-8 py-16 md:px-12">
+			<section className="mx-auto grid max-w-[1750px] gap-12 sm:grid-cols-2 lg:grid-cols-5">
 				<article>
 					<Image
 						src="/logos/Renard-logo.png"
 						alt="Logo ZouuSafe"
-						width={190}
-						height={80}
-						className="h-auto w-[170px]"
+						width={210}
+						height={90}
+						className="h-auto w-[190px]"
 					/>
 
-					<p className="mt-4 max-w-[240px] text-xs leading-5 text-slate-500">
+					<p className="mt-5 max-w-[270px] text-sm leading-7 text-slate-500">
 						Le moteur de recherche sécurisé pour les enfants et le copilote
 						numérique des parents.
 					</p>
@@ -51,23 +51,29 @@ export default function HomeFooter() {
 				/>
 
 				<article>
-					<h3 className="font-black">Suivez-nous</h3>
+					<h3 className="text-lg font-black text-slate-900">
+						Suivez-nous
+					</h3>
 
-					<SocialIcon label="Facebook">
-						<FaFacebookF size={17} />
-					</SocialIcon>
+					<div className="mt-5 flex gap-3">
+						<SocialIcon label="Facebook">
+							<FaFacebookF size={18} />
+						</SocialIcon>
 
-					<SocialIcon label="Instagram">
-						<FaInstagram size={17} />
-					</SocialIcon>
+						<SocialIcon label="Instagram">
+							<FaInstagram size={18} />
+						</SocialIcon>
 
-					<SocialIcon label="YouTube">
-						<FaYoutube size={17} />
-					</SocialIcon>
+						<SocialIcon label="YouTube">
+							<FaYoutube size={18} />
+						</SocialIcon>
+					</div>
 
-					<p className="mt-6 text-xs text-slate-500">
-						© 2026 ZouuSafe. Tous droits réservés.
-					</p>
+					<div className="mt-8 border-t border-slate-100 pt-5">
+						<p className="text-sm text-slate-500">
+							© 2026 ZouuSafe. Tous droits réservés.
+						</p>
+					</div>
 				</article>
 			</section>
 		</footer>
@@ -87,12 +93,17 @@ type FooterColumnProps = {
 function FooterColumn({ title, links }: FooterColumnProps) {
 	return (
 		<article>
-			<h3 className="font-black">{title}</h3>
+			<h3 className="text-lg font-black text-slate-900">
+				{title}
+			</h3>
 
-			<nav className="mt-4 space-y-2 text-xs text-slate-500">
+			<nav className="mt-5 space-y-3 text-sm text-slate-500">
 				{links.map((link) => (
 					<p key={link.label}>
-						<Link href={link.href} className="transition hover:text-violet-600">
+						<Link
+							href={link.href}
+							className="transition-all duration-300 hover:translate-x-1 hover:text-violet-600"
+						>
 							{link.label}
 						</Link>
 					</p>
@@ -113,7 +124,7 @@ function SocialIcon({
 		<button
 			type="button"
 			aria-label={label}
-			className="flex h-9 w-9 items-center justify-center rounded-full bg-violet-500 text-white transition hover:-translate-y-0.5 hover:bg-violet-600"
+			className="flex h-11 w-11 items-center justify-center rounded-full bg-violet-500 text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-violet-600"
 		>
 			{children}
 		</button>
