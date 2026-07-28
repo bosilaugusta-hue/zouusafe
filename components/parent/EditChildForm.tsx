@@ -16,14 +16,9 @@ type EditChildFormProps = {
 	child: Child;
 };
 
-const avatars = [
-	"/avatars-profil/fille-15.png",
-	"/avatars-profil/boy-22.png",
-];
+const avatars = ["/avatars-profil/fille-15.png", "/avatars-profil/boy-22.png"];
 
-export default function EditChildForm({
-	child,
-}: EditChildFormProps) {
+export default function EditChildForm({ child }: EditChildFormProps) {
 	const router = useRouter();
 
 	const [firstName, setFirstName] = useState(child.first_name);
@@ -34,49 +29,39 @@ export default function EditChildForm({
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState("");
 
-	async function handleSubmit(
-		event: React.FormEvent<HTMLFormElement>,
-	) {
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
 		setError("");
 		setIsSubmitting(true);
 
 		try {
-			const response = await fetch(
-				`/api/children/${child.child_id}`,
-				{
-					method: "PATCH",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						firstName,
-						birthDate,
-						gender,
-						avatarUrl,
-					}),
+			const response = await fetch(`/api/children/${child.child_id}`, {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
 				},
-			);
+				body: JSON.stringify({
+					firstName,
+					birthDate,
+					gender,
+					avatarUrl,
+				}),
+			});
 
 			const data = (await response.json()) as {
 				message?: string;
 			};
 
 			if (!response.ok) {
-				throw new Error(
-					data.message ||
-						"Impossible de modifier le profil.",
-				);
+				throw new Error(data.message || "Impossible de modifier le profil.");
 			}
 
 			router.push("/parent-dashboard");
 			router.refresh();
 		} catch (error) {
 			setError(
-				error instanceof Error
-					? error.message
-					: "Une erreur est survenue.",
+				error instanceof Error ? error.message : "Une erreur est survenue.",
 			);
 		} finally {
 			setIsSubmitting(false);
@@ -90,10 +75,7 @@ export default function EditChildForm({
 		avatarUrl !== "";
 
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className="mt-8 space-y-5"
-		>
+		<form onSubmit={handleSubmit} className="mt-8 space-y-5">
 			<div>
 				<label
 					htmlFor="firstName"
@@ -106,9 +88,7 @@ export default function EditChildForm({
 					id="firstName"
 					type="text"
 					value={firstName}
-					onChange={(event) =>
-						setFirstName(event.target.value)
-					}
+					onChange={(event) => setFirstName(event.target.value)}
 					placeholder="Prénom de l’enfant"
 					className="min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-slate-900 outline-none transition focus:border-violet-400 focus:ring-4 focus:ring-violet-100"
 					required
@@ -127,18 +107,14 @@ export default function EditChildForm({
 					id="birthDate"
 					type="date"
 					value={birthDate}
-					onChange={(event) =>
-						setBirthDate(event.target.value)
-					}
+					onChange={(event) => setBirthDate(event.target.value)}
 					className="min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-slate-900 outline-none transition focus:border-violet-400 focus:ring-4 focus:ring-violet-100"
 					required
 				/>
 			</div>
 
 			<fieldset>
-				<legend className="mb-3 text-sm font-bold text-slate-700">
-					Genre
-				</legend>
+				<legend className="mb-3 text-sm font-bold text-slate-700">Genre</legend>
 
 				<div className="grid grid-cols-3 gap-3">
 					<label
@@ -153,12 +129,9 @@ export default function EditChildForm({
 							name="gender"
 							value="girl"
 							checked={gender === "girl"}
-							onChange={(event) =>
-								setGender(event.target.value)
-							}
+							onChange={(event) => setGender(event.target.value)}
 							className="sr-only"
 						/>
-
 						Fille
 					</label>
 
@@ -174,12 +147,9 @@ export default function EditChildForm({
 							name="gender"
 							value="boy"
 							checked={gender === "boy"}
-							onChange={(event) =>
-								setGender(event.target.value)
-							}
+							onChange={(event) => setGender(event.target.value)}
 							className="sr-only"
 						/>
-
 						Garçon
 					</label>
 
@@ -195,12 +165,9 @@ export default function EditChildForm({
 							name="gender"
 							value="other"
 							checked={gender === "other"}
-							onChange={(event) =>
-								setGender(event.target.value)
-							}
+							onChange={(event) => setGender(event.target.value)}
 							className="sr-only"
 						/>
-
 						Autre
 					</label>
 				</div>
@@ -222,9 +189,7 @@ export default function EditChildForm({
 					</div>
 
 					<div>
-						<p className="font-black text-violet-700">
-							Avatar sélectionné
-						</p>
+						<p className="font-black text-violet-700">Avatar sélectionné</p>
 
 						<p className="mt-1 text-sm text-slate-500">
 							Cliquez sur une image pour la choisir.
@@ -248,12 +213,7 @@ export default function EditChildForm({
 								}`}
 								aria-label="Sélectionner cet avatar"
 							>
-								<Image
-									src={avatar}
-									alt=""
-									fill
-									className="object-cover"
-								/>
+								<Image src={avatar} alt="" fill className="object-cover" />
 
 								{isSelected && (
 									<span className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-black text-white">
@@ -280,9 +240,7 @@ export default function EditChildForm({
 				disabled={!isFormValid || isSubmitting}
 				className="min-h-13 w-full rounded-xl bg-gradient-to-r from-violet-400 to-violet-600 px-6 font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
 			>
-				{isSubmitting
-					? "Enregistrement..."
-					: "Enregistrer les modifications"}
+				{isSubmitting ? "Enregistrement..." : "Enregistrer les modifications"}
 			</button>
 		</form>
 	);

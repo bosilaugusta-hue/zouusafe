@@ -67,8 +67,7 @@ export default async function ChildDashboardPage({
 					</h1>
 
 					<p className="mt-3 leading-7 text-slate-500">
-						Le profil demandé n&apos;existe pas ou n&apos;est plus
-						disponible.
+						Le profil demandé n&apos;existe pas ou n&apos;est plus disponible.
 					</p>
 				</section>
 			</main>

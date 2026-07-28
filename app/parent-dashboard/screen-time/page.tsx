@@ -6,10 +6,9 @@ import {
 	TimerReset,
 	UsersRound,
 } from "lucide-react";
-import Image from "next/image";
 import { cookies } from "next/headers";
-
-import Sidebar from "@/components/dashboard/Sidebar";
+import Image from "next/image";
+import type { ReactNode } from "react";
 
 type ChildScreenTime = {
 	child_id: number;
@@ -23,6 +22,21 @@ type ChildScreenTime = {
 
 type ScreenTimeResponse = {
 	children: ChildScreenTime[];
+};
+
+type StatusStyle = {
+	label: string;
+	text: string;
+	badge: string;
+	bar: string;
+	background: string;
+};
+
+type SummaryCardProps = {
+	icon: ReactNode;
+	value: number | string;
+	title: string;
+	iconClassName: string;
 };
 
 async function getScreenTime(): Promise<ChildScreenTime[]> {
@@ -49,7 +63,7 @@ async function getScreenTime(): Promise<ChildScreenTime[]> {
 	return data.children;
 }
 
-function getStatus(progress: number) {
+function getStatus(progress: number): StatusStyle {
 	if (progress >= 100) {
 		return {
 			label: "Limite atteinte",
@@ -79,6 +93,10 @@ function getStatus(progress: number) {
 	};
 }
 
+function getImagePath(path: string) {
+	return path.startsWith("/") ? path : `/${path}`;
+}
+
 export default async function ScreenTimePage() {
 	const children = await getScreenTime();
 
@@ -95,261 +113,237 @@ export default async function ScreenTimePage() {
 	const totalRemaining = Math.max(totalLimit - totalUsed, 0);
 
 	return (
-		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
-			<section className="mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_1fr]">
-				<Sidebar />
+		<section className="space-y-6">
+			<header className="rounded-[30px] border border-white/80 bg-white/90 p-7 shadow-xl backdrop-blur-xl">
+				<div className="flex items-center gap-4">
+					<span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
+						<Clock3 size={28} aria-hidden="true" />
+					</span>
 
-				<section className="space-y-6">
-					<header className="rounded-[30px] border border-white/80 bg-white/90 p-7 shadow-xl backdrop-blur-xl">
-						<div className="flex items-center gap-4">
-							<span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
-								<Clock3 size={28} aria-hidden="true" />
-							</span>
+					<div>
+						<p className="text-sm font-black uppercase tracking-[0.15em] text-violet-500">
+							Suivi quotidien
+						</p>
 
-							<div>
-								<p className="text-sm font-black uppercase tracking-[0.15em] text-violet-500">
-									Suivi quotidien
-								</p>
+						<h1 className="mt-1 text-3xl font-black">Temps d’écran</h1>
 
-								<h1 className="mt-1 text-3xl font-black">
-									Temps d’écran
-								</h1>
+						<p className="mt-2 text-sm text-slate-500">
+							Suivez le temps utilisé et les limites de chaque enfant.
+						</p>
+					</div>
+				</div>
+			</header>
 
-								<p className="mt-2 text-sm text-slate-500">
-									Suivez le temps utilisé et les limites de chaque enfant.
-								</p>
-							</div>
-						</div>
-					</header>
+			<section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+				<SummaryCard
+					icon={<Clock3 size={22} aria-hidden="true" />}
+					value={`${totalUsed} min`}
+					title="Temps utilisé"
+					iconClassName="bg-emerald-100 text-emerald-600"
+				/>
 
-					<section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-						<article className="rounded-[26px] border border-white/80 bg-white/90 p-5 shadow-xl">
-							<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
-								<Clock3 size={22} aria-hidden="true" />
-							</span>
+				<SummaryCard
+					icon={<Hourglass size={22} aria-hidden="true" />}
+					value={`${totalRemaining} min`}
+					title="Temps restant"
+					iconClassName="bg-blue-100 text-blue-600"
+				/>
 
-							<p className="mt-4 text-3xl font-black">
-								{totalUsed} min
-							</p>
+				<SummaryCard
+					icon={<TimerReset size={22} aria-hidden="true" />}
+					value={`${totalLimit} min`}
+					title="Limite totale"
+					iconClassName="bg-violet-100 text-violet-600"
+				/>
 
-							<p className="mt-1 font-black text-slate-700">
-								Temps utilisé
-							</p>
-						</article>
+				<SummaryCard
+					icon={<UsersRound size={22} aria-hidden="true" />}
+					value={children.length}
+					title="Profils suivis"
+					iconClassName="bg-pink-100 text-pink-600"
+				/>
+			</section>
 
-						<article className="rounded-[26px] border border-white/80 bg-white/90 p-5 shadow-xl">
-							<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
-								<Hourglass size={22} aria-hidden="true" />
-							</span>
+			{children.length > 0 ? (
+				<section className="grid gap-5 xl:grid-cols-2">
+					{children.map((child) => {
+						const limit = child.screen_time_limit ?? 120;
+						const used = child.screen_time_used ?? 0;
+						const remaining = Math.max(limit - used, 0);
 
-							<p className="mt-4 text-3xl font-black">
-								{totalRemaining} min
-							</p>
+						const progress =
+							limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
 
-							<p className="mt-1 font-black text-slate-700">
-								Temps restant
-							</p>
-						</article>
+						const status = getStatus(progress);
 
-						<article className="rounded-[26px] border border-white/80 bg-white/90 p-5 shadow-xl">
-							<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
-								<TimerReset size={22} aria-hidden="true" />
-							</span>
+						const initial =
+							child.first_name.trim().charAt(0).toUpperCase() || "E";
 
-							<p className="mt-4 text-3xl font-black">
-								{totalLimit} min
-							</p>
-
-							<p className="mt-1 font-black text-slate-700">
-								Limite totale
-							</p>
-						</article>
-
-						<article className="rounded-[26px] border border-white/80 bg-white/90 p-5 shadow-xl">
-							<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
-								<UsersRound size={22} aria-hidden="true" />
-							</span>
-
-							<p className="mt-4 text-3xl font-black">
-								{children.length}
-							</p>
-
-							<p className="mt-1 font-black text-slate-700">
-								Profils suivis
-							</p>
-						</article>
-					</section>
-
-					<section className="grid gap-5 lg:grid-cols-2">
-						{children.map((child) => {
-							const limit = child.screen_time_limit ?? 120;
-							const used = child.screen_time_used ?? 0;
-							const remaining = Math.max(limit - used, 0);
-
-							const progress =
-								limit > 0
-									? Math.min(100, Math.round((used / limit) * 100))
-									: 0;
-
-							const status = getStatus(progress);
-
-							const avatar =
-								child.avatar_url ?? "/avatars-profil/fille-15.png";
-
-							const avatarSrc = avatar.startsWith("/")
-								? avatar
-								: `/${avatar}`;
-
-							return (
-								<article
-									key={child.child_id}
-									className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-xl backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl"
-								>
-									<div className="flex items-start justify-between gap-4">
-										<div className="flex items-center gap-4">
+						return (
+							<article
+								key={child.child_id}
+								className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
+							>
+								<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+									<div className="flex items-center gap-4">
+										{child.avatar_url ? (
 											<Image
-												src={avatarSrc}
+												src={getImagePath(child.avatar_url)}
 												alt={`Avatar de ${child.first_name}`}
 												width={88}
 												height={88}
 												className="h-20 w-20 rounded-full border-4 border-violet-100 object-cover shadow-md"
 											/>
-
-											<div>
-												<h2 className="text-2xl font-black">
-													{child.first_name}
-												</h2>
-
-												<p className="mt-1 text-sm font-semibold capitalize text-slate-500">
-													Filtre : {child.filter_level ?? "standard"}
-												</p>
-
-												<span
-													className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-black ${
-														child.safe_search
-															? "bg-emerald-100 text-emerald-700"
-															: "bg-red-100 text-red-700"
-													}`}
-												>
-													Safe Search{" "}
-													{child.safe_search ? "activé" : "désactivé"}
-												</span>
+										) : (
+											<div
+												role="img"
+												aria-label={`Avatar de ${child.first_name}`}
+												className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border-4 border-violet-100 bg-gradient-to-br from-violet-500 to-blue-500 text-2xl font-black text-white shadow-md"
+											>
+												{initial}
 											</div>
-										</div>
+										)}
 
-										<div className="text-right">
-											<strong
-												className={`text-3xl font-black ${status.text}`}
-											>
-												{progress} %
-											</strong>
+										<div>
+											<h2 className="text-2xl font-black">
+												{child.first_name}
+											</h2>
 
-											<p
-												className={`mt-2 rounded-full px-3 py-1 text-xs font-black ${status.badge}`}
-											>
-												{status.label}
+											<p className="mt-1 text-sm font-semibold capitalize text-slate-500">
+												Filtre : {child.filter_level ?? "standard"}
 											</p>
+
+											<span
+												className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-black ${
+													child.safe_search
+														? "bg-emerald-100 text-emerald-700"
+														: "bg-red-100 text-red-700"
+												}`}
+											>
+												Safe Search {child.safe_search ? "activé" : "désactivé"}
+											</span>
 										</div>
 									</div>
 
-									<div
-										className={`mt-6 rounded-2xl p-5 ${status.background}`}
-									>
-										<div className="flex items-center justify-between gap-4">
-											<div>
-												<p className="font-black">
-													Temps d’écran aujourd’hui
-												</p>
+									<div className="text-left sm:text-right">
+										<strong className={`text-3xl font-black ${status.text}`}>
+											{progress} %
+										</strong>
 
-												<p className="mt-1 text-sm text-slate-500">
-													{used} min utilisées sur {limit} min
-												</p>
-											</div>
-
-											<Clock3
-												size={24}
-												aria-hidden="true"
-												className={status.text}
-											/>
-										</div>
-
-										<div className="mt-5 h-4 overflow-hidden rounded-full bg-white shadow-inner">
-											<div
-												className={`h-full rounded-full bg-gradient-to-r ${status.bar}`}
-												style={{ width: `${progress}%` }}
-											/>
-										</div>
-
-										<p className="mt-4 text-sm font-black text-slate-700">
-											{remaining > 0
-												? `${remaining} minutes restantes`
-												: "Aucun temps restant"}
+										<p
+											className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-black ${status.badge}`}
+										>
+											{status.label}
 										</p>
 									</div>
-								</article>
-							);
-						})}
-					</section>
-
-					<article className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-xl backdrop-blur-xl">
-						<div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-							<div className="flex items-start gap-4">
-								<span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
-									<ShieldCheck size={24} aria-hidden="true" />
-								</span>
-
-								<div>
-									<p className="text-sm font-black uppercase tracking-[0.14em] text-violet-500">
-										Bilan quotidien
-									</p>
-
-									<h2 className="mt-1 text-xl font-black">
-										Résumé du temps d’écran
-									</h2>
 								</div>
-							</div>
 
-							<ul className="grid gap-3 sm:grid-cols-2">
-								<li className="flex items-center gap-2 text-sm font-bold text-slate-600">
-									<CheckCircle2
-										size={18}
-										className="text-emerald-500"
-										aria-hidden="true"
-									/>
-									Contrôle parental actif
-								</li>
+								<div className={`mt-6 rounded-2xl p-5 ${status.background}`}>
+									<div className="flex items-center justify-between gap-4">
+										<div>
+											<p className="font-black">Temps d’écran aujourd’hui</p>
 
-								<li className="flex items-center gap-2 text-sm font-bold text-slate-600">
-									<CheckCircle2
-										size={18}
-										className="text-emerald-500"
-										aria-hidden="true"
-									/>
-									Limites suivies
-								</li>
+											<p className="mt-1 text-sm text-slate-500">
+												{used} min utilisées sur {limit} min
+											</p>
+										</div>
 
-								<li className="flex items-center gap-2 text-sm font-bold text-slate-600">
-									<CheckCircle2
-										size={18}
-										className="text-emerald-500"
-										aria-hidden="true"
-									/>
-									Safe Search vérifié
-								</li>
+										<Clock3
+											size={24}
+											aria-hidden="true"
+											className={status.text}
+										/>
+									</div>
 
-								<li className="flex items-center gap-2 text-sm font-bold text-slate-600">
-									<CheckCircle2
-										size={18}
-										className="text-emerald-500"
-										aria-hidden="true"
-									/>
-									Données actualisées
-								</li>
-							</ul>
-						</div>
-					</article>
+									<div className="mt-5 h-4 overflow-hidden rounded-full bg-white shadow-inner">
+										<div
+											className={`h-full rounded-full bg-gradient-to-r ${status.bar}`}
+											style={{
+												width: `${progress}%`,
+											}}
+										/>
+									</div>
+
+									<p className="mt-4 text-sm font-black text-slate-700">
+										{remaining > 0
+											? `${remaining} minutes restantes`
+											: "Aucun temps restant"}
+									</p>
+								</div>
+							</article>
+						);
+					})}
 				</section>
-			</section>
-		</main>
+			) : (
+				<section className="rounded-[28px] border border-dashed border-violet-200 bg-white/80 p-10 text-center shadow-lg backdrop-blur-xl">
+					<span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-100 text-violet-500">
+						<Clock3 size={28} aria-hidden="true" />
+					</span>
+
+					<h2 className="mt-4 text-2xl font-black">Aucun profil à suivre</h2>
+
+					<p className="mt-2 text-slate-500">
+						Ajoutez un profil enfant pour suivre son temps d’écran.
+					</p>
+				</section>
+			)}
+
+			<article className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-xl backdrop-blur-xl">
+				<div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+					<div className="flex items-start gap-4">
+						<span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
+							<ShieldCheck size={24} aria-hidden="true" />
+						</span>
+
+						<div>
+							<p className="text-sm font-black uppercase tracking-[0.14em] text-violet-500">
+								Bilan quotidien
+							</p>
+
+							<h2 className="mt-1 text-xl font-black">
+								Résumé du temps d’écran
+							</h2>
+						</div>
+					</div>
+
+					<ul className="grid gap-3 sm:grid-cols-2">
+						<SummaryItem text="Contrôle parental actif" />
+						<SummaryItem text="Limites suivies" />
+						<SummaryItem text="Safe Search vérifié" />
+						<SummaryItem text="Données actualisées" />
+					</ul>
+				</div>
+			</article>
+		</section>
+	);
+}
+
+function SummaryCard({ icon, value, title, iconClassName }: SummaryCardProps) {
+	return (
+		<article className="rounded-[26px] border border-white/80 bg-white/90 p-5 shadow-xl backdrop-blur-xl">
+			<span
+				className={`flex h-11 w-11 items-center justify-center rounded-2xl ${iconClassName}`}
+			>
+				{icon}
+			</span>
+
+			<p className="mt-4 text-3xl font-black">{value}</p>
+
+			<p className="mt-1 font-black text-slate-700">{title}</p>
+		</article>
+	);
+}
+
+function SummaryItem({ text }: { text: string }) {
+	return (
+		<li className="flex items-center gap-2 text-sm font-bold text-slate-600">
+			<CheckCircle2
+				size={18}
+				aria-hidden="true"
+				className="shrink-0 text-emerald-500"
+			/>
+
+			{text}
+		</li>
 	);
 }

@@ -1,7 +1,7 @@
+import type { RowDataPacket } from "mysql2";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { RowDataPacket } from "mysql2";
 
 import EditChildForm from "@/components/parent/EditChildForm";
 import { db } from "@/lib/db";
@@ -28,9 +28,7 @@ function formatBirthDate(value: string | Date) {
 	return value.split("T")[0];
 }
 
-export default async function EditChildPage({
-	params,
-}: EditChildPageProps) {
+export default async function EditChildPage({ params }: EditChildPageProps) {
 	const { id } = await params;
 	const childId = Number(id);
 
@@ -92,8 +90,7 @@ export default async function EditChildPage({
 					</h1>
 
 					<p className="mt-2 text-sm leading-6 text-slate-500">
-						Modifiez ses informations ou choisissez un nouvel
-						avatar.
+						Modifiez ses informations ou choisissez un nouvel avatar.
 					</p>
 				</div>
 

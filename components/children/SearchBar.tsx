@@ -47,15 +47,12 @@ export default function SearchBar({ childId }: SearchBarProps) {
 			const data = (await response.json()) as SearchResponse;
 
 			if (!response.ok) {
-				throw new Error(
-					data.message ?? "Impossible d’effectuer la recherche.",
-				);
+				throw new Error(data.message ?? "Impossible d’effectuer la recherche.");
 			}
 
 			if (!data.allowed) {
 				setErrorMessage(
-					data.message ??
-						"Cette recherche n’est pas adaptée aux enfants.",
+					data.message ?? "Cette recherche n’est pas adaptée aux enfants.",
 				);
 
 				return;
@@ -67,15 +64,10 @@ export default function SearchBar({ childId }: SearchBarProps) {
 				)}&filter=all`,
 			);
 		} catch (error) {
-			console.error(
-				"Erreur pendant la recherche sécurisée :",
-				error,
-			);
+			console.error("Erreur pendant la recherche sécurisée :", error);
 
 			setErrorMessage(
-				error instanceof Error
-					? error.message
-					: "Une erreur est survenue.",
+				error instanceof Error ? error.message : "Une erreur est survenue.",
 			);
 		} finally {
 			setIsLoading(false);
@@ -127,11 +119,7 @@ export default function SearchBar({ childId }: SearchBarProps) {
 					role="alert"
 					className="mt-3 flex items-center gap-3 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm font-bold text-orange-700"
 				>
-					<ShieldAlert
-						size={20}
-						aria-hidden="true"
-						className="shrink-0"
-					/>
+					<ShieldAlert size={20} aria-hidden="true" className="shrink-0" />
 
 					<p>{errorMessage}</p>
 				</div>

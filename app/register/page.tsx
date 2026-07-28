@@ -1,7 +1,7 @@
-import RegisterForm from "@/components/auth/RegisterForm";
 import { ShieldCheck, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import RegisterForm from "@/components/auth/RegisterForm";
 
 export default function RegisterPage() {
 	return (

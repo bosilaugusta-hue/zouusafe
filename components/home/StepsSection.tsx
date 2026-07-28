@@ -15,18 +15,16 @@ export default function StepsSection() {
 			<div className="relative mx-auto grid max-w-[1750px] items-center gap-20 xl:grid-cols-[1.35fr_0.75fr]">
 				<div>
 					<header className="mb-16 text-center xl:text-left">
-						<p className="zouu-eyebrow">
-							Simple et rassurant
-						</p>
+						<p className="zouu-eyebrow">Simple et rassurant</p>
 
 						<h2 className="mt-4 text-5xl font-black leading-tight text-slate-900">
 							Comment fonctionne ZouuSafe ?
 						</h2>
 
 						<p className="mx-auto mt-6 max-w-3xl text-xl leading-9 text-slate-600 xl:mx-0">
-							En quelques étapes seulement, créez un environnement sécurisé
-							pour votre enfant et accompagnez-le dans chacune de ses
-							découvertes numériques.
+							En quelques étapes seulement, créez un environnement sécurisé pour
+							votre enfant et accompagnez-le dans chacune de ses découvertes
+							numériques.
 						</p>
 					</header>
 

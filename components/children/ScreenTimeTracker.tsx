@@ -17,9 +17,7 @@ type ScreenTimeResponse = {
 const ONE_MINUTE = 60_000;
 const ACTIVITY_DELAY = 60_000;
 
-export default function ScreenTimeTracker({
-	childId,
-}: ScreenTimeTrackerProps) {
+export default function ScreenTimeTracker({ childId }: ScreenTimeTrackerProps) {
 	const router = useRouter();
 	const lastActivityRef = useRef(Date.now());
 
@@ -37,47 +35,36 @@ export default function ScreenTimeTracker({
 		];
 
 		for (const eventName of activityEvents) {
-			window.addEventListener(
-				eventName,
-				registerActivity,
-				{ passive: true },
-			);
+			window.addEventListener(eventName, registerActivity, { passive: true });
 		}
 
 		const interval = window.setInterval(async () => {
-			const pageIsVisible =
-				document.visibilityState === "visible";
+			const pageIsVisible = document.visibilityState === "visible";
 
 			const childIsActive =
-				Date.now() - lastActivityRef.current <=
-				ACTIVITY_DELAY;
+				Date.now() - lastActivityRef.current <= ACTIVITY_DELAY;
 
 			if (!pageIsVisible || !childIsActive) {
 				return;
 			}
 
 			try {
-				const response = await fetch(
-					"/api/screen-time",
-					{
-						method: "POST",
-						headers: {
-							"Content-Type":
-								"application/json",
-						},
-						body: JSON.stringify({
-							childId,
-						}),
+				const response = await fetch("/api/screen-time", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
 					},
-				);
+					body: JSON.stringify({
+						childId,
+					}),
+				});
 
 				const data = (await response
-	.json()
-	.catch(() => ({}))) as ScreenTimeResponse;
+					.json()
+					.catch(() => ({}))) as ScreenTimeResponse;
 				if (!response.ok) {
 					console.error(
-						data.message ??
-							"Impossible de comptabiliser le temps d’écran.",
+						data.message ?? "Impossible de comptabiliser le temps d’écran.",
 					);
 					return;
 				}
@@ -86,10 +73,7 @@ export default function ScreenTimeTracker({
 					router.refresh();
 				}
 			} catch (error) {
-				console.error(
-					"Erreur pendant le suivi du temps d’écran :",
-					error,
-				);
+				console.error("Erreur pendant le suivi du temps d’écran :", error);
 			}
 		}, ONE_MINUTE);
 
@@ -97,10 +81,7 @@ export default function ScreenTimeTracker({
 			window.clearInterval(interval);
 
 			for (const eventName of activityEvents) {
-				window.removeEventListener(
-					eventName,
-					registerActivity,
-				);
+				window.removeEventListener(eventName, registerActivity);
 			}
 		};
 	}, [childId, router]);

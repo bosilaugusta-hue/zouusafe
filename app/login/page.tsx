@@ -1,7 +1,7 @@
-import LoginForm from "@/components/auth/LoginForm";
 import { ShieldCheck, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import LoginForm from "@/components/auth/LoginForm";
 
 export default function LoginPage() {
 	return (
@@ -22,20 +22,20 @@ export default function LoginPage() {
 
 			<div className="absolute bottom-3 left-5 hidden h-[410px] w-[390px] xl:block 2xl:left-12">
 				<Image
-	src="/icones/bulle-recherche.png"
-	alt=""
-	width={70}
-	height={70}
-	className="float absolute left-[300px] top-[35px] z-20 h-auto w-[58px] drop-shadow-xl"
-/>
+					src="/icones/bulle-recherche.png"
+					alt=""
+					width={70}
+					height={70}
+					className="float absolute left-[300px] top-[35px] z-20 h-auto w-[58px] drop-shadow-xl"
+				/>
 
-<Image
-	src="/icones/bulle-protection.png"
-	alt=""
-	width={70}
-	height={70}
-	className="float absolute left-[320px] top-[250px] z-20 h-auto w-[56px] drop-shadow-xl"
-/>
+				<Image
+					src="/icones/bulle-protection.png"
+					alt=""
+					width={70}
+					height={70}
+					className="float absolute left-[320px] top-[250px] z-20 h-auto w-[56px] drop-shadow-xl"
+				/>
 
 				<Image
 					src="/mascottes/renard-tout-est-ok.png"
@@ -47,19 +47,19 @@ export default function LoginPage() {
 				/>
 
 				<div className="absolute bottom-[28px] left-[190px] z-30 flex items-center gap-2 whitespace-nowrap rounded-2xl border border-white/80 bg-white/90 px-5 py-3 text-sm font-bold text-violet-700 shadow-xl backdrop-blur-xl">
-	<ShieldCheck size={18} />
-	Connexion sécurisée
-</div>
+					<ShieldCheck size={18} />
+					Connexion sécurisée
+				</div>
 			</div>
 
 			<div className="absolute right-5 top-14 hidden h-[430px] w-[400px] xl:block 2xl:right-12">
 				<Image
-	src="/icones/bulle-etoile.png"
-	alt=""
-	width={70}
-	height={70}
-	className="float absolute right-[1px] top-[40px] z-20 h-auto w-[58px] drop-shadow-xl"
-/>
+					src="/icones/bulle-etoile.png"
+					alt=""
+					width={70}
+					height={70}
+					className="float absolute right-[1px] top-[40px] z-20 h-auto w-[58px] drop-shadow-xl"
+				/>
 
 				<Image
 					src="/mascottes/Bonjour-robot.png"
@@ -71,9 +71,9 @@ export default function LoginPage() {
 				/>
 
 				<div className="absolute left-[5px] top-[165px] z-30 flex items-center gap-2 whitespace-nowrap rounded-2xl border border-white/80 bg-white/90 px-5 py-3 text-sm font-bold text-violet-700 shadow-xl backdrop-blur-xl">
-	<Sparkles size={18} />
-	Contrôle parental
-</div>
+					<Sparkles size={18} />
+					Contrôle parental
+				</div>
 			</div>
 
 			<section className="relative z-10 w-full max-w-[720px]">
@@ -113,8 +113,8 @@ export default function LoginPage() {
 							</h1>
 
 							<p className="mx-auto mt-3 max-w-xl text-base leading-7 text-slate-600">
-								Retrouvez l’activité de votre enfant et gérez ses paramètres
-								de sécurité depuis votre espace personnel.
+								Retrouvez l’activité de votre enfant et gérez ses paramètres de
+								sécurité depuis votre espace personnel.
 							</p>
 						</header>
 

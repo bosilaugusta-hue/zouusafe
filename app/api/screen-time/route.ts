@@ -34,17 +34,13 @@ function getSecretKey() {
 	const secret = process.env.AUTH_SECRET;
 
 	if (!secret) {
-		throw new Error(
-			"AUTH_SECRET est absent de .env.local.",
-		);
+		throw new Error("AUTH_SECRET est absent de .env.local.");
 	}
 
 	return new TextEncoder().encode(secret);
 }
 
-function formatDatabaseDate(
-	value: string | Date | null,
-) {
+function formatDatabaseDate(value: string | Date | null) {
 	if (!value) {
 		return null;
 	}
@@ -59,8 +55,7 @@ function formatDatabaseDate(
 export async function GET() {
 	try {
 		const cookieStore = await cookies();
-		const token =
-			cookieStore.get("zouusafe_session")?.value;
+		const token = cookieStore.get("zouusafe_session")?.value;
 
 		if (!token) {
 			return NextResponse.json(
@@ -69,16 +64,12 @@ export async function GET() {
 			);
 		}
 
-		const { payload } = await jwtVerify(
-			token,
-			getSecretKey(),
-		);
+		const { payload } = await jwtVerify(token, getSecretKey());
 
 		const { parentId } = payload as SessionPayload;
 
-		const [children] =
-			await db.query<ScreenTimeRow[]>(
-				`
+		const [children] = await db.query<ScreenTimeRow[]>(
+			`
 					SELECT
 						child.child_id,
 						child.first_name,
@@ -95,22 +86,18 @@ export async function GET() {
 					WHERE child.parent_id = ?
 					ORDER BY child.first_name
 				`,
-				[parentId],
-			);
+			[parentId],
+		);
 
 		return NextResponse.json({
 			children,
 		});
 	} catch (error) {
-		console.error(
-			"GET /api/screen-time :",
-			error,
-		);
+		console.error("GET /api/screen-time :", error);
 
 		return NextResponse.json(
 			{
-				message:
-					"Impossible de récupérer les données de temps d’écran.",
+				message: "Impossible de récupérer les données de temps d’écran.",
 			},
 			{ status: 500 },
 		);
@@ -119,27 +106,21 @@ export async function GET() {
 
 export async function POST(request: Request) {
 	try {
-		const body =
-			(await request.json()) as UpdateScreenTimeBody;
+		const body = (await request.json()) as UpdateScreenTimeBody;
 
 		const childId = Number(body.childId);
 
-		if (
-			!Number.isInteger(childId) ||
-			childId <= 0
-		) {
+		if (!Number.isInteger(childId) || childId <= 0) {
 			return NextResponse.json(
 				{
-					message:
-						"Identifiant enfant invalide.",
+					message: "Identifiant enfant invalide.",
 				},
 				{ status: 400 },
 			);
 		}
 
-		const [settings] =
-			await db.query<ChildScreenTimeRow[]>(
-				`
+		const [settings] = await db.query<ChildScreenTimeRow[]>(
+			`
 					SELECT
 						screen_time_limit,
 						screen_time_used,
@@ -148,16 +129,15 @@ export async function POST(request: Request) {
 					WHERE child_id = ?
 					LIMIT 1
 				`,
-				[childId],
-			);
+			[childId],
+		);
 
 		const setting = settings[0];
 
 		if (!setting) {
 			return NextResponse.json(
 				{
-					message:
-						"Aucun réglage de temps d’écran trouvé.",
+					message: "Aucun réglage de temps d’écran trouvé.",
 				},
 				{ status: 404 },
 			);
@@ -177,18 +157,14 @@ export async function POST(request: Request) {
 		);
 
 		const today = todayRows[0]?.today;
-		const savedDate = formatDatabaseDate(
-			setting.screen_time_date,
-		);
+		const savedDate = formatDatabaseDate(setting.screen_time_date);
 
-		let screenTimeUsed =
-			setting.screen_time_used ?? 0;
+		let screenTimeUsed = setting.screen_time_used ?? 0;
 
 		if (!today) {
 			return NextResponse.json(
 				{
-					message:
-						"Impossible de déterminer la date actuelle.",
+					message: "Impossible de déterminer la date actuelle.",
 				},
 				{ status: 500 },
 			);
@@ -209,13 +185,9 @@ export async function POST(request: Request) {
 			screenTimeUsed = 0;
 		}
 
-		const screenTimeLimit =
-			setting.screen_time_limit;
+		const screenTimeLimit = setting.screen_time_limit;
 
-		if (
-			screenTimeLimit !== null &&
-			screenTimeUsed >= screenTimeLimit
-		) {
+		if (screenTimeLimit !== null && screenTimeUsed >= screenTimeLimit) {
 			return NextResponse.json({
 				limitReached: true,
 				screenTimeUsed,
@@ -238,12 +210,10 @@ export async function POST(request: Request) {
 			[childId],
 		);
 
-		const newScreenTimeUsed =
-			screenTimeUsed + 1;
+		const newScreenTimeUsed = screenTimeUsed + 1;
 
 		const limitReached =
-			screenTimeLimit !== null &&
-			newScreenTimeUsed >= screenTimeLimit;
+			screenTimeLimit !== null && newScreenTimeUsed >= screenTimeLimit;
 
 		return NextResponse.json({
 			limitReached,
@@ -251,15 +221,11 @@ export async function POST(request: Request) {
 			screenTimeLimit,
 		});
 	} catch (error) {
-		console.error(
-			"POST /api/screen-time :",
-			error,
-		);
+		console.error("POST /api/screen-time :", error);
 
 		return NextResponse.json(
 			{
-				message:
-					"Impossible de comptabiliser le temps d’écran.",
+				message: "Impossible de comptabiliser le temps d’écran.",
 			},
 			{ status: 500 },
 		);

@@ -8,18 +8,16 @@ export default function FeaturesSection() {
 			className="relative z-10 -mt-8 rounded-t-[3.5rem] bg-white px-8 py-28 md:px-12"
 		>
 			<header className="mx-auto mb-20 max-w-5xl text-center">
-				<p className="zouu-eyebrow">
-					Les super-pouvoirs de Zouu
-				</p>
+				<p className="zouu-eyebrow">Les super-pouvoirs de Zouu</p>
 
 				<h2 className="mt-4 text-5xl font-black leading-tight text-slate-900">
 					Une protection pensée pour toute la famille
 				</h2>
 
 				<p className="mx-auto mt-6 max-w-3xl text-xl leading-9 text-slate-600">
-					Les enfants découvrent Internet sereinement pendant que
-					les parents gardent le contrôle grâce à des outils
-					simples, intelligents et rassurants.
+					Les enfants découvrent Internet sereinement pendant que les parents
+					gardent le contrôle grâce à des outils simples, intelligents et
+					rassurants.
 				</p>
 			</header>
 

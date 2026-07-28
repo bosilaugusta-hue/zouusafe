@@ -25,12 +25,9 @@ export default function SearchHistory({
 	useEffect(() => {
 		async function loadHistory() {
 			try {
-				const response = await fetch(
-					`/api/search-history?childId=${childId}`,
-					{
-						cache: "no-store",
-					},
-				);
+				const response = await fetch(`/api/search-history?childId=${childId}`, {
+					cache: "no-store",
+				});
 
 				if (!response.ok) {
 					throw new Error();
@@ -42,10 +39,7 @@ export default function SearchHistory({
 
 				setHistory(data.history.slice(0, 4));
 			} catch (error) {
-				console.error(
-					"Impossible de charger les recherches :",
-					error,
-				);
+				console.error("Impossible de charger les recherches :", error);
 			} finally {
 				setIsLoading(false);
 			}
@@ -82,9 +76,7 @@ export default function SearchHistory({
 
 			<div className="mt-5">
 				{isLoading ? (
-					<p className="text-center text-sm text-slate-500">
-						Chargement...
-					</p>
+					<p className="text-center text-sm text-slate-500">Chargement...</p>
 				) : history.length === 0 ? (
 					<p className="text-center text-sm text-slate-500">
 						Les recherches de {childName} apparaîtront ici.

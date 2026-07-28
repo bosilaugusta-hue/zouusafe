@@ -33,9 +33,7 @@ export default function ResetPasswordForm() {
 		const formData = new FormData(event.currentTarget);
 
 		const password = String(formData.get("password") ?? "");
-		const confirmPassword = String(
-			formData.get("confirmPassword") ?? "",
-		);
+		const confirmPassword = String(formData.get("confirmPassword") ?? "");
 
 		if (password.length < 12) {
 			setError("Le mot de passe doit contenir au moins 12 caractères.");
@@ -62,32 +60,20 @@ export default function ResetPasswordForm() {
 				}),
 			});
 
-			const result =
-				(await response.json()) as ResetPasswordResponse;
+			const result = (await response.json()) as ResetPasswordResponse;
 
 			if (!response.ok) {
-				setError(
-					result.message ??
-						"Impossible de modifier le mot de passe.",
-				);
+				setError(result.message ?? "Impossible de modifier le mot de passe.");
 				return;
 			}
 
-			setMessage(
-				result.message ??
-					"Votre mot de passe a bien été modifié.",
-			);
+			setMessage(result.message ?? "Votre mot de passe a bien été modifié.");
 
 			event.currentTarget.reset();
 		} catch (error) {
-			console.error(
-				"Erreur de réinitialisation du mot de passe :",
-				error,
-			);
+			console.error("Erreur de réinitialisation du mot de passe :", error);
 
-			setError(
-				"Impossible de contacter le serveur. Veuillez réessayer.",
-			);
+			setError("Impossible de contacter le serveur. Veuillez réessayer.");
 		} finally {
 			setIsLoading(false);
 		}
@@ -141,16 +127,10 @@ export default function ResetPasswordForm() {
 								? "Masquer le mot de passe"
 								: "Afficher le mot de passe"
 						}
-						onClick={() =>
-							setShowPassword((current) => !current)
-						}
+						onClick={() => setShowPassword((current) => !current)}
 						className="shrink-0 text-slate-400 transition hover:text-violet-600"
 					>
-						{showPassword ? (
-							<EyeOff size={20} />
-						) : (
-							<Eye size={20} />
-						)}
+						{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
 					</button>
 				</span>
 			</label>
@@ -184,16 +164,10 @@ export default function ResetPasswordForm() {
 								? "Masquer la confirmation"
 								: "Afficher la confirmation"
 						}
-						onClick={() =>
-							setShowConfirmation((current) => !current)
-						}
+						onClick={() => setShowConfirmation((current) => !current)}
 						className="shrink-0 text-slate-400 transition hover:text-violet-600"
 					>
-						{showConfirmation ? (
-							<EyeOff size={20} />
-						) : (
-							<Eye size={20} />
-						)}
+						{showConfirmation ? <EyeOff size={20} /> : <Eye size={20} />}
 					</button>
 				</span>
 			</label>

@@ -20,14 +20,11 @@
 	--zouu-radius: 16px;
 	--zouu-radius-large: 28px;
 
-	--zouu-shadow-small:
-		0 4px 12px rgba(15, 23, 42, 0.06);
+	--zouu-shadow-small: 0 4px 12px rgba(15, 23, 42, 0.06);
 
-	--zouu-shadow:
-		0 12px 30px rgba(124, 58, 237, 0.12);
+	--zouu-shadow: 0 12px 30px rgba(124, 58, 237, 0.12);
 
-	--zouu-shadow-hover:
-		0 18px 36px rgba(124, 58, 237, 0.2);
+	--zouu-shadow-hover: 0 18px 36px rgba(124, 58, 237, 0.2);
 
 	--zouu-transition: 0.25s ease;
 }
@@ -49,22 +46,9 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	color: var(--zouu-text);
 	background:
-		radial-gradient(
-			circle at top left,
-			#f8ecff 0%,
-			transparent 35%
-		),
-		radial-gradient(
-			circle at bottom right,
-			#fff4dd 0%,
-			transparent 35%
-		),
-		linear-gradient(
-			135deg,
-			#eef4ff 0%,
-			#f7efff 55%,
-			#fff7ea 100%
-		);
+		radial-gradient(circle at top left, #f8ecff 0%, transparent 35%),
+		radial-gradient(circle at bottom right, #fff4dd 0%, transparent 35%),
+		linear-gradient(135deg, #eef4ff 0%, #f7efff 55%, #fff7ea 100%);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-rendering: optimizeLegibility;
@@ -113,19 +97,11 @@ a {
 
 ::-webkit-scrollbar-thumb {
 	border-radius: 999px;
-	background: linear-gradient(
-		180deg,
-		#8b5cf6,
-		#ec4899
-	);
+	background: linear-gradient(180deg, #8b5cf6, #ec4899);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: linear-gradient(
-		180deg,
-		#7c3aed,
-		#db2777
-	);
+	background: linear-gradient(180deg, #7c3aed, #db2777);
 }
 
 /* Boutons communs */

@@ -51,9 +51,7 @@ export default function HomeFooter() {
 				/>
 
 				<article>
-					<h3 className="text-lg font-black text-slate-900">
-						Suivez-nous
-					</h3>
+					<h3 className="text-lg font-black text-slate-900">Suivez-nous</h3>
 
 					<div className="mt-5 flex gap-3">
 						<SocialIcon label="Facebook">
@@ -93,9 +91,7 @@ type FooterColumnProps = {
 function FooterColumn({ title, links }: FooterColumnProps) {
 	return (
 		<article>
-			<h3 className="text-lg font-black text-slate-900">
-				{title}
-			</h3>
+			<h3 className="text-lg font-black text-slate-900">{title}</h3>
 
 			<nav className="mt-5 space-y-3 text-sm text-slate-500">
 				{links.map((link) => (

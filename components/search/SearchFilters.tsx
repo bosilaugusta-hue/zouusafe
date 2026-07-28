@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import {
 	BookOpen,
 	Gamepad2,
@@ -8,6 +6,7 @@ import {
 	Pencil,
 	Video,
 } from "lucide-react";
+import Link from "next/link";
 
 const filters = [
 	{
@@ -54,10 +53,7 @@ export default function SearchFilters({
 	activeFilter = "all",
 }: SearchFiltersProps) {
 	return (
-		<nav
-			aria-label="Filtres de recherche"
-			className="flex flex-wrap gap-3"
-		>
+		<nav aria-label="Filtres de recherche" className="flex flex-wrap gap-3">
 			{filters.map((filter) => {
 				const Icon = filter.icon;
 				const isActive = activeFilter === filter.value;
@@ -78,11 +74,7 @@ export default function SearchFilters({
 					>
 						<Icon
 							size={19}
-							className={
-								isActive
-									? "text-violet-600"
-									: "text-slate-500"
-							}
+							className={isActive ? "text-violet-600" : "text-slate-500"}
 						/>
 
 						{filter.label}

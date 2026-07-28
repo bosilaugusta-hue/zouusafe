@@ -32,10 +32,7 @@ type UpdateChildBody = {
 
 const allowedGenders = ["girl", "boy", "other"];
 
-export async function GET(
-	_request: Request,
-	{ params }: RouteContext,
-) {
+export async function GET(_request: Request, { params }: RouteContext) {
 	try {
 		const { id } = await params;
 		const childId = Number(id);
@@ -94,10 +91,7 @@ LIMIT 1
 	}
 }
 
-export async function PATCH(
-	request: Request,
-	{ params }: RouteContext,
-) {
+export async function PATCH(request: Request, { params }: RouteContext) {
 	try {
 		const { id } = await params;
 		const childId = Number(id);
@@ -194,10 +188,7 @@ LIMIT 1
 	}
 }
 
-export async function DELETE(
-	_request: Request,
-	{ params }: RouteContext,
-) {
+export async function DELETE(_request: Request, { params }: RouteContext) {
 	const connection = await db.getConnection();
 
 	try {
@@ -212,7 +203,6 @@ export async function DELETE(
 		}
 
 		await connection.beginTransaction();
-
 
 		await connection.execute(
 			`
@@ -267,8 +257,7 @@ export async function DELETE(
 
 		return NextResponse.json(
 			{
-				message:
-					"Impossible de supprimer ce profil et ses données associées.",
+				message: "Impossible de supprimer ce profil et ses données associées.",
 			},
 			{ status: 500 },
 		);

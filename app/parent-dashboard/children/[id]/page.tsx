@@ -1,3 +1,4 @@
+import { jwtVerify } from "jose";
 import {
 	ArrowLeft,
 	BarChart3,
@@ -9,12 +10,11 @@ import {
 	ShieldCheck,
 	Sparkles,
 } from "lucide-react";
-import { jwtVerify } from "jose";
 import type { RowDataPacket } from "mysql2";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
 
 import { db } from "@/lib/db";
 
@@ -91,9 +91,7 @@ function formatDate(date: Date) {
 	}).format(new Date(date));
 }
 
-export default async function ChildProfilePage({
-	params,
-}: PageProps) {
+export default async function ChildProfilePage({ params }: PageProps) {
 	const { id } = await params;
 	const childId = Number(id);
 
@@ -187,24 +185,16 @@ export default async function ChildProfilePage({
 
 	const age = calculateAge(child.birth_date);
 
-	const avatar =
-		child.avatar_url ?? "/avatars-profil/fille-1.png";
+	const avatar = child.avatar_url ?? "/avatars-profil/fille-1.png";
 
-	const avatarSrc = avatar.startsWith("/")
-		? avatar
-		: `/${avatar}`;
+	const avatarSrc = avatar.startsWith("/") ? avatar : `/${avatar}`;
 
 	const screenTimeLimit = child.screen_time_limit ?? 120;
 	const screenTimeUsed = child.screen_time_used ?? 0;
 
 	const progress =
 		screenTimeLimit > 0
-			? Math.min(
-					100,
-					Math.round(
-						(screenTimeUsed / screenTimeLimit) * 100,
-					),
-				)
+			? Math.min(100, Math.round((screenTimeUsed / screenTimeLimit) * 100))
 			: 0;
 
 	const searchCount = searchCountRows[0]?.total ?? 0;
@@ -331,9 +321,7 @@ export default async function ChildProfilePage({
 									</strong>
 								</div>
 
-								<h2 className="mt-4 font-black">
-									Temps utilisé
-								</h2>
+								<h2 className="mt-4 font-black">Temps utilisé</h2>
 
 								<p className="mt-1 text-sm text-slate-500">
 									sur {screenTimeLimit} min
@@ -346,18 +334,12 @@ export default async function ChildProfilePage({
 										<Search size={22} />
 									</span>
 
-									<strong className="text-2xl font-black">
-										{searchCount}
-									</strong>
+									<strong className="text-2xl font-black">{searchCount}</strong>
 								</div>
 
-								<h2 className="mt-4 font-black">
-									Recherches
-								</h2>
+								<h2 className="mt-4 font-black">Recherches</h2>
 
-								<p className="mt-1 text-sm text-slate-500">
-									enregistrées
-								</p>
+								<p className="mt-1 text-sm text-slate-500">enregistrées</p>
 							</article>
 
 							<article className="rounded-3xl border border-pink-100 bg-pink-50 p-5">
@@ -371,13 +353,9 @@ export default async function ChildProfilePage({
 									</strong>
 								</div>
 
-								<h2 className="mt-4 font-black">
-									Sites bloqués
-								</h2>
+								<h2 className="mt-4 font-black">Sites bloqués</h2>
 
-								<p className="mt-1 text-sm text-slate-500">
-									contenus filtrés
-								</p>
+								<p className="mt-1 text-sm text-slate-500">contenus filtrés</p>
 							</article>
 
 							<article className="rounded-3xl border border-green-100 bg-green-50 p-5">
@@ -391,15 +369,10 @@ export default async function ChildProfilePage({
 									</strong>
 								</div>
 
-								<h2 className="mt-4 font-black">
-									Niveau de filtre
-								</h2>
+								<h2 className="mt-4 font-black">Niveau de filtre</h2>
 
 								<p className="mt-1 text-sm text-slate-500">
-									SafeSearch{" "}
-									{safeSearchEnabled
-										? "activé"
-										: "désactivé"}
+									SafeSearch {safeSearchEnabled ? "activé" : "désactivé"}
 								</p>
 							</article>
 						</section>
@@ -412,8 +385,8 @@ export default async function ChildProfilePage({
 									</h2>
 
 									<p className="mt-1 text-sm text-slate-600">
-										{screenTimeUsed} minutes utilisées sur{" "}
-										{screenTimeLimit} minutes autorisées
+										{screenTimeUsed} minutes utilisées sur {screenTimeLimit}{" "}
+										minutes autorisées
 									</p>
 								</div>
 
@@ -459,9 +432,7 @@ export default async function ChildProfilePage({
 												<Icon size={23} />
 											</span>
 
-											<h3 className="mt-4 font-black">
-												{tool.title}
-											</h3>
+											<h3 className="mt-4 font-black">{tool.title}</h3>
 
 											<p className="mt-1 text-sm leading-5 text-slate-600">
 												{tool.description}
@@ -487,9 +458,7 @@ export default async function ChildProfilePage({
 											<Search size={21} />
 										</span>
 
-										<h2 className="text-xl font-black">
-											Historique récent
-										</h2>
+										<h2 className="text-xl font-black">Historique récent</h2>
 									</div>
 
 									<Link
@@ -502,10 +471,7 @@ export default async function ChildProfilePage({
 
 								{history.length === 0 ? (
 									<div className="flex min-h-48 flex-col items-center justify-center text-center">
-										<Search
-											size={38}
-											className="text-slate-300"
-										/>
+										<Search size={38} className="text-slate-300" />
 
 										<p className="mt-4 font-bold text-slate-500">
 											Aucune recherche enregistrée.
@@ -518,9 +484,7 @@ export default async function ChildProfilePage({
 												key={item.search_history_id}
 												className="rounded-2xl bg-blue-50 px-4 py-3"
 											>
-												<p className="font-black">
-													{item.search_query}
-												</p>
+												<p className="font-black">{item.search_query}</p>
 
 												<p className="mt-1 text-xs text-slate-500">
 													{formatDate(item.created_at)}
@@ -538,9 +502,7 @@ export default async function ChildProfilePage({
 											<Bell size={21} />
 										</span>
 
-										<h2 className="text-xl font-black">
-											Alertes récentes
-										</h2>
+										<h2 className="text-xl font-black">Alertes récentes</h2>
 									</div>
 
 									<Link
@@ -553,10 +515,7 @@ export default async function ChildProfilePage({
 
 								{alerts.length === 0 ? (
 									<div className="flex min-h-48 flex-col items-center justify-center text-center">
-										<Bell
-											size={38}
-											className="text-slate-300"
-										/>
+										<Bell size={38} className="text-slate-300" />
 
 										<p className="mt-4 font-bold text-slate-500">
 											Aucune alerte pour le moment.
@@ -568,8 +527,7 @@ export default async function ChildProfilePage({
 											const severityClass =
 												alert.severity === "high"
 													? "bg-red-50 text-red-700"
-													: alert.severity ===
-														  "medium"
+													: alert.severity === "medium"
 														? "bg-orange-50 text-orange-700"
 														: "bg-blue-50 text-blue-700";
 
@@ -578,14 +536,10 @@ export default async function ChildProfilePage({
 													key={alert.alert_id}
 													className={`rounded-2xl px-4 py-3 ${severityClass}`}
 												>
-													<p className="font-black">
-														{alert.message}
-													</p>
+													<p className="font-black">{alert.message}</p>
 
 													<p className="mt-1 text-xs opacity-70">
-														{formatDate(
-															alert.created_at,
-														)}
+														{formatDate(alert.created_at)}
 													</p>
 												</li>
 											);

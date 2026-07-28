@@ -14,10 +14,7 @@ const suggestions = [
 	"Coloriages à imprimer",
 ];
 
-export default function SearchSidebar({
-	childId,
-	query,
-}: SearchSidebarProps) {
+export default function SearchSidebar({ childId, query }: SearchSidebarProps) {
 	return (
 		<aside className="space-y-5">
 			<article className="rounded-[28px] border border-emerald-100 bg-emerald-50 p-6 shadow-sm">
@@ -34,15 +31,12 @@ export default function SearchSidebar({
 						<div className="flex items-center gap-2 text-emerald-700">
 							<ShieldCheck size={20} />
 
-							<h2 className="text-lg font-black">
-								Recherche protégée
-							</h2>
+							<h2 className="text-lg font-black">Recherche protégée</h2>
 						</div>
 
 						<p className="mt-2 text-sm leading-6 text-slate-600">
-							Les contenus proposés sont automatiquement adaptés
-							à l’âge de l’enfant et filtrés pour une navigation
-							plus sûre.
+							Les contenus proposés sont automatiquement adaptés à l’âge de
+							l’enfant et filtrés pour une navigation plus sûre.
 						</p>
 					</div>
 				</div>
@@ -50,10 +44,7 @@ export default function SearchSidebar({
 
 			<article className="rounded-[28px] border border-white bg-white/90 p-6 shadow-sm">
 				<h2 className="flex items-center gap-2 text-lg font-black text-slate-900">
-					<Lightbulb
-						size={20}
-						className="text-amber-500"
-					/>
+					<Lightbulb size={20} className="text-amber-500" />
 					Tu peux aussi chercher
 				</h2>
 
@@ -73,9 +64,7 @@ export default function SearchSidebar({
 
 				<p className="mt-5 text-xs leading-5 text-slate-500">
 					Recherche actuelle :{" "}
-					<span className="font-black text-violet-700">
-						{query}
-					</span>
+					<span className="font-black text-violet-700">{query}</span>
 				</p>
 			</article>
 		</aside>

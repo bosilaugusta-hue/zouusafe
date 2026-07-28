@@ -89,8 +89,7 @@ export default function SearchResultCard({
 	const categoryDetails = getCategoryDetails(category);
 	const CategoryIcon = categoryDetails.icon;
 
-	const isGallery =
-		category === "images" || category === "coloring";
+	const isGallery = category === "images" || category === "coloring";
 
 	if (isGallery) {
 		return (
@@ -119,10 +118,7 @@ export default function SearchResultCard({
 					<span
 						className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-black ${categoryDetails.badgeClassName}`}
 					>
-						<CategoryIcon
-							size={16}
-							aria-hidden="true"
-						/>
+						<CategoryIcon size={16} aria-hidden="true" />
 
 						{categoryDetails.label}
 					</span>
@@ -143,10 +139,7 @@ export default function SearchResultCard({
 					>
 						{categoryDetails.buttonLabel}
 
-						<ExternalLink
-							size={17}
-							aria-hidden="true"
-						/>
+						<ExternalLink size={17} aria-hidden="true" />
 					</a>
 				</div>
 			</article>
@@ -155,13 +148,7 @@ export default function SearchResultCard({
 
 	return (
 		<article className="overflow-hidden rounded-[28px] border border-white/90 bg-white/90 shadow-[0_12px_35px_rgba(88,80,150,0.10)] transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-			<div
-				className={
-					image
-						? "grid md:grid-cols-[240px_minmax(0,1fr)]"
-						: ""
-				}
-			>
+			<div className={image ? "grid md:grid-cols-[240px_minmax(0,1fr)]" : ""}>
 				{image && (
 					<div className="relative min-h-56 bg-violet-50">
 						<Image
@@ -175,11 +162,7 @@ export default function SearchResultCard({
 						{category === "videos" && (
 							<div className="absolute inset-0 flex items-center justify-center bg-black/15">
 								<div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-violet-700 shadow-lg">
-									<Play
-										size={28}
-										aria-hidden="true"
-										className="ml-1"
-									/>
+									<Play size={28} aria-hidden="true" className="ml-1" />
 								</div>
 							</div>
 						)}
@@ -192,20 +175,13 @@ export default function SearchResultCard({
 							<span
 								className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-black ${categoryDetails.badgeClassName}`}
 							>
-								<CategoryIcon
-									size={16}
-									aria-hidden="true"
-								/>
+								<CategoryIcon size={16} aria-hidden="true" />
 
 								{categoryDetails.label}
 							</span>
 
 							<span className="inline-flex items-center gap-2 text-xs font-black text-emerald-700">
-								<ShieldCheck
-									size={16}
-									aria-hidden="true"
-								/>
-
+								<ShieldCheck size={16} aria-hidden="true" />
 								Contenu protégé
 							</span>
 						</div>
@@ -215,10 +191,7 @@ export default function SearchResultCard({
 						</h2>
 
 						<p className="mt-2 flex items-center gap-2 text-sm font-bold text-violet-600">
-							<Globe2
-								size={17}
-								aria-hidden="true"
-							/>
+							<Globe2 size={17} aria-hidden="true" />
 
 							{source}
 						</p>
@@ -237,10 +210,7 @@ export default function SearchResultCard({
 						>
 							{categoryDetails.buttonLabel}
 
-							<ExternalLink
-								size={17}
-								aria-hidden="true"
-							/>
+							<ExternalLink size={17} aria-hidden="true" />
 						</a>
 					</div>
 				</div>

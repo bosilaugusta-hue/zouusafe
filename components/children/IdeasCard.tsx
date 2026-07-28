@@ -8,9 +8,7 @@ const ideas = [
 export default function IdeasCard() {
 	return (
 		<article className="rounded-3xl bg-white p-6 shadow-md">
-			<h2 className="text-xl font-black text-violet-700">
-				💡 Idées pour toi
-			</h2>
+			<h2 className="text-xl font-black text-violet-700">💡 Idées pour toi</h2>
 
 			<ul className="mt-5 space-y-3">
 				{ideas.map((idea) => (

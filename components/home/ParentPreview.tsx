@@ -48,10 +48,7 @@ export default function ParentPreview() {
 						))}
 					</ul>
 
-					<Link
-						href="/login"
-						className="btn-primary mt-11 px-10 py-5 text-lg"
-					>
+					<Link href="/login" className="btn-primary mt-11 px-10 py-5 text-lg">
 						Découvrir l’espace parent
 						<ArrowRight size={21} />
 					</Link>
@@ -64,12 +61,12 @@ export default function ParentPreview() {
 						<div className="grid min-h-[560px] md:grid-cols-[205px_1fr]">
 							<aside className="hidden bg-gradient-to-b from-violet-50 via-white to-white p-7 md:block">
 								<Image
-	src="/logos/zouusafe-renard-tete.png"
-	alt="Logo ZouuSafe"
-	width={170}
-	height={90}
-	className="mx-auto mb-10 h-auto w-[150px]"
-/>
+									src="/logos/zouusafe-renard-tete.png"
+									alt="Logo ZouuSafe"
+									width={170}
+									height={90}
+									className="mx-auto mb-10 h-auto w-[150px]"
+								/>
 
 								<nav className="space-y-4 text-sm font-bold text-slate-600">
 									<p className="rounded-2xl bg-violet-100 px-4 py-4 text-violet-700 shadow-sm">
@@ -80,7 +77,6 @@ export default function ParentPreview() {
 
 									<p className="flex items-center justify-between px-4 py-3">
 										Alertes
-
 										<span className="rounded-full bg-red-500 px-2.5 py-1 text-[11px] text-white">
 											2
 										</span>
@@ -136,11 +132,7 @@ export default function ParentPreview() {
 										valueClassName="text-red-500"
 									/>
 
-									<StatCard
-										label="Appareils"
-										value="3"
-										detail="Connectés"
-									/>
+									<StatCard label="Appareils" value="3" detail="Connectés" />
 								</div>
 
 								<div className="mt-7 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">

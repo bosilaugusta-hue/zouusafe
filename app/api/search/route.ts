@@ -177,22 +177,13 @@ function normalizeWebResults(
 	filter: SearchFilter,
 ): NormalizedResult[] {
 	return (data.web?.results ?? [])
-		.filter(
-			(result) =>
-				result.title &&
-				result.url &&
-				result.description,
-		)
+		.filter((result) => result.title && result.url && result.description)
 		.map((result, index) => ({
 			id: `${filter}-${index}-${result.url}`,
 			title: result.title ?? "Résultat",
 			url: result.url ?? "",
-			description:
-				result.description ??
-				"Aucune description disponible.",
-			source:
-				result.profile?.long_name ??
-				getSourceName(result.url ?? ""),
+			description: result.description ?? "Aucune description disponible.",
+			source: result.profile?.long_name ?? getSourceName(result.url ?? ""),
 			image: null,
 			category: filter,
 		}));
@@ -221,20 +212,13 @@ function normalizeImageResults(
 				category === "coloring"
 					? "Un dessin amusant à imprimer et à colorier."
 					: "Une illustration trouvée par la recherche sécurisée ZouuSafe.",
-			source:
-				result.source ??
-				getSourceName(result.url ?? ""),
-			image:
-				result.thumbnail?.src ??
-				result.properties?.url ??
-				null,
+			source: result.source ?? getSourceName(result.url ?? ""),
+			image: result.thumbnail?.src ?? result.properties?.url ?? null,
 			category,
 		}));
 }
 
-function normalizeVideoResults(
-	data: VideoResponse,
-): NormalizedResult[] {
+function normalizeVideoResults(data: VideoResponse): NormalizedResult[] {
 	return (data.results ?? [])
 		.filter((result) => result.title && result.url)
 		.map((result, index) => ({
@@ -244,9 +228,7 @@ function normalizeVideoResults(
 			description:
 				result.description ??
 				"Vidéo trouvée par la recherche sécurisée ZouuSafe.",
-			source:
-				result.profile?.long_name ??
-				getSourceName(result.url ?? ""),
+			source: result.profile?.long_name ?? getSourceName(result.url ?? ""),
 			image: result.thumbnail?.src ?? null,
 			category: "videos",
 		}));
@@ -263,8 +245,7 @@ export async function POST(request: Request) {
 		if (!childId || !query) {
 			return NextResponse.json(
 				{
-					message:
-						"L’enfant et la recherche sont obligatoires.",
+					message: "L’enfant et la recherche sont obligatoires.",
 				},
 				{ status: 400 },
 			);
@@ -347,14 +328,11 @@ export async function POST(request: Request) {
 		const apiKey = process.env.BRAVE_SEARCH_API_KEY;
 
 		if (!apiKey) {
-			console.error(
-				"BRAVE_SEARCH_API_KEY est absente de .env.local.",
-			);
+			console.error("BRAVE_SEARCH_API_KEY est absente de .env.local.");
 
 			return NextResponse.json(
 				{
-					message:
-						"Le moteur de recherche n’est pas configuré.",
+					message: "Le moteur de recherche n’est pas configuré.",
 				},
 				{ status: 500 },
 			);
@@ -393,16 +371,11 @@ export async function POST(request: Request) {
 		if (!braveResponse.ok) {
 			const braveError = await braveResponse.text();
 
-			console.error(
-				"Erreur Brave Search :",
-				braveResponse.status,
-				braveError,
-			);
+			console.error("Erreur Brave Search :", braveResponse.status, braveError);
 
 			return NextResponse.json(
 				{
-					message:
-						"Le moteur de recherche est temporairement indisponible.",
+					message: "Le moteur de recherche est temporairement indisponible.",
 				},
 				{ status: 502 },
 			);
@@ -411,18 +384,15 @@ export async function POST(request: Request) {
 		let results: NormalizedResult[] = [];
 
 		if (filter === "images" || filter === "coloring") {
-			const braveData =
-				(await braveResponse.json()) as ImageResponse;
+			const braveData = (await braveResponse.json()) as ImageResponse;
 
 			results = normalizeImageResults(braveData, filter);
 		} else if (filter === "videos") {
-			const braveData =
-				(await braveResponse.json()) as VideoResponse;
+			const braveData = (await braveResponse.json()) as VideoResponse;
 
 			results = normalizeVideoResults(braveData);
 		} else {
-			const braveData =
-				(await braveResponse.json()) as WebResponse;
+			const braveData = (await braveResponse.json()) as WebResponse;
 
 			results = normalizeWebResults(braveData, filter);
 		}
@@ -432,21 +402,14 @@ export async function POST(request: Request) {
 			query,
 			filter,
 			results,
-			message:
-				results.length === 0
-					? "Aucun résultat trouvé."
-					: null,
+			message: results.length === 0 ? "Aucun résultat trouvé." : null,
 		});
 	} catch (error) {
-		console.error(
-			"Erreur pendant la recherche sécurisée :",
-			error,
-		);
+		console.error("Erreur pendant la recherche sécurisée :", error);
 
 		return NextResponse.json(
 			{
-				message:
-					"Une erreur est survenue pendant la recherche.",
+				message: "Une erreur est survenue pendant la recherche.",
 			},
 			{ status: 500 },
 		);

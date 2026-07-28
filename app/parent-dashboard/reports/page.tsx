@@ -7,10 +7,8 @@ import {
 	ShieldAlert,
 	ShieldCheck,
 } from "lucide-react";
-import Image from "next/image";
 import { cookies } from "next/headers";
-
-import Sidebar from "@/components/dashboard/Sidebar";
+import Image from "next/image";
 
 type ReportChild = {
 	child_id: number;
@@ -96,8 +94,6 @@ export default async function ReportsPage() {
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
 			<section className="mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_1fr]">
-				<Sidebar />
-
 				<section className="space-y-6">
 					<header className="rounded-[30px] border border-white/70 bg-white/90 p-7 shadow-xl backdrop-blur-xl">
 						<div className="flex items-center gap-4">
@@ -110,9 +106,7 @@ export default async function ReportsPage() {
 									Analyse de l’activité
 								</p>
 
-								<h1 className="mt-1 text-3xl font-black">
-									Rapports
-								</h1>
+								<h1 className="mt-1 text-3xl font-black">Rapports</h1>
 
 								<p className="mt-2 text-sm text-slate-500">
 									Consultez les principales données de protection de vos
@@ -208,12 +202,9 @@ export default async function ReportsPage() {
 
 					<section className="grid gap-5 lg:grid-cols-2">
 						{reports.children.map((child) => {
-							const avatar =
-								child.avatar_url ?? "/avatars-profil/fille-15.png";
+							const avatar = child.avatar_url ?? "/avatars-profil/fille-15.png";
 
-							const avatarSrc = avatar.startsWith("/")
-								? avatar
-								: `/${avatar}`;
+							const avatarSrc = avatar.startsWith("/") ? avatar : `/${avatar}`;
 
 							const progress = getProgress(
 								child.screen_time_used,
@@ -247,10 +238,7 @@ export default async function ReportsPage() {
 												</h2>
 
 												<div className="mt-2 flex w-fit items-center gap-2 rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-black text-emerald-700">
-													<ShieldCheck
-														size={14}
-														aria-hidden="true"
-													/>
+													<ShieldCheck size={14} aria-hidden="true" />
 													Protection active
 												</div>
 
@@ -317,9 +305,7 @@ export default async function ReportsPage() {
 												</span>
 
 												<div>
-													<h3 className="font-black">
-														Temps d’écran
-													</h3>
+													<h3 className="font-black">Temps d’écran</h3>
 
 													<p className="mt-1 text-sm text-slate-500">
 														{child.screen_time_used} min sur{" "}
@@ -413,17 +399,11 @@ function SummaryCard({
 				{icon}
 			</div>
 
-			<p className="mt-4 text-3xl font-black text-slate-900">
-				{value}
-			</p>
+			<p className="mt-4 text-3xl font-black text-slate-900">{value}</p>
 
-			<p className="mt-1 font-black text-slate-800">
-				{title}
-			</p>
+			<p className="mt-1 font-black text-slate-800">{title}</p>
 
-			<p className="mt-1 text-xs font-semibold text-slate-500">
-				{description}
-			</p>
+			<p className="mt-1 text-xs font-semibold text-slate-500">{description}</p>
 
 			<div
 				className={`mt-5 h-1 w-12 rounded-full bg-gradient-to-r ${lineClassName}`}

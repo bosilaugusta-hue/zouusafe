@@ -5,12 +5,12 @@ import ChildCard from "@/components/dashboard/ChildCard";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import HistoryCard from "@/components/dashboard/HistoryCard";
 import QuickSettings from "@/components/dashboard/QuickSettings";
-import Sidebar from "@/components/dashboard/Sidebar";
 import StatsCards from "@/components/dashboard/StatsCards";
 
 type DashboardData = {
 	parent: {
 		first_name: string;
+		avatar_url: string | null;
 	};
 	stats: {
 		children: number;
@@ -23,8 +23,8 @@ type DashboardData = {
 		first_name: string;
 		birth_date: string;
 		avatar_url: string | null;
-		filter_level: string | null;
-		safe_search: boolean | null;
+		filter_level?: string | null;
+		safe_search?: boolean | null;
 	}>;
 	alerts: Array<{
 		alert_id: number;
@@ -34,18 +34,15 @@ type DashboardData = {
 	}>;
 	history: Array<{
 		search_history_id: number;
-		query: string;
+		search_query: string;
 		created_at: string;
-		first_name: string;
 	}>;
-	settings: Array<{
-		child_id: number;
-		first_name: string;
+	settings: {
 		screen_time_limit: number;
 		screen_time_used: number;
 		filter_level: string;
 		safe_search: boolean;
-	}>;
+	} | null;
 };
 
 async function getDashboardData(): Promise<DashboardData> {
@@ -56,15 +53,12 @@ async function getDashboardData(): Promise<DashboardData> {
 		throw new Error("Session utilisateur introuvable.");
 	}
 
-	const response = await fetch(
-		"http://localhost:3000/api/dashboard",
-		{
-			cache: "no-store",
-			headers: {
-				Cookie: `zouusafe_session=${sessionCookie.value}`,
-			},
+	const response = await fetch("http://localhost:3000/api/dashboard", {
+		cache: "no-store",
+		headers: {
+			Cookie: `zouusafe_session=${sessionCookie.value}`,
 		},
-	);
+	});
 
 	if (!response.ok) {
 		throw new Error(
@@ -78,58 +72,50 @@ async function getDashboardData(): Promise<DashboardData> {
 export default async function ParentDashboardPage() {
 	const dashboard = await getDashboardData();
 
-	const firstChildName =
-		dashboard.children[0]?.first_name ?? "votre enfant";
+	const firstChild = dashboard.children[0];
 
-	const firstSettings =
-		dashboard.settings[0] ?? {
-			child_id: 0,
-			first_name: "Zoé",
-			screen_time_limit: 0,
-			screen_time_used: 0,
-			filter_level: "standard",
-			safe_search: true,
-		};
+	const firstChildName = firstChild?.first_name ?? "votre enfant";
+
+	const firstSettings = {
+		child_id: firstChild?.child_id ?? 0,
+		first_name: firstChildName,
+		screen_time_limit: dashboard.settings?.screen_time_limit ?? 0,
+		screen_time_used: dashboard.settings?.screen_time_used ?? 0,
+		filter_level: dashboard.settings?.filter_level ?? "standard",
+		safe_search: dashboard.settings?.safe_search ?? true,
+	};
 
 	const formattedHistory = dashboard.history.map((item) => ({
 		search_history_id: item.search_history_id,
-		search_query: item.query,
+		search_query: item.search_query,
 		created_at: item.created_at,
-		first_name: item.first_name,
+		first_name: firstChildName,
 	}));
 
 	return (
-		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
-			<section className="mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_1fr]">
-				<Sidebar />
+		<main className="space-y-6">
+			<DashboardHeader
+				parentName={dashboard.parent.first_name}
+				childName={firstChildName}
+			/>
 
-				<section className="space-y-6">
-					<DashboardHeader
-						parentName={
-							dashboard.parent?.first_name ?? "Augusta"
-						}
-						childName={firstChildName}
-					/>
+			<StatsCards
+				childrenCount={dashboard.stats.children}
+				searchesCount={dashboard.stats.searches}
+				blockedCount={dashboard.stats.blockedSites}
+				screenTime={dashboard.stats.screenTime}
+			/>
 
-					<StatsCards
-						childrenCount={dashboard.stats.children}
-						searchesCount={dashboard.stats.searches}
-						blockedCount={dashboard.stats.blockedSites}
-						screenTime={dashboard.stats.screenTime}
-					/>
+			<section className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
+				<ChildCard childList={dashboard.children} />
 
-					<section className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
-						<ChildCard childList={dashboard.children} />
+				<AlertsCard alerts={dashboard.alerts} />
+			</section>
 
-						<AlertsCard alerts={dashboard.alerts} />
-					</section>
+			<section className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
+				<HistoryCard history={formattedHistory} />
 
-					<section className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
-						<HistoryCard history={formattedHistory} />
-
-						<QuickSettings settings={firstSettings} />
-					</section>
-				</section>
+				<QuickSettings settings={firstSettings} />
 			</section>
 		</main>
 	);

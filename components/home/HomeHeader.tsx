@@ -72,15 +72,10 @@ export default function HomeHeader() {
 					</a>
 				</nav>
 
-				<Link
-					href="/login"
-					className="btn-primary"
-				>
+				<Link href="/login" className="btn-primary">
 					<UserRound size={18} />
 
-					<span className="hidden sm:inline">
-						Connexion parent
-					</span>
+					<span className="hidden sm:inline">Connexion parent</span>
 
 					<ArrowRight size={18} />
 				</Link>

@@ -1,9 +1,4 @@
-import {
-	Clock,
-	SearchCheck,
-	Shield,
-	Timer,
-} from "lucide-react";
+import { Clock, SearchCheck, Shield, Timer } from "lucide-react";
 
 type SafetySettings = {
 	screen_time_limit: number;
@@ -16,24 +11,15 @@ type QuickSettingsProps = {
 	settings: SafetySettings | null;
 };
 
-export default function QuickSettings({
-	settings,
-}: QuickSettingsProps) {
+export default function QuickSettings({ settings }: QuickSettingsProps) {
 	const safeSearchEnabled = settings?.safe_search ?? true;
 	const filterLevel = settings?.filter_level ?? "Modéré";
 	const screenTimeLimit = settings?.screen_time_limit ?? 120;
 	const screenTimeUsed = settings?.screen_time_used ?? 0;
 
-	const remainingTime = Math.max(
-		screenTimeLimit - screenTimeUsed,
-		0,
-	);
+	const remainingTime = Math.max(screenTimeLimit - screenTimeUsed, 0);
 
-	const progress =
-		Math.min(
-			(screenTimeUsed / screenTimeLimit) * 100,
-			100,
-		) || 0;
+	const progress = Math.min((screenTimeUsed / screenTimeLimit) * 100, 100) || 0;
 
 	const progressColor =
 		progress >= 100
@@ -43,20 +29,20 @@ export default function QuickSettings({
 				: "bg-emerald-500";
 
 	return (
-		<article className="rounded-[30px] border border-white/70 bg-white/90 p-6 shadow-xl backdrop-blur-xl">
-			<header className="mb-6 flex items-center justify-between">
+		<article className="rounded-[28px] border border-white/70 bg-white/90 p-5 shadow-xl backdrop-blur-xl">
+			<header className="mb-5 flex items-center justify-between">
 				<div>
-					<p className="text-sm font-bold uppercase tracking-[0.14em] text-violet-500">
+					<p className="text-xs font-bold uppercase tracking-[0.14em] text-violet-500">
 						Contrôle parental
 					</p>
 
-					<h2 className="mt-1 text-2xl font-black text-slate-900">
+					<h2 className="mt-1 text-xl font-black text-slate-900">
 						Paramètres rapides
 					</h2>
 				</div>
 
-				<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-100 to-blue-100 text-violet-600 shadow-sm">
-					<Shield size={22} />
+				<div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-100 to-blue-100 text-violet-600 shadow-sm">
+					<Shield size={20} />
 				</div>
 			</header>
 
@@ -70,11 +56,7 @@ export default function QuickSettings({
 				<SettingItem
 					icon={<SearchCheck size={22} />}
 					title="Safe Search"
-					text={
-						safeSearchEnabled
-							? "Activé"
-							: "Désactivé"
-					}
+					text={safeSearchEnabled ? "Activé" : "Désactivé"}
 				/>
 
 				<SettingItem
@@ -83,17 +65,17 @@ export default function QuickSettings({
 					text={`${screenTimeLimit} min / jour`}
 				/>
 
-				<section className="flex items-center justify-center rounded-2xl border border-emerald-100 bg-emerald-50 p-4 shadow-sm">
-					<div className="text-center">
-						<p className="text-sm font-semibold text-emerald-600">
-							Protection
-						</p>
+			<section className="flex items-center justify-center rounded-2xl border border-emerald-100 bg-emerald-50 p-4 shadow-sm">
+	<div className="text-center">
+		<p className="text-xs font-semibold text-emerald-600">
+			Protection
+		</p>
 
-						<p className="mt-1 text-lg font-black text-emerald-700">
-							Active
-						</p>
-					</div>
-				</section>
+		<p className="mt-1 text-base font-black text-emerald-700">
+			Active
+		</p>
+	</div>
+</section>
 
 				<section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:col-span-2">
 					<div className="flex items-center gap-4">
@@ -102,9 +84,7 @@ export default function QuickSettings({
 						</span>
 
 						<div className="flex-1">
-							<h3 className="font-black text-slate-900">
-								Temps d'écran
-							</h3>
+							<h3 className="font-black text-slate-900">Temps d'écran</h3>
 
 							<p className="text-sm text-slate-500">
 								{screenTimeUsed} / {screenTimeLimit} min
@@ -116,13 +96,11 @@ export default function QuickSettings({
 								{remainingTime}
 							</p>
 
-							<p className="text-xs text-slate-500">
-								min restantes
-							</p>
+							<p className="text-xs text-slate-500">min restantes</p>
 						</div>
 					</div>
 
-					<div className="mt-5 h-4 overflow-hidden rounded-full bg-slate-200">
+					<div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-200">
 						<div
 							className={`h-full rounded-full transition-all duration-500 ${progressColor}`}
 							style={{
@@ -162,13 +140,9 @@ function SettingItem({
 			</span>
 
 			<div>
-				<h3 className="font-black text-slate-900">
-					{title}
-				</h3>
+				<h3 className="font-black text-slate-900">{title}</h3>
 
-				<p className="text-sm text-slate-600">
-					{text}
-				</p>
+				<p className="text-sm text-slate-600">{text}</p>
 			</div>
 		</section>
 	);

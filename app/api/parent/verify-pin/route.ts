@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
-import type { RowDataPacket } from "mysql2";
 import { jwtVerify } from "jose";
+import type { RowDataPacket } from "mysql2";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -43,10 +43,7 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const { payload } = await jwtVerify(
-			token,
-			getSecretKey(),
-		);
+		const { payload } = await jwtVerify(token, getSecretKey());
 
 		const { parentId } = payload as SessionPayload;
 
@@ -74,8 +71,7 @@ export async function POST(request: Request) {
 		if (!/^\d{4}$/.test(pin)) {
 			return NextResponse.json(
 				{
-					message:
-						"Le code PIN doit contenir exactement 4 chiffres.",
+					message: "Le code PIN doit contenir exactement 4 chiffres.",
 				},
 				{ status: 400 },
 			);
@@ -107,18 +103,14 @@ export async function POST(request: Request) {
 		if (!parent.pin_code) {
 			return NextResponse.json(
 				{
-					message:
-						"Aucun code PIN n’a encore été configuré.",
+					message: "Aucun code PIN n’a encore été configuré.",
 					requiresPinSetup: true,
 				},
 				{ status: 409 },
 			);
 		}
 
-		const isValidPin = await bcrypt.compare(
-			pin,
-			parent.pin_code,
-		);
+		const isValidPin = await bcrypt.compare(pin, parent.pin_code);
 
 		if (!isValidPin) {
 			return NextResponse.json(
@@ -134,15 +126,11 @@ export async function POST(request: Request) {
 			message: "Code PIN validé.",
 		});
 	} catch (error) {
-		console.error(
-			"Erreur pendant la vérification du PIN :",
-			error,
-		);
+		console.error("Erreur pendant la vérification du PIN :", error);
 
 		return NextResponse.json(
 			{
-				message:
-					"Une erreur est survenue pendant la vérification du PIN.",
+				message: "Une erreur est survenue pendant la vérification du PIN.",
 			},
 			{ status: 500 },
 		);

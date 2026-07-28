@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import type { RowDataPacket } from "mysql2";
+import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
@@ -50,10 +50,7 @@ export async function POST(request: Request) {
 			{ status: 201 },
 		);
 	} catch (error) {
-		console.error(
-			"Erreur pendant l'enregistrement de l'historique :",
-			error,
-		);
+		console.error("Erreur pendant l'enregistrement de l'historique :", error);
 
 		return NextResponse.json(
 			{
@@ -101,10 +98,7 @@ export async function GET(request: Request) {
 			history: rows,
 		});
 	} catch (error) {
-		console.error(
-			"Erreur pendant la récupération de l'historique :",
-			error,
-		);
+		console.error("Erreur pendant la récupération de l'historique :", error);
 
 		return NextResponse.json(
 			{

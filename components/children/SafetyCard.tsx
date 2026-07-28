@@ -16,8 +16,8 @@ export default function SafetyCard() {
 			</h2>
 
 			<p className="mt-2 text-sm leading-6 text-slate-600">
-				ZouuSafe protège tes recherches et t’aide à découvrir des
-				contenus adaptés.
+				ZouuSafe protège tes recherches et t’aide à découvrir des contenus
+				adaptés.
 			</p>
 		</article>
 	);

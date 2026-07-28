@@ -52,9 +52,7 @@ export default function HeroSection() {
 						</p>
 
 						<h1 className="text-5xl font-black leading-[0.98] tracking-tight text-slate-950 md:text-6xl xl:text-[68px]">
-							<span className="whitespace-nowrap">
-								Internet sécurisé
-							</span>
+							<span className="whitespace-nowrap">Internet sécurisé</span>
 
 							<br />
 
@@ -78,10 +76,7 @@ export default function HeroSection() {
 								<ArrowRight size={19} />
 							</Link>
 
-							<a
-								href="#features"
-								className="btn-secondary px-8 py-4 text-base"
-							>
+							<a href="#features" className="btn-secondary px-8 py-4 text-base">
 								Découvrir ZouuSafe
 							</a>
 						</div>

@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import ChildCard from "@/components/dashboard/ChildCard";
-import Sidebar from "@/components/dashboard/Sidebar";
 
 type Child = {
 	child_id: number;
@@ -50,8 +49,6 @@ export default async function ChildrenPage() {
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
 			<section className="mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_1fr]">
-				<Sidebar />
-
 				<section className="space-y-6">
 					<header className="rounded-3xl border border-white/80 bg-white/90 p-7 shadow-xl backdrop-blur-xl">
 						<div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
@@ -65,13 +62,11 @@ export default async function ChildrenPage() {
 										Gestion des profils
 									</p>
 
-									<h1 className="mt-1 text-3xl font-black">
-										Mes enfants
-									</h1>
+									<h1 className="mt-1 text-3xl font-black">Mes enfants</h1>
 
 									<p className="mt-2 text-sm text-slate-500">
-										Gérez les profils, les protections et
-										les paramètres de vos enfants.
+										Gérez les profils, les protections et les paramètres de vos
+										enfants.
 									</p>
 								</div>
 							</div>
@@ -92,22 +87,11 @@ export default async function ChildrenPage() {
 							const used = child.screen_time_used ?? 0;
 
 							const progress =
-								limit > 0
-									? Math.min(
-											100,
-											Math.round(
-												(used / limit) * 100,
-											),
-										)
-									: 0;
+								limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
 
-							const avatar =
-								child.avatar_url ??
-								"/avatars-profil/fille-15.png";
+							const avatar = child.avatar_url ?? "/avatars-profil/fille-15.png";
 
-							const avatarSrc = avatar.startsWith("/")
-								? avatar
-								: `/${avatar}`;
+							const avatarSrc = avatar.startsWith("/") ? avatar : `/${avatar}`;
 
 							return (
 								<article
@@ -116,12 +100,12 @@ export default async function ChildrenPage() {
 								>
 									<div className="flex items-center gap-4">
 										<Image
-	src={avatarSrc}
-	alt={`Avatar de ${child.first_name}`}
-	width={96}
-	height={96}
-	className="h-24 w-24 rounded-full border-4 border-violet-100 object-cover shadow-md"
-/>
+											src={avatarSrc}
+											alt={`Avatar de ${child.first_name}`}
+											width={96}
+											height={96}
+											className="h-24 w-24 rounded-full border-4 border-violet-100 object-cover shadow-md"
+										/>
 										<div>
 											<h2 className="text-2xl font-black">
 												{child.first_name}
@@ -132,9 +116,7 @@ export default async function ChildrenPage() {
 											</span>
 
 											<p className="mt-2 text-sm font-bold capitalize text-slate-500">
-												Filtre :{" "}
-												{child.filter_level ??
-													"standard"}
+												Filtre : {child.filter_level ?? "standard"}
 											</p>
 										</div>
 									</div>
@@ -147,8 +129,7 @@ export default async function ChildrenPage() {
 												</p>
 
 												<p className="mt-1 text-xs text-slate-500">
-													{used} min utilisées sur{" "}
-													{limit} min
+													{used} min utilisées sur {limit} min
 												</p>
 											</div>
 
@@ -189,13 +170,11 @@ export default async function ChildrenPage() {
 
 					{children.length === 0 && (
 						<section className="rounded-[28px] border border-dashed border-violet-200 bg-white/80 p-10 text-center shadow-lg">
-							<h2 className="text-2xl font-black">
-								Aucun enfant ajouté
-							</h2>
+							<h2 className="text-2xl font-black">Aucun enfant ajouté</h2>
 
 							<p className="mt-3 text-slate-500">
-								Créez un premier profil pour commencer à
-								configurer sa protection.
+								Créez un premier profil pour commencer à configurer sa
+								protection.
 							</p>
 
 							<Link
@@ -212,4 +191,3 @@ export default async function ChildrenPage() {
 		</main>
 	);
 }
-

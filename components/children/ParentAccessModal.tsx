@@ -1,11 +1,6 @@
 "use client";
 
-import {
-	Brain,
-	LockKeyhole,
-	RotateCcw,
-	X,
-} from "lucide-react";
+import { Brain, LockKeyhole, RotateCcw, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -39,14 +34,11 @@ export default function ParentAccessModal({
 }: ParentAccessModalProps) {
 	const router = useRouter();
 
-	const [step, setStep] =
-		useState<ModalStep>("calculation");
+	const [step, setStep] = useState<ModalStep>("calculation");
 
-	const [calculation, setCalculation] =
-		useState(createCalculation);
+	const [calculation, setCalculation] = useState(createCalculation);
 
-	const [calculationAnswer, setCalculationAnswer] =
-		useState("");
+	const [calculationAnswer, setCalculationAnswer] = useState("");
 
 	const [pin, setPin] = useState("");
 	const [error, setError] = useState("");
@@ -87,18 +79,14 @@ export default function ParentAccessModal({
 	}
 
 	function handleCalculationChange(value: string) {
-		const numericValue = value
-			.replace(/\D/g, "")
-			.slice(0, 2);
+		const numericValue = value.replace(/\D/g, "").slice(0, 2);
 
 		setCalculationAnswer(numericValue);
 		setError("");
 	}
 
 	function handlePinChange(value: string) {
-		const numericValue = value
-			.replace(/\D/g, "")
-			.slice(0, 4);
+		const numericValue = value.replace(/\D/g, "").slice(0, 4);
 
 		setPin(numericValue);
 		setError("");
@@ -110,9 +98,7 @@ export default function ParentAccessModal({
 		setError("");
 	}
 
-	function handleCalculationSubmit(
-		event: React.FormEvent<HTMLFormElement>,
-	) {
+	function handleCalculationSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
 		if (!calculationAnswer) {
@@ -120,13 +106,8 @@ export default function ParentAccessModal({
 			return;
 		}
 
-		if (
-			Number(calculationAnswer) !==
-			calculation.result
-		) {
-			setError(
-				"Ce n’est pas la bonne réponse. Réessaie.",
-			);
+		if (Number(calculationAnswer) !== calculation.result) {
+			setError("Ce n’est pas la bonne réponse. Réessaie.");
 			return;
 		}
 
@@ -143,15 +124,11 @@ export default function ParentAccessModal({
 		setError("");
 	}
 
-	async function handlePinSubmit(
-		event: React.FormEvent<HTMLFormElement>,
-	) {
+	async function handlePinSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
 		if (pin.length !== 4) {
-			setError(
-				"Entre les 4 chiffres du code parent.",
-			);
+			setError("Entre les 4 chiffres du code parent.");
 			return;
 		}
 
@@ -159,16 +136,13 @@ export default function ParentAccessModal({
 			setIsLoading(true);
 			setError("");
 
-			const response = await fetch(
-				"/api/parent/verify-pin",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ pin }),
+			const response = await fetch("/api/parent/verify-pin", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
 				},
-			);
+				body: JSON.stringify({ pin }),
+			});
 
 			const data = (await response
 				.json()
@@ -182,10 +156,7 @@ export default function ParentAccessModal({
 					return;
 				}
 
-				setError(
-					data.message ??
-						"Impossible de vérifier le code PIN.",
-				);
+				setError(data.message ?? "Impossible de vérifier le code PIN.");
 				return;
 			}
 
@@ -197,14 +168,9 @@ export default function ParentAccessModal({
 			router.push("/parent-dashboard");
 			router.refresh();
 		} catch (error) {
-			console.error(
-				"Erreur pendant la vérification du PIN :",
-				error,
-			);
+			console.error("Erreur pendant la vérification du PIN :", error);
 
-			setError(
-				"Une erreur est survenue. Réessaie dans quelques instants.",
-			);
+			setError("Une erreur est survenue. Réessaie dans quelques instants.");
 		} finally {
 			setIsLoading(false);
 		}
@@ -247,9 +213,7 @@ export default function ParentAccessModal({
 						id="parent-access-title"
 						className="text-2xl font-extrabold text-slate-900"
 					>
-						{step === "calculation"
-							? "Vérification parent"
-							: "Espace parent"}
+						{step === "calculation" ? "Vérification parent" : "Espace parent"}
 					</h2>
 
 					<p className="mt-2 text-sm leading-6 text-slate-600">
@@ -260,18 +224,12 @@ export default function ParentAccessModal({
 				</div>
 
 				{step === "calculation" ? (
-					<form
-						onSubmit={handleCalculationSubmit}
-						className="mt-7"
-					>
+					<form onSubmit={handleCalculationSubmit} className="mt-7">
 						<div className="rounded-3xl border border-blue-100 bg-blue-50 p-6 text-center">
-							<p className="text-sm font-bold text-blue-600">
-								Combien font :
-							</p>
+							<p className="text-sm font-bold text-blue-600">Combien font :</p>
 
 							<p className="mt-3 text-4xl font-black text-slate-900">
-								{calculation.firstNumber} +{" "}
-								{calculation.secondNumber} ?
+								{calculation.firstNumber} + {calculation.secondNumber} ?
 							</p>
 						</div>
 
@@ -289,11 +247,7 @@ export default function ParentAccessModal({
 							autoComplete="off"
 							maxLength={2}
 							value={calculationAnswer}
-							onChange={(event) =>
-								handleCalculationChange(
-									event.target.value,
-								)
-							}
+							onChange={(event) => handleCalculationChange(event.target.value)}
 							className="mt-3 h-16 w-full rounded-2xl border-2 border-blue-200 bg-blue-50 px-4 text-center text-3xl font-black text-blue-700 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
 							placeholder="?"
 						/>
@@ -335,10 +289,7 @@ export default function ParentAccessModal({
 						</div>
 					</form>
 				) : (
-					<form
-						onSubmit={handlePinSubmit}
-						className="mt-7"
-					>
+					<form onSubmit={handlePinSubmit} className="mt-7">
 						<label
 							htmlFor="parent-pin"
 							className="block text-center text-sm font-bold text-slate-700"
@@ -353,11 +304,7 @@ export default function ParentAccessModal({
 							autoComplete="off"
 							maxLength={4}
 							value={pin}
-							onChange={(event) =>
-								handlePinChange(
-									event.target.value,
-								)
-							}
+							onChange={(event) => handlePinChange(event.target.value)}
 							className="mt-3 h-16 w-full rounded-2xl border-2 border-violet-200 bg-violet-50 px-4 text-center text-3xl font-black tracking-[0.7em] text-violet-700 outline-none transition focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-100"
 							placeholder="••••"
 						/>
@@ -393,15 +340,10 @@ export default function ParentAccessModal({
 
 							<button
 								type="submit"
-								disabled={
-									isLoading ||
-									pin.length !== 4
-								}
+								disabled={isLoading || pin.length !== 4}
 								className="h-12 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-500 font-bold text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
 							>
-								{isLoading
-									? "Vérification..."
-									: "Valider"}
+								{isLoading ? "Vérification..." : "Valider"}
 							</button>
 						</div>
 					</form>

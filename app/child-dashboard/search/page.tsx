@@ -39,9 +39,7 @@ async function getChild(childId: number): Promise<Child | null> {
 	return data.child;
 }
 
-export default async function SearchPage({
-	searchParams,
-}: SearchPageProps) {
+export default async function SearchPage({ searchParams }: SearchPageProps) {
 	const {
 		childId: childIdParam,
 		query: queryParam,
@@ -74,10 +72,7 @@ export default async function SearchPage({
 
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df]">
-			<SearchHeader
-				childId={child.child_id}
-				query={query}
-			/>
+			<SearchHeader childId={child.child_id} query={query} />
 
 			<section className="mx-auto w-full max-w-[1500px] px-4 pt-6 pb-12 sm:px-6 lg:px-8">
 				<div className="overflow-hidden rounded-[32px] border border-white/80 bg-white/60 px-6 py-7 shadow-[0_18px_50px_rgba(88,80,150,0.12)] backdrop-blur-xl md:px-9">
@@ -144,10 +139,7 @@ export default async function SearchPage({
 						/>
 					</section>
 
-					<SearchSidebar
-						childId={child.child_id}
-						query={query}
-					/>
+					<SearchSidebar childId={child.child_id} query={query} />
 				</div>
 			</section>
 		</main>

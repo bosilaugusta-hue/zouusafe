@@ -1,12 +1,5 @@
-import {
-	CalendarDays,
-	CheckCircle2,
-	Search,
-	UserRound,
-} from "lucide-react";
+import { CalendarDays, CheckCircle2, Search, UserRound } from "lucide-react";
 import { cookies } from "next/headers";
-
-import Sidebar from "@/components/dashboard/Sidebar";
 
 type HistoryItem = {
 	search_history_id: number;
@@ -29,20 +22,15 @@ async function getHistory(): Promise<HistoryItem[]> {
 		throw new Error("Session utilisateur introuvable.");
 	}
 
-	const response = await fetch(
-		"http://localhost:3000/api/history",
-		{
-			cache: "no-store",
-			headers: {
-				Cookie: `zouusafe_session=${sessionCookie.value}`,
-			},
+	const response = await fetch("http://localhost:3000/api/history", {
+		cache: "no-store",
+		headers: {
+			Cookie: `zouusafe_session=${sessionCookie.value}`,
 		},
-	);
+	});
 
 	if (!response.ok) {
-		throw new Error(
-			"Impossible de récupérer l’historique.",
-		);
+		throw new Error("Impossible de récupérer l’historique.");
 	}
 
 	const data = (await response.json()) as HistoryResponse;
@@ -66,8 +54,6 @@ export default async function HistoryPage() {
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
 			<section className="mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_1fr]">
-				<Sidebar />
-
 				<section className="space-y-6">
 					<header className="rounded-3xl border border-white/80 bg-white/90 p-7 shadow-xl backdrop-blur-xl">
 						<div className="flex items-center gap-4">
@@ -108,19 +94,13 @@ export default async function HistoryPage() {
 									Enfants suivis
 								</p>
 
-								<p className="mt-2 text-3xl font-black text-blue-700">
-									2
-								</p>
+								<p className="mt-2 text-3xl font-black text-blue-700">2</p>
 							</div>
 
 							<div className="rounded-2xl bg-green-50 p-4">
-								<p className="text-sm font-bold text-slate-500">
-									Protection
-								</p>
+								<p className="text-sm font-bold text-slate-500">Protection</p>
 
-								<p className="mt-2 text-lg font-black text-green-700">
-									Active
-								</p>
+								<p className="mt-2 text-lg font-black text-green-700">Active</p>
 							</div>
 						</div>
 
@@ -134,10 +114,7 @@ export default async function HistoryPage() {
 
 							{history.length === 0 ? (
 								<div className="p-10 text-center">
-									<Search
-										size={42}
-										className="mx-auto text-slate-300"
-									/>
+									<Search size={42} className="mx-auto text-slate-300" />
 
 									<p className="mt-4 font-bold text-slate-500">
 										Aucune recherche enregistrée.
@@ -161,10 +138,7 @@ export default async function HistoryPage() {
 											</div>
 
 											<div className="flex items-center gap-2">
-												<UserRound
-													size={17}
-													className="text-violet-500"
-												/>
+												<UserRound size={17} className="text-violet-500" />
 
 												<span className="font-bold text-slate-700">
 													{item.first_name}
@@ -172,10 +146,7 @@ export default async function HistoryPage() {
 											</div>
 
 											<div className="flex items-center gap-2 text-sm text-slate-500">
-												<CalendarDays
-													size={17}
-													className="text-slate-400"
-												/>
+												<CalendarDays size={17} className="text-slate-400" />
 
 												{formatDate(item.created_at)}
 											</div>

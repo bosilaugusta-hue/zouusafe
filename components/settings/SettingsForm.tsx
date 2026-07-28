@@ -1,11 +1,6 @@
 "use client";
 
-import {
-	Clock3,
-	Save,
-	SearchCheck,
-	ShieldCheck,
-} from "lucide-react";
+import { Clock3, Save, SearchCheck, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 export type Setting = {
@@ -25,27 +20,22 @@ type ApiResponse = {
 	message?: string;
 };
 
-export default function SettingsForm({
-	initialSettings,
-}: SettingsFormProps) {
-	const [settings, setSettings] =
-		useState<Setting[]>(initialSettings);
+export default function SettingsForm({ initialSettings }: SettingsFormProps) {
+	const [settings, setSettings] = useState<Setting[]>(initialSettings);
 
-	const [loadingChildId, setLoadingChildId] =
-		useState<number | null>(null);
+	const [loadingChildId, setLoadingChildId] = useState<number | null>(null);
 
-	const [successMessages, setSuccessMessages] =
-		useState<Record<number, string>>({});
+	const [successMessages, setSuccessMessages] = useState<
+		Record<number, string>
+	>({});
 
-	const [errorMessages, setErrorMessages] =
-		useState<Record<number, string>>({});
+	const [errorMessages, setErrorMessages] = useState<Record<number, string>>(
+		{},
+	);
 
 	function updateSetting(
 		childId: number,
-		field:
-			| "filter_level"
-			| "safe_search"
-			| "screen_time_limit",
+		field: "filter_level" | "safe_search" | "screen_time_limit",
 		value: string | boolean | number,
 	) {
 		setSettings((currentSettings) =>
@@ -91,23 +81,19 @@ export default function SettingsForm({
 				},
 				body: JSON.stringify({
 					childId: setting.child_id,
-					screenTimeLimit:
-						setting.screen_time_limit,
+					screenTimeLimit: setting.screen_time_limit,
 					filterLevel: setting.filter_level,
 					safeSearch: setting.safe_search,
 				}),
 			});
 
-			const data = (await response
-				.json()
-				.catch(() => ({}))) as ApiResponse;
+			const data = (await response.json().catch(() => ({}))) as ApiResponse;
 
 			if (!response.ok) {
 				setErrorMessages((current) => ({
 					...current,
 					[setting.child_id]:
-						data.message ??
-						"Impossible d’enregistrer les paramètres.",
+						data.message ?? "Impossible d’enregistrer les paramètres.",
 				}));
 
 				return;
@@ -116,14 +102,10 @@ export default function SettingsForm({
 			setSuccessMessages((current) => ({
 				...current,
 				[setting.child_id]:
-					data.message ??
-					"Les paramètres ont bien été enregistrés.",
+					data.message ?? "Les paramètres ont bien été enregistrés.",
 			}));
 		} catch (error) {
-			console.error(
-				"Erreur pendant l’enregistrement :",
-				error,
-			);
+			console.error("Erreur pendant l’enregistrement :", error);
 
 			setErrorMessages((current) => ({
 				...current,
@@ -152,9 +134,7 @@ export default function SettingsForm({
 								Profil enfant
 							</p>
 
-							<h2 className="mt-1 text-2xl font-black">
-								{setting.first_name}
-							</h2>
+							<h2 className="mt-1 text-2xl font-black">{setting.first_name}</h2>
 
 							<p className="mt-1 text-sm text-slate-500">
 								Personnalisez les règles de protection.
@@ -174,9 +154,7 @@ export default function SettingsForm({
 								</span>
 
 								<div>
-									<h3 className="font-black">
-										Niveau de filtrage
-									</h3>
+									<h3 className="font-black">Niveau de filtrage</h3>
 
 									<p className="mt-1 text-sm text-slate-500">
 										Protection des contenus
@@ -187,9 +165,7 @@ export default function SettingsForm({
 							<div className="mt-5 space-y-3">
 								<label className="flex cursor-pointer items-center justify-between rounded-2xl bg-white px-4 py-3">
 									<div>
-										<p className="font-black">
-											Standard
-										</p>
+										<p className="font-black">Standard</p>
 
 										<p className="text-xs text-slate-500">
 											Protection équilibrée
@@ -199,10 +175,7 @@ export default function SettingsForm({
 									<input
 										type="radio"
 										name={`filter-${setting.child_id}`}
-										checked={
-											setting.filter_level ===
-											"standard"
-										}
+										checked={setting.filter_level === "standard"}
 										onChange={() =>
 											updateSetting(
 												setting.child_id,
@@ -215,28 +188,17 @@ export default function SettingsForm({
 
 								<label className="flex cursor-pointer items-center justify-between rounded-2xl bg-white px-4 py-3">
 									<div>
-										<p className="font-black">
-											Strict
-										</p>
+										<p className="font-black">Strict</p>
 
-										<p className="text-xs text-slate-500">
-											Filtrage renforcé
-										</p>
+										<p className="text-xs text-slate-500">Filtrage renforcé</p>
 									</div>
 
 									<input
 										type="radio"
 										name={`filter-${setting.child_id}`}
-										checked={
-											setting.filter_level ===
-											"strict"
-										}
+										checked={setting.filter_level === "strict"}
 										onChange={() =>
-											updateSetting(
-												setting.child_id,
-												"filter_level",
-												"strict",
-											)
+											updateSetting(setting.child_id, "filter_level", "strict")
 										}
 									/>
 								</label>
@@ -250,9 +212,7 @@ export default function SettingsForm({
 								</span>
 
 								<div>
-									<h3 className="font-black">
-										Safe Search
-									</h3>
+									<h3 className="font-black">Safe Search</h3>
 
 									<p className="mt-1 text-sm text-slate-500">
 										Recherche sécurisée
@@ -263,9 +223,7 @@ export default function SettingsForm({
 							<div className="mt-5 rounded-2xl bg-white px-4 py-4">
 								<div className="flex items-center justify-between gap-4">
 									<div>
-										<p className="font-black">
-											Activer Safe Search
-										</p>
+										<p className="font-black">Activer Safe Search</p>
 
 										<p className="mt-1 text-xs text-slate-500">
 											Filtre les résultats sensibles
@@ -275,9 +233,7 @@ export default function SettingsForm({
 									<button
 										type="button"
 										role="switch"
-										aria-checked={
-											setting.safe_search
-										}
+										aria-checked={setting.safe_search}
 										aria-label={`Safe Search pour ${setting.first_name}`}
 										onClick={() =>
 											updateSetting(
@@ -287,16 +243,12 @@ export default function SettingsForm({
 											)
 										}
 										className={`relative h-7 w-12 shrink-0 rounded-full transition ${
-											setting.safe_search
-												? "bg-violet-600"
-												: "bg-slate-300"
+											setting.safe_search ? "bg-violet-600" : "bg-slate-300"
 										}`}
 									>
 										<span
 											className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-all ${
-												setting.safe_search
-													? "left-6"
-													: "left-1"
+												setting.safe_search ? "left-6" : "left-1"
 											}`}
 										/>
 									</button>
@@ -311,9 +263,7 @@ export default function SettingsForm({
 								</span>
 
 								<div>
-									<h3 className="font-black">
-										Limite quotidienne
-									</h3>
+									<h3 className="font-black">Limite quotidienne</h3>
 
 									<p className="mt-1 text-sm text-slate-500">
 										Temps d’écran autorisé
@@ -335,24 +285,19 @@ export default function SettingsForm({
 									min={15}
 									max={600}
 									step={15}
-									value={
-										setting.screen_time_limit
-									}
+									value={setting.screen_time_limit}
 									onChange={(event) =>
 										updateSetting(
 											setting.child_id,
 											"screen_time_limit",
-											Number(
-												event.target.value,
-											),
+											Number(event.target.value),
 										)
 									}
 									className="mt-3 min-h-12 w-full rounded-xl border border-slate-200 px-4 font-black outline-none focus:border-violet-400 focus:ring-4 focus:ring-violet-100"
 								/>
 
 								<p className="mt-2 text-xs text-slate-500">
-									Temps utilisé aujourd’hui :{" "}
-									{setting.screen_time_used} min
+									Temps utilisé aujourd’hui : {setting.screen_time_used} min
 								</p>
 							</div>
 						</section>
@@ -372,20 +317,15 @@ export default function SettingsForm({
 							role="status"
 							className="mt-5 rounded-2xl bg-green-50 px-4 py-3 text-sm font-bold text-green-700"
 						>
-							✓{" "}
-							{successMessages[setting.child_id]}
+							✓ {successMessages[setting.child_id]}
 						</p>
 					)}
 
 					<div className="mt-6 flex justify-end">
 						<button
 							type="button"
-							disabled={
-								loadingChildId === setting.child_id
-							}
-							onClick={() =>
-								saveSetting(setting)
-							}
+							disabled={loadingChildId === setting.child_id}
+							onClick={() => saveSetting(setting)}
 							className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-500 px-6 font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
 						>
 							<Save size={19} />

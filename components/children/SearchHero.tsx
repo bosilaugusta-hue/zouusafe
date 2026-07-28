@@ -43,10 +43,7 @@ export default function SearchHero({
 				</p>
 
 				<div className="mt-6 w-full">
-					<SecureSearchBar
-						childId={childId}
-						className="w-full"
-					/>
+					<SecureSearchBar childId={childId} className="w-full" />
 				</div>
 
 				<div className="mt-5 flex flex-wrap items-center justify-center gap-3">

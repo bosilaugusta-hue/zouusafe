@@ -29,9 +29,7 @@ export default function RegisterForm() {
 			.trim()
 			.toLowerCase();
 		const password = String(formData.get("password") ?? "");
-		const confirmPassword = String(
-			formData.get("confirmPassword") ?? "",
-		);
+		const confirmPassword = String(formData.get("confirmPassword") ?? "");
 
 		if (password !== confirmPassword) {
 			setError("Les deux mots de passe ne correspondent pas.");
@@ -57,10 +55,7 @@ export default function RegisterForm() {
 			const result = (await response.json()) as RegisterResponse;
 
 			if (!response.ok) {
-				setError(
-					result.message ??
-						"Impossible de créer votre compte.",
-				);
+				setError(result.message ?? "Impossible de créer votre compte.");
 				return;
 			}
 
@@ -69,9 +64,7 @@ export default function RegisterForm() {
 		} catch (error) {
 			console.error("Erreur lors de l’inscription :", error);
 
-			setError(
-				"Impossible de contacter le serveur. Veuillez réessayer.",
-			);
+			setError("Impossible de contacter le serveur. Veuillez réessayer.");
 		} finally {
 			setIsLoading(false);
 		}
@@ -158,9 +151,7 @@ export default function RegisterForm() {
 				disabled={isLoading}
 				className="w-full rounded-2xl bg-gradient-to-r from-violet-500 to-violet-600 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
 			>
-				{isLoading
-					? "Création du compte..."
-					: "Créer mon compte"}
+				{isLoading ? "Création du compte..." : "Créer mon compte"}
 			</button>
 		</form>
 	);
@@ -192,9 +183,7 @@ function FormField({
 			</span>
 
 			<span className="flex min-h-[52px] items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 transition focus-within:border-violet-400 focus-within:ring-4 focus-within:ring-violet-100">
-				<span className="shrink-0 text-violet-500">
-					{icon}
-				</span>
+				<span className="shrink-0 text-violet-500">{icon}</span>
 
 				<input
 					type={type}

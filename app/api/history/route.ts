@@ -40,10 +40,7 @@ export async function GET() {
 			);
 		}
 
-		const { payload } = await jwtVerify(
-			token,
-			getSecretKey(),
-		);
+		const { payload } = await jwtVerify(token, getSecretKey());
 
 		const { parentId } = payload as SessionPayload;
 
@@ -73,8 +70,7 @@ export async function GET() {
 
 		return NextResponse.json(
 			{
-				message:
-					"Impossible de récupérer l’historique.",
+				message: "Impossible de récupérer l’historique.",
 			},
 			{ status: 500 },
 		);

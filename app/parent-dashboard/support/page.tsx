@@ -35,13 +35,10 @@ export default function SupportPage() {
 									Nous sommes là pour vous
 								</p>
 
-								<h1 className="mt-1 text-3xl font-black">
-									Aide & Support
-								</h1>
+								<h1 className="mt-1 text-3xl font-black">Aide & Support</h1>
 
 								<p className="mt-2 text-sm text-slate-500">
-									Trouvez rapidement une réponse ou contactez
-									l’équipe ZouuSafe.
+									Trouvez rapidement une réponse ou contactez l’équipe ZouuSafe.
 								</p>
 							</div>
 						</div>
@@ -60,8 +57,7 @@ export default function SupportPage() {
 									</h2>
 
 									<p className="mt-2 text-sm leading-6 text-slate-500">
-										Retrouvez les réponses aux questions les
-										plus courantes.
+										Retrouvez les réponses aux questions les plus courantes.
 									</p>
 								</div>
 
@@ -77,10 +73,7 @@ export default function SupportPage() {
 										className="flex items-center gap-3 rounded-2xl border border-blue-50 bg-blue-50/50 px-4 py-3 text-sm font-bold text-slate-700 transition hover:-translate-y-0.5 hover:bg-blue-50 hover:shadow-sm"
 									>
 										<span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-blue-500 shadow-sm">
-											<CircleHelp
-												size={16}
-												aria-hidden="true"
-											/>
+											<CircleHelp size={16} aria-hidden="true" />
 										</span>
 
 										{item}
@@ -101,8 +94,8 @@ export default function SupportPage() {
 									</h2>
 
 									<p className="mt-2 text-sm leading-6 text-slate-500">
-										Expliquez-nous votre problème et notre
-										équipe vous répondra rapidement.
+										Expliquez-nous votre problème et notre équipe vous répondra
+										rapidement.
 									</p>
 								</div>
 
@@ -149,8 +142,8 @@ export default function SupportPage() {
 									</h2>
 
 									<p className="mt-2 text-sm leading-6 text-slate-500">
-										Découvrez comment configurer et utiliser
-										toutes les fonctions de ZouuSafe.
+										Découvrez comment configurer et utiliser toutes les
+										fonctions de ZouuSafe.
 									</p>
 								</div>
 
@@ -191,8 +184,8 @@ export default function SupportPage() {
 									</h2>
 
 									<p className="mt-2 text-sm leading-6 text-slate-500">
-										Une recherche semble mal filtrée ou un
-										contenu ne vous paraît pas adapté ?
+										Une recherche semble mal filtrée ou un contenu ne vous
+										paraît pas adapté ?
 									</p>
 								</div>
 
@@ -208,8 +201,8 @@ export default function SupportPage() {
 									</span>
 
 									<p className="text-sm font-semibold leading-6 text-slate-600">
-										Votre signalement nous aide à améliorer
-										la sécurité des enfants.
+										Votre signalement nous aide à améliorer la sécurité des
+										enfants.
 									</p>
 								</div>
 

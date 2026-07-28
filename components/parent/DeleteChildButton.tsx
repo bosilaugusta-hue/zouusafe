@@ -33,18 +33,14 @@ export default function DeleteChildButton({
 			};
 
 			if (!response.ok) {
-				throw new Error(
-					data.message || "Impossible de supprimer ce profil.",
-				);
+				throw new Error(data.message || "Impossible de supprimer ce profil.");
 			}
 
 			setIsOpen(false);
 			router.refresh();
 		} catch (error) {
 			setError(
-				error instanceof Error
-					? error.message
-					: "Une erreur est survenue.",
+				error instanceof Error ? error.message : "Une erreur est survenue.",
 			);
 		} finally {
 			setIsDeleting(false);
@@ -92,8 +88,8 @@ export default function DeleteChildButton({
 						</h2>
 
 						<p className="mt-3 leading-7 text-slate-600">
-							Le profil de {childName} sera supprimé définitivement avec
-							ses paramètres associés.
+							Le profil de {childName} sera supprimé définitivement avec ses
+							paramètres associés.
 						</p>
 
 						<p className="mt-2 text-sm font-semibold text-red-600">
@@ -127,9 +123,7 @@ export default function DeleteChildButton({
 							>
 								<Trash2 size={18} />
 
-								{isDeleting
-									? "Suppression..."
-									: "Supprimer"}
+								{isDeleting ? "Suppression..." : "Supprimer"}
 							</button>
 						</div>
 					</section>

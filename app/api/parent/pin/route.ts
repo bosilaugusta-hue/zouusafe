@@ -17,9 +17,7 @@ function getSecretKey() {
 	const secret = process.env.AUTH_SECRET;
 
 	if (!secret) {
-		throw new Error(
-			"La variable AUTH_SECRET est introuvable.",
-		);
+		throw new Error("La variable AUTH_SECRET est introuvable.");
 	}
 
 	return new TextEncoder().encode(secret);
@@ -28,23 +26,18 @@ function getSecretKey() {
 export async function POST(request: Request) {
 	try {
 		const cookieStore = await cookies();
-		const sessionCookie =
-			cookieStore.get("zouusafe_session");
+		const sessionCookie = cookieStore.get("zouusafe_session");
 
 		if (!sessionCookie) {
 			return NextResponse.json(
 				{
-					message:
-						"Vous devez être connecté pour créer un code PIN.",
+					message: "Vous devez être connecté pour créer un code PIN.",
 				},
 				{ status: 401 },
 			);
 		}
 
-		const { payload } = await jwtVerify(
-			sessionCookie.value,
-			getSecretKey(),
-		);
+		const { payload } = await jwtVerify(sessionCookie.value, getSecretKey());
 
 		const session = payload as unknown as SessionPayload;
 
@@ -63,8 +56,7 @@ export async function POST(request: Request) {
 		if (!pin || !/^\d{4}$/.test(pin)) {
 			return NextResponse.json(
 				{
-					message:
-						"Le code PIN doit contenir exactement 4 chiffres.",
+					message: "Le code PIN doit contenir exactement 4 chiffres.",
 				},
 				{ status: 400 },
 			);
@@ -83,21 +75,16 @@ export async function POST(request: Request) {
 
 		return NextResponse.json(
 			{
-				message:
-					"Le code PIN a bien été enregistré.",
+				message: "Le code PIN a bien été enregistré.",
 			},
 			{ status: 200 },
 		);
 	} catch (error) {
-		console.error(
-			"Erreur pendant l’enregistrement du PIN :",
-			error,
-		);
+		console.error("Erreur pendant l’enregistrement du PIN :", error);
 
 		return NextResponse.json(
 			{
-				message:
-					"Impossible d’enregistrer le code PIN.",
+				message: "Impossible d’enregistrer le code PIN.",
 			},
 			{ status: 500 },
 		);

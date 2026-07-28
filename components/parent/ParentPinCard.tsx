@@ -26,9 +26,7 @@ export default function ParentPinCard() {
 		setError("");
 	}
 
-	async function handleSubmit(
-		event: React.FormEvent<HTMLFormElement>,
-	) {
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
 		if (pin.length !== 4) {
@@ -54,34 +52,21 @@ export default function ParentPinCard() {
 				body: JSON.stringify({ pin }),
 			});
 
-			const data = (await response
-	.json()
-	.catch(() => ({}))) as PinResponse;
+			const data = (await response.json().catch(() => ({}))) as PinResponse;
 
 			if (!response.ok) {
-				setError(
-					data.message ??
-						"Impossible d’enregistrer le code PIN.",
-				);
+				setError(data.message ?? "Impossible d’enregistrer le code PIN.");
 				return;
 			}
 
-			setMessage(
-				data.message ??
-					"Le code PIN a bien été enregistré.",
-			);
+			setMessage(data.message ?? "Le code PIN a bien été enregistré.");
 
 			setPin("");
 			setConfirmPin("");
 		} catch (error) {
-			console.error(
-				"Erreur pendant l’enregistrement du PIN :",
-				error,
-			);
+			console.error("Erreur pendant l’enregistrement du PIN :", error);
 
-			setError(
-				"Une erreur est survenue. Réessaie dans quelques instants.",
-			);
+			setError("Une erreur est survenue. Réessaie dans quelques instants.");
 		} finally {
 			setIsLoading(false);
 		}
@@ -95,21 +80,16 @@ export default function ParentPinCard() {
 				</div>
 
 				<div>
-					<h2 className="text-xl font-black text-slate-900">
-						Code PIN parent
-					</h2>
+					<h2 className="text-xl font-black text-slate-900">Code PIN parent</h2>
 
 					<p className="mt-1 text-sm leading-6 text-slate-600">
-						Ce code protège le retour vers le tableau de bord
-						parent depuis l’espace enfant.
+						Ce code protège le retour vers le tableau de bord parent depuis
+						l’espace enfant.
 					</p>
 				</div>
 			</div>
 
-			<form
-				onSubmit={handleSubmit}
-				className="mt-6 space-y-5"
-			>
+			<form onSubmit={handleSubmit} className="mt-6 space-y-5">
 				<div>
 					<label
 						htmlFor="parent-pin"
@@ -125,9 +105,7 @@ export default function ParentPinCard() {
 						autoComplete="new-password"
 						maxLength={4}
 						value={pin}
-						onChange={(event) =>
-							handlePinChange(event.target.value)
-						}
+						onChange={(event) => handlePinChange(event.target.value)}
 						placeholder="••••"
 						className="h-14 w-full rounded-2xl border border-violet-200 bg-violet-50 px-4 text-center text-2xl font-black tracking-[0.7em] text-violet-700 outline-none transition focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-100"
 					/>
@@ -148,11 +126,7 @@ export default function ParentPinCard() {
 						autoComplete="new-password"
 						maxLength={4}
 						value={confirmPin}
-						onChange={(event) =>
-							handleConfirmPinChange(
-								event.target.value,
-							)
-						}
+						onChange={(event) => handleConfirmPinChange(event.target.value)}
 						placeholder="••••"
 						className="h-14 w-full rounded-2xl border border-violet-200 bg-violet-50 px-4 text-center text-2xl font-black tracking-[0.7em] text-violet-700 outline-none transition focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-100"
 					/>
@@ -179,16 +153,10 @@ export default function ParentPinCard() {
 
 				<button
 					type="submit"
-					disabled={
-						isLoading ||
-						pin.length !== 4 ||
-						confirmPin.length !== 4
-					}
+					disabled={isLoading || pin.length !== 4 || confirmPin.length !== 4}
 					className="h-13 w-full rounded-2xl bg-gradient-to-r from-violet-600 to-purple-500 px-5 py-3 font-bold text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
 				>
-					{isLoading
-						? "Enregistrement..."
-						: "Enregistrer le code PIN"}
+					{isLoading ? "Enregistrement..." : "Enregistrer le code PIN"}
 				</button>
 			</form>
 		</section>

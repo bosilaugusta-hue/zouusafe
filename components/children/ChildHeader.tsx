@@ -1,11 +1,6 @@
 "use client";
 
-import {
-	History,
-	LockKeyhole,
-	Settings,
-	Star,
-} from "lucide-react";
+import { History, LockKeyhole, Settings, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -23,8 +18,7 @@ export default function ChildHeader({
 	childName,
 	avatarUrl,
 }: ChildHeaderProps) {
-	const [isParentModalOpen, setIsParentModalOpen] =
-		useState(false);
+	const [isParentModalOpen, setIsParentModalOpen] = useState(false);
 
 	return (
 		<>
@@ -52,11 +46,7 @@ export default function ChildHeader({
 						href={`/child-dashboard/favorites?childId=${childId}`}
 						className="hidden items-center gap-2 rounded-full border border-white/80 bg-white/95 px-5 py-3 text-sm font-bold text-slate-800 shadow-lg backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-xl sm:flex"
 					>
-						<Star
-							size={18}
-							aria-hidden="true"
-							className="text-yellow-500"
-						/>
+						<Star size={18} aria-hidden="true" className="text-yellow-500" />
 						Favoris
 					</Link>
 
@@ -64,11 +54,7 @@ export default function ChildHeader({
 						href={`/child-dashboard/history?childId=${childId}`}
 						className="hidden items-center gap-2 rounded-full border border-white/80 bg-white/95 px-5 py-3 text-sm font-bold text-slate-800 shadow-lg backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-xl md:flex"
 					>
-						<History
-							size={18}
-							aria-hidden="true"
-							className="text-violet-600"
-						/>
+						<History size={18} aria-hidden="true" className="text-violet-600" />
 						Historique
 					</Link>
 
@@ -99,18 +85,11 @@ export default function ChildHeader({
 
 						<button
 							type="button"
-							onClick={() =>
-								setIsParentModalOpen(true)
-							}
+							onClick={() => setIsParentModalOpen(true)}
 							className="flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-indigo-500 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:from-violet-700 hover:to-indigo-600 hover:shadow-md"
 						>
-							<LockKeyhole
-								size={16}
-								aria-hidden="true"
-							/>
-							<span className="hidden sm:inline">
-								Parent
-							</span>
+							<LockKeyhole size={16} aria-hidden="true" />
+							<span className="hidden sm:inline">Parent</span>
 						</button>
 					</div>
 				</nav>
@@ -118,9 +97,7 @@ export default function ChildHeader({
 
 			<ParentAccessModal
 				isOpen={isParentModalOpen}
-				onClose={() =>
-					setIsParentModalOpen(false)
-				}
+				onClose={() => setIsParentModalOpen(false)}
 			/>
 		</>
 	);

@@ -12,14 +12,10 @@ type SearchCategoriesProps = {
 
 const CATEGORIES_PER_PAGE = 8;
 
-export default function SearchCategories({
-	childId,
-}: SearchCategoriesProps) {
+export default function SearchCategories({ childId }: SearchCategoriesProps) {
 	const [currentPage, setCurrentPage] = useState(0);
 
-	const totalPages = Math.ceil(
-		searchCategories.length / CATEGORIES_PER_PAGE,
-	);
+	const totalPages = Math.ceil(searchCategories.length / CATEGORIES_PER_PAGE);
 
 	const paginationPages = Array.from(
 		{ length: totalPages },
@@ -29,8 +25,7 @@ export default function SearchCategories({
 		}),
 	);
 
-	const firstCategoryIndex =
-		currentPage * CATEGORIES_PER_PAGE;
+	const firstCategoryIndex = currentPage * CATEGORIES_PER_PAGE;
 
 	const visibleCategories = searchCategories.slice(
 		firstCategoryIndex,
@@ -78,10 +73,7 @@ export default function SearchCategories({
 							aria-label="Afficher les catégories précédentes"
 							className="absolute left-0 top-1/2 z-20 flex h-12 w-12 -translate-x-2 -translate-y-1/2 items-center justify-center rounded-full border border-violet-100 bg-white text-violet-600 shadow-lg transition hover:scale-105 hover:bg-violet-50 sm:-translate-x-5"
 						>
-							<ChevronLeft
-								size={28}
-								aria-hidden="true"
-							/>
+							<ChevronLeft size={28} aria-hidden="true" />
 						</button>
 					)}
 
@@ -102,10 +94,7 @@ export default function SearchCategories({
 							aria-label="Afficher les catégories suivantes"
 							className="absolute right-0 top-1/2 z-20 flex h-12 w-12 translate-x-2 -translate-y-1/2 items-center justify-center rounded-full border border-violet-100 bg-white text-violet-600 shadow-lg transition hover:scale-105 hover:bg-violet-50 sm:translate-x-5"
 						>
-							<ChevronRight
-								size={28}
-								aria-hidden="true"
-							/>
+							<ChevronRight size={28} aria-hidden="true" />
 						</button>
 					)}
 				</div>
@@ -117,16 +106,10 @@ export default function SearchCategories({
 								<button
 									key={page.id}
 									type="button"
-									onClick={() =>
-										setCurrentPage(page.pageNumber)
-									}
-									aria-label={`Afficher la page ${
-										page.pageNumber + 1
-									}`}
+									onClick={() => setCurrentPage(page.pageNumber)}
+									aria-label={`Afficher la page ${page.pageNumber + 1}`}
 									aria-current={
-										page.pageNumber === currentPage
-											? "page"
-											: undefined
+										page.pageNumber === currentPage ? "page" : undefined
 									}
 									className={`h-2.5 rounded-full transition-all ${
 										page.pageNumber === currentPage

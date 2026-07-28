@@ -1,8 +1,5 @@
 import { jwtVerify } from "jose";
-import type {
-	ResultSetHeader,
-	RowDataPacket,
-} from "mysql2";
+import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -46,10 +43,7 @@ async function getParentId() {
 		return null;
 	}
 
-	const { payload } = await jwtVerify(
-		token,
-		getSecretKey(),
-	);
+	const { payload } = await jwtVerify(token, getSecretKey());
 
 	const session = payload as unknown as SessionPayload;
 
@@ -61,10 +55,7 @@ export async function GET() {
 		const parentId = await getParentId();
 
 		if (!parentId) {
-			return NextResponse.json(
-				{ message: "Non connecté." },
-				{ status: 401 },
-			);
+			return NextResponse.json({ message: "Non connecté." }, { status: 401 });
 		}
 
 		const [settings] = await db.query<SettingRow[]>(
@@ -92,15 +83,9 @@ export async function GET() {
 			})),
 		});
 	} catch (error) {
-		console.error(
-			"Erreur pendant la récupération des paramètres :",
-			error,
-		);
+		console.error("Erreur pendant la récupération des paramètres :", error);
 
-		return NextResponse.json(
-			{ message: "Erreur serveur." },
-			{ status: 500 },
-		);
+		return NextResponse.json({ message: "Erreur serveur." }, { status: 500 });
 	}
 }
 
@@ -109,21 +94,12 @@ export async function PUT(request: Request) {
 		const parentId = await getParentId();
 
 		if (!parentId) {
-			return NextResponse.json(
-				{ message: "Non connecté." },
-				{ status: 401 },
-			);
+			return NextResponse.json({ message: "Non connecté." }, { status: 401 });
 		}
 
-		const body =
-			(await request.json()) as UpdateSettingsBody;
+		const body = (await request.json()) as UpdateSettingsBody;
 
-		const {
-			childId,
-			screenTimeLimit,
-			filterLevel,
-			safeSearch,
-		} = body;
+		const { childId, screenTimeLimit, filterLevel, safeSearch } = body;
 
 		if (
 			!childId ||
@@ -133,34 +109,25 @@ export async function PUT(request: Request) {
 		) {
 			return NextResponse.json(
 				{
-					message:
-						"Les paramètres envoyés sont incomplets.",
+					message: "Les paramètres envoyés sont incomplets.",
 				},
 				{ status: 400 },
 			);
 		}
 
-		if (
-			filterLevel !== "standard" &&
-			filterLevel !== "strict"
-		) {
+		if (filterLevel !== "standard" && filterLevel !== "strict") {
 			return NextResponse.json(
 				{
-					message:
-						"Le niveau de filtrage est invalide.",
+					message: "Le niveau de filtrage est invalide.",
 				},
 				{ status: 400 },
 			);
 		}
 
-		if (
-			screenTimeLimit < 15 ||
-			screenTimeLimit > 600
-		) {
+		if (screenTimeLimit < 15 || screenTimeLimit > 600) {
 			return NextResponse.json(
 				{
-					message:
-						"La limite doit être comprise entre 15 et 600 minutes.",
+					message: "La limite doit être comprise entre 15 et 600 minutes.",
 				},
 				{ status: 400 },
 			);
@@ -178,39 +145,27 @@ export async function PUT(request: Request) {
 				WHERE safety_setting.child_id = ?
 					AND child.parent_id = ?
 			`,
-			[
-				screenTimeLimit,
-				filterLevel,
-				safeSearch ? 1 : 0,
-				childId,
-				parentId,
-			],
+			[screenTimeLimit, filterLevel, safeSearch ? 1 : 0, childId, parentId],
 		);
 
 		if (result.affectedRows === 0) {
 			return NextResponse.json(
 				{
-					message:
-						"Profil enfant introuvable ou paramètres inchangés.",
+					message: "Profil enfant introuvable ou paramètres inchangés.",
 				},
 				{ status: 404 },
 			);
 		}
 
 		return NextResponse.json({
-			message:
-				"Les paramètres ont bien été enregistrés.",
+			message: "Les paramètres ont bien été enregistrés.",
 		});
 	} catch (error) {
-		console.error(
-			"Erreur pendant la mise à jour des paramètres :",
-			error,
-		);
+		console.error("Erreur pendant la mise à jour des paramètres :", error);
 
 		return NextResponse.json(
 			{
-				message:
-					"Impossible d’enregistrer les paramètres.",
+				message: "Impossible d’enregistrer les paramètres.",
 			},
 			{ status: 500 },
 		);

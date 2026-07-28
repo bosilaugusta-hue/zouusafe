@@ -1,5 +1,5 @@
-import bcrypt from "bcryptjs";
 import { createHash } from "node:crypto";
+import bcrypt from "bcryptjs";
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { NextResponse } from "next/server";
 
@@ -42,8 +42,7 @@ export async function POST(request: Request) {
 		if (password.length < 12) {
 			return NextResponse.json(
 				{
-					message:
-						"Le mot de passe doit contenir au moins 12 caractères.",
+					message: "Le mot de passe doit contenir au moins 12 caractères.",
 				},
 				{
 					status: 400,
@@ -62,9 +61,7 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const tokenHash = createHash("sha256")
-			.update(token)
-			.digest("hex");
+		const tokenHash = createHash("sha256").update(token).digest("hex");
 
 		await connection.beginTransaction();
 
@@ -90,8 +87,7 @@ export async function POST(request: Request) {
 
 			return NextResponse.json(
 				{
-					message:
-						"Ce lien de réinitialisation est invalide.",
+					message: "Ce lien de réinitialisation est invalide.",
 				},
 				{
 					status: 400,
@@ -104,8 +100,7 @@ export async function POST(request: Request) {
 
 			return NextResponse.json(
 				{
-					message:
-						"Ce lien de réinitialisation a déjà été utilisé.",
+					message: "Ce lien de réinitialisation a déjà été utilisé.",
 				},
 				{
 					status: 400,
@@ -131,20 +126,17 @@ export async function POST(request: Request) {
 
 		const hashedPassword = await bcrypt.hash(password, 12);
 
-		const [updateParentResult] =
-			await connection.execute<ResultSetHeader>(
-				`
+		const [updateParentResult] = await connection.execute<ResultSetHeader>(
+			`
 					UPDATE parent
 					SET password = ?
 					WHERE parent_id = ?
 				`,
-				[hashedPassword, resetToken.parent_id],
-			);
+			[hashedPassword, resetToken.parent_id],
+		);
 
 		if (updateParentResult.affectedRows !== 1) {
-			throw new Error(
-				"Le compte parent associé au jeton est introuvable.",
-			);
+			throw new Error("Le compte parent associé au jeton est introuvable.");
 		}
 
 		await connection.execute<ResultSetHeader>(
@@ -164,31 +156,23 @@ export async function POST(request: Request) {
 					AND used_at IS NULL
 					AND password_reset_token_id <> ?
 			`,
-			[
-				resetToken.parent_id,
-				resetToken.password_reset_token_id,
-			],
+			[resetToken.parent_id, resetToken.password_reset_token_id],
 		);
 
 		await connection.commit();
 
 		return NextResponse.json({
 			success: true,
-			message:
-				"Votre mot de passe a été modifié avec succès.",
+			message: "Votre mot de passe a été modifié avec succès.",
 		});
 	} catch (error) {
 		await connection.rollback();
 
-		console.error(
-			"Erreur de réinitialisation du mot de passe :",
-			error,
-		);
+		console.error("Erreur de réinitialisation du mot de passe :", error);
 
 		return NextResponse.json(
 			{
-				message:
-					"Une erreur est survenue pendant la réinitialisation.",
+				message: "Une erreur est survenue pendant la réinitialisation.",
 			},
 			{
 				status: 500,

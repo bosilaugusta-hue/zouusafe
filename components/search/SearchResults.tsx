@@ -12,13 +12,7 @@ type SearchResult = {
 	description: string;
 	source: string;
 	image: string | null;
-	category:
-		| "all"
-		| "images"
-		| "videos"
-		| "stories"
-		| "games"
-		| "coloring";
+	category: "all" | "images" | "videos" | "stories" | "games" | "coloring";
 };
 
 type SearchApiResponse = {
@@ -99,8 +93,7 @@ export default function SearchResults({
 
 				if (!response.ok) {
 					throw new Error(
-						data.message ||
-							"Impossible de charger les résultats.",
+						data.message || "Impossible de charger les résultats.",
 					);
 				}
 
@@ -108,10 +101,7 @@ export default function SearchResults({
 				setResults(data.results ?? []);
 				setMessage(data.message ?? "");
 			} catch (caughtError) {
-				if (
-					caughtError instanceof Error &&
-					caughtError.name === "AbortError"
-				) {
+				if (caughtError instanceof Error && caughtError.name === "AbortError") {
 					return;
 				}
 
@@ -172,8 +162,7 @@ export default function SearchResults({
 				</h2>
 
 				<p className="mx-auto mt-3 max-w-lg leading-7 text-slate-600">
-					{message ||
-						"Cette recherche n’est pas adaptée aux enfants."}
+					{message || "Cette recherche n’est pas adaptée aux enfants."}
 				</p>
 			</div>
 		);
@@ -183,11 +172,7 @@ export default function SearchResults({
 		return (
 			<div className="rounded-[28px] border border-white/80 bg-white/80 p-10 text-center shadow-sm">
 				<div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-violet-100">
-					<Search
-						size={36}
-						aria-hidden="true"
-						className="text-violet-600"
-					/>
+					<Search size={36} aria-hidden="true" className="text-violet-600" />
 				</div>
 
 				<h2 className="mt-5 text-2xl font-black text-slate-900">
@@ -202,8 +187,7 @@ export default function SearchResults({
 		);
 	}
 
-	const isGallery =
-		activeFilter === "images" || activeFilter === "coloring";
+	const isGallery = activeFilter === "images" || activeFilter === "coloring";
 
 	return (
 		<div>
@@ -216,9 +200,7 @@ export default function SearchResults({
 
 			<div
 				className={
-					isGallery
-						? "grid gap-5 sm:grid-cols-2 xl:grid-cols-3"
-						: "space-y-5"
+					isGallery ? "grid gap-5 sm:grid-cols-2 xl:grid-cols-3" : "space-y-5"
 				}
 			>
 				{results.map((result) => (

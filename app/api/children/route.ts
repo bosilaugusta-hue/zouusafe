@@ -1,8 +1,8 @@
-import { db } from "@/lib/db";
 import { jwtVerify } from "jose";
 import type { ResultSetHeader } from "mysql2";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
 
 type SessionPayload = {
 	parentId: number;
@@ -53,14 +53,12 @@ export async function POST(request: Request) {
 
 		const firstName = body.firstName?.trim();
 		const birthDate = body.birthDate?.trim();
-		const avatar =
-			body.avatar?.trim() || "/avatars_profil/fille_1.png";
+		const avatar = body.avatar?.trim() || "/avatars_profil/fille_1.png";
 
 		if (!firstName || !birthDate) {
 			return NextResponse.json(
 				{
-					message:
-						"Le prénom et la date de naissance sont obligatoires.",
+					message: "Le prénom et la date de naissance sont obligatoires.",
 				},
 				{ status: 400 },
 			);
@@ -69,8 +67,7 @@ export async function POST(request: Request) {
 		if (firstName.length > 100) {
 			return NextResponse.json(
 				{
-					message:
-						"Le prénom ne peut pas dépasser 100 caractères.",
+					message: "Le prénom ne peut pas dépasser 100 caractères.",
 				},
 				{ status: 400 },
 			);
@@ -79,10 +76,7 @@ export async function POST(request: Request) {
 		const parsedBirthDate = new Date(`${birthDate}T00:00:00`);
 		const today = new Date();
 
-		if (
-			Number.isNaN(parsedBirthDate.getTime()) ||
-			parsedBirthDate > today
-		) {
+		if (Number.isNaN(parsedBirthDate.getTime()) || parsedBirthDate > today) {
 			return NextResponse.json(
 				{ message: "La date de naissance est invalide." },
 				{ status: 400 },
@@ -92,9 +86,8 @@ export async function POST(request: Request) {
 		await connection.beginTransaction();
 		transactionStarted = true;
 
-		const [childResult] =
-			await connection.execute<ResultSetHeader>(
-				`
+		const [childResult] = await connection.execute<ResultSetHeader>(
+			`
 					INSERT INTO child (
 						first_name,
 						birth_date,
@@ -103,8 +96,8 @@ export async function POST(request: Request) {
 					)
 					VALUES (?, ?, ?, ?)
 				`,
-				[firstName, birthDate, avatar, parentId],
-			);
+			[firstName, birthDate, avatar, parentId],
+		);
 
 		const childId = childResult.insertId;
 
@@ -147,8 +140,7 @@ export async function POST(request: Request) {
 
 		return NextResponse.json(
 			{
-				message:
-					"Une erreur est survenue pendant la création du profil.",
+				message: "Une erreur est survenue pendant la création du profil.",
 			},
 			{ status: 500 },
 		);

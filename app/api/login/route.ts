@@ -72,10 +72,7 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const passwordIsValid = await bcrypt.compare(
-			password,
-			parent.password,
-		);
+		const passwordIsValid = await bcrypt.compare(password, parent.password);
 
 		if (!passwordIsValid) {
 			return NextResponse.json(

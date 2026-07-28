@@ -1,6 +1,6 @@
-import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 import Image from "next/image";
 import Link from "next/link";
+import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 
 export default function ResetPasswordPage() {
 	return (

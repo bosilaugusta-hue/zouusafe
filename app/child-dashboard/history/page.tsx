@@ -42,9 +42,7 @@ function formatDate(date: string) {
 	}).format(new Date(date));
 }
 
-export default async function HistoryPage({
-	searchParams,
-}: HistoryPageProps) {
+export default async function HistoryPage({ searchParams }: HistoryPageProps) {
 	const { childId: childIdParam } = await searchParams;
 
 	const childId = Number(childIdParam) || 1;
@@ -104,10 +102,7 @@ export default async function HistoryPage({
 											</div>
 
 											<div className="flex shrink-0 items-center gap-2 text-xs font-semibold text-slate-500">
-												<Clock3
-													size={15}
-													aria-hidden="true"
-												/>
+												<Clock3 size={15} aria-hidden="true" />
 
 												<time dateTime={item.created_at}>
 													{formatDate(item.created_at)}

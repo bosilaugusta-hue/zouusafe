@@ -44,10 +44,7 @@ export default function SecureSearchBar({
 
 	return (
 		<div className={`w-full ${className}`}>
-			<form
-				onSubmit={handleSubmit}
-				className="relative w-full"
-			>
+			<form onSubmit={handleSubmit} className="relative w-full">
 				<Search
 					size={24}
 					aria-hidden="true"
@@ -84,9 +81,7 @@ export default function SecureSearchBar({
 			</form>
 
 			{error && (
-				<p className="mt-2 pl-5 text-sm font-bold text-rose-600">
-					{error}
-				</p>
+				<p className="mt-2 pl-5 text-sm font-bold text-rose-600">{error}</p>
 			)}
 		</div>
 	);
