@@ -73,7 +73,6 @@ export default async function ParentDashboardPage() {
 	const dashboard = await getDashboardData();
 
 	const firstChild = dashboard.children[0];
-
 	const firstChildName = firstChild?.first_name ?? "votre enfant";
 
 	const firstSettings = {
@@ -93,18 +92,22 @@ export default async function ParentDashboardPage() {
 	}));
 
 	return (
-		<main className="space-y-6">
-			<DashboardHeader
-				parentName={dashboard.parent.first_name}
-				childName={firstChildName}
-			/>
+		<main className="space-y-5">
+			<section className="relative">
+				<DashboardHeader
+					parentName={dashboard.parent.first_name}
+					childName={firstChildName}
+				/>
 
-			<StatsCards
-				childrenCount={dashboard.stats.children}
-				searchesCount={dashboard.stats.searches}
-				blockedCount={dashboard.stats.blockedSites}
-				screenTime={dashboard.stats.screenTime}
-			/>
+				<div className="relative z-10 -mt-3">
+					<StatsCards
+						childrenCount={dashboard.stats.children}
+						searchesCount={dashboard.stats.searches}
+						blockedCount={dashboard.stats.blockedSites}
+						screenTime={dashboard.stats.screenTime}
+					/>
+				</div>
+			</section>
 
 			<section className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
 				<ChildCard childList={dashboard.children} />

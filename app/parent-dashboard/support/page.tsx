@@ -8,7 +8,6 @@ import {
 	ShieldCheck,
 } from "lucide-react";
 
-import Sidebar from "@/components/dashboard/Sidebar";
 
 const faqItems = [
 	"Comment ajouter un enfant ?",
@@ -19,11 +18,7 @@ const faqItems = [
 
 export default function SupportPage() {
 	return (
-		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
-			<section className="mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_1fr]">
-				<Sidebar />
-
-				<section className="space-y-6">
+		<main className="space-y-6">
 					<header className="rounded-[30px] border border-white/70 bg-white/90 p-7 shadow-xl backdrop-blur-xl">
 						<div className="flex items-center gap-4">
 							<span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-violet-100 text-blue-600 shadow-sm">
@@ -249,8 +244,6 @@ export default function SupportPage() {
 							</div>
 						</div>
 					</article>
-				</section>
-			</section>
 		</main>
 	);
 }

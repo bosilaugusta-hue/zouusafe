@@ -1,4 +1,10 @@
-import { CalendarDays, CheckCircle2, Search, UserRound } from "lucide-react";
+import {
+	CalendarDays,
+	CheckCircle2,
+	Search,
+	ShieldCheck,
+	UserRound,
+} from "lucide-react";
 import { cookies } from "next/headers";
 
 type HistoryItem = {
@@ -39,131 +45,219 @@ async function getHistory(): Promise<HistoryItem[]> {
 }
 
 function formatDate(date: string) {
+	const parsedDate = new Date(date);
+
+	if (Number.isNaN(parsedDate.getTime())) {
+		return "Date indisponible";
+	}
+
 	return new Intl.DateTimeFormat("fr-FR", {
 		day: "2-digit",
-		month: "long",
+		month: "short",
 		year: "numeric",
 		hour: "2-digit",
 		minute: "2-digit",
-	}).format(new Date(date));
+	}).format(parsedDate);
 }
 
 export default async function HistoryPage() {
 	const history = await getHistory();
 
+	const childrenCount = new Set(history.map((item) => item.child_id)).size;
+
 	return (
-		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] p-6 text-slate-900">
-			<section className="mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_1fr]">
-				<section className="space-y-6">
-					<header className="rounded-3xl border border-white/80 bg-white/90 p-7 shadow-xl backdrop-blur-xl">
-						<div className="flex items-center gap-4">
-							<span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
-								<Search size={28} />
-							</span>
+		<main className="space-y-6">
+			<header className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_16px_45px_rgba(91,33,182,0.1)] backdrop-blur-xl">
+				<div className="flex items-center gap-4">
+					<span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-600 shadow-sm">
+						<Search size={27} aria-hidden="true" />
+					</span>
 
-							<div>
-								<p className="text-sm font-black uppercase tracking-[0.15em] text-violet-500">
-									Activité des enfants
-								</p>
+					<div>
+						<p className="text-xs font-black uppercase tracking-[0.18em] text-violet-600">
+							Activité des enfants
+						</p>
 
-								<h1 className="mt-1 text-3xl font-black">
-									Historique des recherches
-								</h1>
+						<h1 className="mt-1 text-3xl font-black tracking-tight text-slate-950">
+							Historique des recherches
+						</h1>
 
-								<p className="mt-2 text-sm text-slate-500">
-									Consultez les recherches effectuées par Zoé et Zaïre.
-								</p>
-							</div>
+						<p className="mt-1.5 text-sm leading-5 text-slate-500">
+							Consultez les recherches effectuées par vos enfants.
+						</p>
+					</div>
+				</div>
+			</header>
+
+			<section className="grid gap-4 md:grid-cols-3">
+				<article className="rounded-[24px] border border-white/80 bg-white/90 p-5 shadow-[0_12px_35px_rgba(30,41,59,0.08)] backdrop-blur-xl">
+					<div className="flex items-center gap-4">
+						<span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
+							<Search size={22} aria-hidden="true" />
+						</span>
+
+						<div>
+							<p className="text-sm font-bold text-slate-500">
+								Total des recherches
+							</p>
+
+							<p className="mt-1 text-3xl font-black text-slate-950">
+								{history.length}
+							</p>
 						</div>
-					</header>
+					</div>
+				</article>
 
-					<section className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-xl backdrop-blur-xl">
-						<div className="grid gap-4 sm:grid-cols-3">
-							<div className="rounded-2xl bg-violet-50 p-4">
-								<p className="text-sm font-bold text-slate-500">
-									Total des recherches
-								</p>
+				<article className="rounded-[24px] border border-white/80 bg-white/90 p-5 shadow-[0_12px_35px_rgba(30,41,59,0.08)] backdrop-blur-xl">
+					<div className="flex items-center gap-4">
+						<span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+							<UserRound size={22} aria-hidden="true" />
+						</span>
 
-								<p className="mt-2 text-3xl font-black text-violet-700">
-									{history.length}
-								</p>
-							</div>
+						<div>
+							<p className="text-sm font-bold text-slate-500">
+								Enfants suivis
+							</p>
 
-							<div className="rounded-2xl bg-blue-50 p-4">
-								<p className="text-sm font-bold text-slate-500">
-									Enfants suivis
-								</p>
+							<p className="mt-1 text-3xl font-black text-slate-950">
+								{childrenCount}
+							</p>
+						</div>
+					</div>
+				</article>
 
-								<p className="mt-2 text-3xl font-black text-blue-700">2</p>
-							</div>
+				<article className="rounded-[24px] border border-emerald-100 bg-emerald-50/80 p-5 shadow-[0_12px_35px_rgba(30,41,59,0.06)]">
+					<div className="flex items-center gap-4">
+						<span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-sm">
+							<ShieldCheck size={22} aria-hidden="true" />
+						</span>
 
-							<div className="rounded-2xl bg-green-50 p-4">
-								<p className="text-sm font-bold text-slate-500">Protection</p>
+						<div>
+							<p className="text-sm font-bold text-emerald-600">
+								Protection
+							</p>
 
-								<p className="mt-2 text-lg font-black text-green-700">Active</p>
-							</div>
+							<p className="mt-1 text-xl font-black text-emerald-700">
+								Active
+							</p>
+						</div>
+					</div>
+				</article>
+			</section>
+
+			<section className="overflow-hidden rounded-[28px] border border-white/80 bg-white/90 shadow-[0_16px_45px_rgba(30,41,59,0.08)] backdrop-blur-xl">
+				<header className="flex flex-col gap-2 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+					<div>
+						<h2 className="text-xl font-black text-slate-950">
+							Dernières recherches
+						</h2>
+
+						<p className="mt-1 text-sm text-slate-500">
+							L’historique complet des recherches enregistrées.
+						</p>
+					</div>
+
+					<span className="w-fit rounded-full bg-violet-100 px-3 py-1.5 text-xs font-black text-violet-700">
+						{history.length} recherche{history.length > 1 ? "s" : ""}
+					</span>
+				</header>
+
+				{history.length === 0 ? (
+					<div className="px-6 py-14 text-center">
+						<span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+							<Search size={25} aria-hidden="true" />
+						</span>
+
+						<h3 className="mt-4 text-lg font-black text-slate-900">
+							Aucune recherche enregistrée
+						</h3>
+
+						<p className="mt-2 text-sm text-slate-500">
+							Les recherches de vos enfants apparaîtront ici.
+						</p>
+					</div>
+				) : (
+					<>
+						<div className="hidden grid-cols-[1.4fr_0.8fr_1fr_0.6fr] gap-5 bg-violet-50/80 px-6 py-4 text-sm font-black text-slate-700 md:grid">
+							<span>Recherche</span>
+							<span>Enfant</span>
+							<span>Date</span>
+							<span>Statut</span>
 						</div>
 
-						<div className="mt-6 overflow-hidden rounded-2xl border border-slate-100">
-							<div className="grid grid-cols-[1.2fr_1fr_1fr_0.8fr] gap-4 bg-violet-50 px-5 py-4 text-sm font-black text-slate-700">
-								<span>Recherche</span>
-								<span>Enfant</span>
-								<span>Date</span>
-								<span>Statut</span>
-							</div>
+						<ul>
+							{history.map((item) => (
+								<li
+									key={item.search_history_id}
+									className="grid gap-4 border-t border-slate-100 px-6 py-4 transition hover:bg-violet-50/30 md:grid-cols-[1.4fr_0.8fr_1fr_0.6fr] md:items-center md:gap-5"
+								>
+									<div className="flex min-w-0 items-center gap-3">
+										<span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+											<Search size={18} aria-hidden="true" />
+										</span>
 
-							{history.length === 0 ? (
-								<div className="p-10 text-center">
-									<Search size={42} className="mx-auto text-slate-300" />
+										<div className="min-w-0">
+											<p className="text-xs font-bold uppercase text-slate-400 md:hidden">
+												Recherche
+											</p>
 
-									<p className="mt-4 font-bold text-slate-500">
-										Aucune recherche enregistrée.
-									</p>
-								</div>
-							) : (
-								<ul>
-									{history.map((item) => (
-										<li
-											key={item.search_history_id}
-											className="grid grid-cols-[1.2fr_1fr_1fr_0.8fr] gap-4 border-t border-slate-100 px-5 py-4"
-										>
-											<div className="flex items-center gap-3">
-												<span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-													<Search size={17} />
-												</span>
+											<p className="truncate font-black text-slate-900">
+												{item.search_query || "Recherche vide"}
+											</p>
+										</div>
+									</div>
 
-												<p className="font-black text-slate-900">
-													{item.search_query}
-												</p>
-											</div>
+									<div className="flex items-center gap-2">
+										<UserRound
+											size={17}
+											aria-hidden="true"
+											className="shrink-0 text-violet-500"
+										/>
 
-											<div className="flex items-center gap-2">
-												<UserRound size={17} className="text-violet-500" />
+										<div>
+											<p className="text-xs font-bold uppercase text-slate-400 md:hidden">
+												Enfant
+											</p>
 
-												<span className="font-bold text-slate-700">
-													{item.first_name}
-												</span>
-											</div>
+											<span className="font-bold text-slate-700">
+												{item.first_name}
+											</span>
+										</div>
+									</div>
 
-											<div className="flex items-center gap-2 text-sm text-slate-500">
-												<CalendarDays size={17} className="text-slate-400" />
+									<div className="flex items-center gap-2 text-sm text-slate-500">
+										<CalendarDays
+											size={17}
+											aria-hidden="true"
+											className="shrink-0 text-slate-400"
+										/>
 
+										<div>
+											<p className="text-xs font-bold uppercase text-slate-400 md:hidden">
+												Date
+											</p>
+
+											<time dateTime={item.created_at}>
 												{formatDate(item.created_at)}
-											</div>
+											</time>
+										</div>
+									</div>
 
-											<div>
-												<span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm font-black text-green-700">
-													<CheckCircle2 size={16} />
-													Autorisé
-												</span>
-											</div>
-										</li>
-									))}
-								</ul>
-							)}
-						</div>
-					</section>
-				</section>
+									<div>
+										<p className="mb-1 text-xs font-bold uppercase text-slate-400 md:hidden">
+											Statut
+										</p>
+
+										<span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-black text-emerald-700">
+											<CheckCircle2 size={15} aria-hidden="true" />
+											Autorisé
+										</span>
+									</div>
+								</li>
+							))}
+						</ul>
+					</>
+				)}
 			</section>
 		</main>
 	);
