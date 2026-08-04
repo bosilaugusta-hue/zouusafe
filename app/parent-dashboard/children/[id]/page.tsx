@@ -71,7 +71,6 @@ function calculateAge(birthDate: string) {
 	const today = new Date();
 
 	let age = today.getFullYear() - birth.getFullYear();
-
 	const monthDifference = today.getMonth() - birth.getMonth();
 
 	if (
@@ -86,9 +85,47 @@ function calculateAge(birthDate: string) {
 
 function formatDate(date: Date) {
 	return new Intl.DateTimeFormat("fr-FR", {
-		dateStyle: "short",
-		timeStyle: "short",
+		day: "2-digit",
+		month: "short",
+		hour: "2-digit",
+		minute: "2-digit",
 	}).format(new Date(date));
+}
+
+function getAvatarPath(avatarUrl: string | null) {
+	if (!avatarUrl) {
+		return "/avatars-profil/fille-1.png";
+	}
+
+	return avatarUrl.startsWith("/") ? avatarUrl : `/${avatarUrl}`;
+}
+
+function getSeverityConfig(severity: string) {
+	switch (severity.toLowerCase()) {
+		case "high":
+			return {
+				label: "Élevée",
+				containerClass: "border-red-100 bg-red-50",
+				textClass: "text-red-700",
+				badgeClass: "bg-red-100 text-red-700",
+			};
+
+		case "medium":
+			return {
+				label: "Moyenne",
+				containerClass: "border-orange-100 bg-orange-50",
+				textClass: "text-orange-700",
+				badgeClass: "bg-orange-100 text-orange-700",
+			};
+
+		default:
+			return {
+				label: "Faible",
+				containerClass: "border-blue-100 bg-blue-50",
+				textClass: "text-blue-700",
+				badgeClass: "bg-blue-100 text-blue-700",
+			};
+	}
 }
 
 export default async function ChildProfilePage({ params }: PageProps) {
@@ -184,10 +221,7 @@ export default async function ChildProfilePage({ params }: PageProps) {
 	);
 
 	const age = calculateAge(child.birth_date);
-
-	const avatar = child.avatar_url ?? "/avatars-profil/fille-1.png";
-
-	const avatarSrc = avatar.startsWith("/") ? avatar : `/${avatar}`;
+	const avatarSrc = getAvatarPath(child.avatar_url);
 
 	const screenTimeLimit = child.screen_time_limit ?? 120;
 	const screenTimeUsed = child.screen_time_used ?? 0;
@@ -216,7 +250,7 @@ export default async function ChildProfilePage({ params }: PageProps) {
 			title: "Sites bloqués",
 			description: "Voir les contenus filtrés",
 			icon: ShieldCheck,
-			href: `/parent-dashboard/blocked-sites?childId=${child.child_id}`,
+			href: `/parent-dashboard/blocked?childId=${child.child_id}`,
 			background: "bg-pink-50",
 			iconClass: "bg-pink-100 text-pink-600",
 		},
@@ -225,8 +259,8 @@ export default async function ChildProfilePage({ params }: PageProps) {
 			description: "Gérer la limite quotidienne",
 			icon: Clock3,
 			href: `/parent-dashboard/screen-time?childId=${child.child_id}`,
-			background: "bg-green-50",
-			iconClass: "bg-green-100 text-green-600",
+			background: "bg-emerald-50",
+			iconClass: "bg-emerald-100 text-emerald-600",
 		},
 		{
 			title: "Paramètres",
@@ -247,310 +281,362 @@ export default async function ChildProfilePage({ params }: PageProps) {
 	];
 
 	return (
-		<main className="min-h-screen bg-gradient-to-br from-[#eef4ff] via-[#f7efff] to-[#fff6df] px-5 py-8 text-slate-900 md:px-8">
-			<section className="mx-auto w-full max-w-6xl">
-				<Link
-					href="/parent-dashboard"
-					className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-black text-violet-600 shadow-sm transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
-				>
-					<ArrowLeft size={17} />
-					Retour au tableau de bord
-				</Link>
+		<main className="space-y-6">
+			<Link
+				href="/parent-dashboard/children"
+				className="inline-flex items-center gap-2 rounded-full bg-white/85 px-4 py-2 text-sm font-black text-violet-600 shadow-sm transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
+			>
+				<ArrowLeft size={17} aria-hidden="true" />
+				Retour aux profils
+			</Link>
 
-				<section className="mt-6 overflow-hidden rounded-[2rem] border border-white/80 bg-white/90 shadow-xl backdrop-blur-xl">
-					<header className="relative overflow-hidden bg-gradient-to-r from-violet-100 via-pink-50 to-blue-50 p-7 md:p-9">
-						<div className="absolute -right-10 -top-16 h-48 w-48 rounded-full bg-violet-300/20 blur-3xl" />
-						<div className="absolute -bottom-16 left-1/3 h-48 w-48 rounded-full bg-pink-300/20 blur-3xl" />
+			<section className="overflow-hidden rounded-[30px] border border-white/80 bg-white/90 shadow-[0_18px_48px_rgba(91,33,182,0.12)] backdrop-blur-xl">
+				<header className="relative overflow-hidden bg-gradient-to-r from-violet-100 via-pink-50 to-blue-50 px-6 py-7 md:px-8 md:py-8">
+					<div
+						aria-hidden="true"
+						className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-violet-300/20 blur-3xl"
+					/>
 
-						<div className="relative flex flex-col items-center justify-between gap-7 md:flex-row">
-							<div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
-								<Image
-									src={avatarSrc}
-									alt={`Avatar de ${child.first_name}`}
-									width={150}
-									height={150}
-									priority
-									className="h-32 w-32 rounded-full border-8 border-white object-cover shadow-xl md:h-36 md:w-36"
-								/>
+					<div
+						aria-hidden="true"
+						className="pointer-events-none absolute -bottom-20 left-1/3 h-52 w-52 rounded-full bg-pink-300/20 blur-3xl"
+					/>
 
-								<div>
-									<p className="inline-flex items-center gap-2 font-black text-violet-600">
-										<Sparkles size={17} />
-										Profil enfant
-									</p>
+					<div className="relative flex flex-col items-center justify-between gap-7 lg:flex-row">
+						<div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
+							<Image
+								src={avatarSrc}
+								alt={`Avatar de ${child.first_name}`}
+								width={160}
+								height={160}
+								priority
+								className="h-36 w-36 rounded-full border-8 border-white object-cover shadow-xl md:h-40 md:w-40"
+							/>
 
-									<h1 className="mt-2 text-4xl font-black md:text-5xl">
-										{child.first_name}
-									</h1>
-
-									<p className="mt-2 text-lg font-semibold text-slate-600">
-										{age} {age > 1 ? "ans" : "an"}
-									</p>
-
-									<span className="mt-4 inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-black text-green-700">
-										<span className="h-2.5 w-2.5 rounded-full bg-green-500" />
-										Protection active
-									</span>
-								</div>
-							</div>
-
-							<Link
-								href={`/child-dashboard?childId=${child.child_id}`}
-								className="group inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-violet-500 to-violet-700 px-6 py-4 text-center font-black text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl md:w-auto"
-							>
-								<Search size={21} />
-								Ouvrir l’espace sécurisé
-								<ExternalLink
-									size={18}
-									className="transition group-hover:translate-x-1"
-								/>
-							</Link>
-						</div>
-					</header>
-
-					<div className="space-y-7 p-6 md:p-8">
-						<section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-							<article className="rounded-3xl border border-violet-100 bg-violet-50 p-5">
-								<div className="flex items-center justify-between">
-									<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
-										<Clock3 size={22} />
-									</span>
-
-									<strong className="text-2xl font-black">
-										{screenTimeUsed} min
-									</strong>
-								</div>
-
-								<h2 className="mt-4 font-black">Temps utilisé</h2>
-
-								<p className="mt-1 text-sm text-slate-500">
-									sur {screenTimeLimit} min
-								</p>
-							</article>
-
-							<article className="rounded-3xl border border-blue-100 bg-blue-50 p-5">
-								<div className="flex items-center justify-between">
-									<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
-										<Search size={22} />
-									</span>
-
-									<strong className="text-2xl font-black">{searchCount}</strong>
-								</div>
-
-								<h2 className="mt-4 font-black">Recherches</h2>
-
-								<p className="mt-1 text-sm text-slate-500">enregistrées</p>
-							</article>
-
-							<article className="rounded-3xl border border-pink-100 bg-pink-50 p-5">
-								<div className="flex items-center justify-between">
-									<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
-										<ShieldCheck size={22} />
-									</span>
-
-									<strong className="text-2xl font-black">
-										{blockedCount}
-									</strong>
-								</div>
-
-								<h2 className="mt-4 font-black">Sites bloqués</h2>
-
-								<p className="mt-1 text-sm text-slate-500">contenus filtrés</p>
-							</article>
-
-							<article className="rounded-3xl border border-green-100 bg-green-50 p-5">
-								<div className="flex items-center justify-between">
-									<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-100 text-green-600">
-										<ShieldCheck size={22} />
-									</span>
-
-									<strong className="text-lg font-black capitalize">
-										{filterLevel}
-									</strong>
-								</div>
-
-								<h2 className="mt-4 font-black">Niveau de filtre</h2>
-
-								<p className="mt-1 text-sm text-slate-500">
-									SafeSearch {safeSearchEnabled ? "activé" : "désactivé"}
-								</p>
-							</article>
-						</section>
-
-						<section className="rounded-3xl border border-violet-100 bg-violet-50/70 p-5 md:p-6">
-							<div className="flex items-center justify-between gap-4">
-								<div>
-									<h2 className="text-xl font-black">
-										Temps d’écran aujourd’hui
-									</h2>
-
-									<p className="mt-1 text-sm text-slate-600">
-										{screenTimeUsed} minutes utilisées sur {screenTimeLimit}{" "}
-										minutes autorisées
-									</p>
-								</div>
-
-								<strong className="text-xl font-black text-violet-600">
-									{progress} %
-								</strong>
-							</div>
-
-							<div className="mt-5 h-4 overflow-hidden rounded-full bg-white shadow-inner">
-								<div
-									className="h-full rounded-full bg-gradient-to-r from-violet-400 to-violet-600 transition-all"
-									style={{
-										width: `${progress}%`,
-									}}
-								/>
-							</div>
-						</section>
-
-						<section>
 							<div>
-								<p className="text-sm font-black uppercase tracking-wider text-violet-600">
-									Accès rapides
+								<p className="inline-flex items-center gap-2 text-sm font-black text-violet-600">
+									<Sparkles size={17} aria-hidden="true" />
+									Profil enfant
 								</p>
 
-								<h2 className="mt-1 text-2xl font-black">
-									Gérer le profil de {child.first_name}
+								<h1 className="mt-2 text-4xl font-black tracking-tight text-slate-950 md:text-5xl">
+									{child.first_name}
+								</h1>
+
+								<p className="mt-2 text-lg font-semibold text-slate-600">
+									{age} {age > 1 ? "ans" : "an"}
+								</p>
+
+								<span className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-black text-emerald-700">
+									<span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+									Protection active
+								</span>
+							</div>
+						</div>
+
+						<Link
+							href={`/child-dashboard?childId=${child.child_id}`}
+							className="group inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-violet-500 to-violet-700 px-6 py-4 text-center font-black text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl lg:w-auto"
+						>
+							<Search size={21} aria-hidden="true" />
+							Ouvrir l’espace sécurisé
+							<ExternalLink
+								size={18}
+								aria-hidden="true"
+								className="transition group-hover:translate-x-1"
+							/>
+						</Link>
+					</div>
+				</header>
+
+				<div className="space-y-7 p-5 md:p-7">
+					<section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+						<StatCard
+							icon={<Clock3 size={21} aria-hidden="true" />}
+							value={`${screenTimeUsed} min`}
+							title="Temps utilisé"
+							description={`sur ${screenTimeLimit} min`}
+							containerClass="border-violet-100 bg-violet-50"
+							iconClass="bg-violet-100 text-violet-600"
+						/>
+
+						<StatCard
+							icon={<Search size={21} aria-hidden="true" />}
+							value={searchCount}
+							title="Recherches"
+							description="enregistrées"
+							containerClass="border-blue-100 bg-blue-50"
+							iconClass="bg-blue-100 text-blue-600"
+						/>
+
+						<StatCard
+							icon={<ShieldCheck size={21} aria-hidden="true" />}
+							value={blockedCount}
+							title="Sites bloqués"
+							description="contenus filtrés"
+							containerClass="border-pink-100 bg-pink-50"
+							iconClass="bg-pink-100 text-pink-600"
+						/>
+
+						<StatCard
+							icon={<ShieldCheck size={21} aria-hidden="true" />}
+							value={filterLevel}
+							title="Niveau de filtre"
+							description={`SafeSearch ${
+								safeSearchEnabled ? "activé" : "désactivé"
+							}`}
+							containerClass="border-emerald-100 bg-emerald-50"
+							iconClass="bg-emerald-100 text-emerald-600"
+							capitalize
+						/>
+					</section>
+
+					<section className="rounded-[24px] border border-violet-100 bg-violet-50/70 p-5 md:p-6">
+						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+							<div>
+								<h2 className="text-xl font-black text-slate-950">
+									Temps d’écran aujourd’hui
 								</h2>
+
+								<p className="mt-1 text-sm text-slate-600">
+									{screenTimeUsed} minutes utilisées sur {screenTimeLimit} minutes
+									autorisées
+								</p>
 							</div>
 
-							<div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-								{tools.map((tool) => {
-									const Icon = tool.icon;
+							<strong className="text-2xl font-black text-violet-600">
+								{progress} %
+							</strong>
+						</div>
 
-									return (
-										<Link
-											key={tool.title}
-											href={tool.href}
-											className={`group rounded-3xl border border-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${tool.background}`}
+						<div className="mt-5 h-4 overflow-hidden rounded-full bg-white shadow-inner">
+							<div
+								className="h-full rounded-full bg-gradient-to-r from-violet-400 to-violet-600 shadow-sm transition-all duration-500"
+								style={{
+									width: `${progress}%`,
+								}}
+							/>
+						</div>
+					</section>
+
+					<section>
+						<div>
+							<p className="text-xs font-black uppercase tracking-[0.18em] text-violet-600">
+								Accès rapides
+							</p>
+
+							<h2 className="mt-1 text-2xl font-black text-slate-950">
+								Gérer le profil de {child.first_name}
+							</h2>
+						</div>
+
+						<div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+							{tools.map((tool) => {
+								const Icon = tool.icon;
+
+								return (
+									<Link
+										key={tool.title}
+										href={tool.href}
+										className={`group flex min-h-[190px] flex-col rounded-[24px] border border-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${tool.background}`}
+									>
+										<span
+											className={`flex h-12 w-12 items-center justify-center rounded-2xl ${tool.iconClass}`}
 										>
-											<span
-												className={`flex h-12 w-12 items-center justify-center rounded-2xl ${tool.iconClass}`}
-											>
-												<Icon size={23} />
-											</span>
-
-											<h3 className="mt-4 font-black">{tool.title}</h3>
-
-											<p className="mt-1 text-sm leading-5 text-slate-600">
-												{tool.description}
-											</p>
-
-											<span className="mt-4 inline-flex items-center gap-1 text-sm font-black text-violet-600">
-												Ouvrir
-												<span className="transition group-hover:translate-x-1">
-													→
-												</span>
-											</span>
-										</Link>
-									);
-								})}
-							</div>
-						</section>
-
-						<section className="grid gap-6 lg:grid-cols-2">
-							<article className="min-h-72 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-								<div className="flex items-center justify-between gap-4">
-									<div className="flex items-center gap-3">
-										<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
-											<Search size={21} />
+											<Icon size={22} aria-hidden="true" />
 										</span>
 
-										<h2 className="text-xl font-black">Historique récent</h2>
-									</div>
+										<h3 className="mt-4 font-black text-slate-900">
+											{tool.title}
+										</h3>
 
-									<Link
-										href={`/parent-dashboard/history?childId=${child.child_id}`}
-										className="text-sm font-black text-violet-600 hover:underline"
-									>
-										Voir tout
+										<p className="mt-1 text-sm leading-5 text-slate-600">
+											{tool.description}
+										</p>
+
+										<span className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-black text-violet-600">
+											Ouvrir
+											<span className="transition group-hover:translate-x-1">
+												→
+											</span>
+										</span>
 									</Link>
+								);
+							})}
+						</div>
+					</section>
+
+					<section className="grid gap-6 xl:grid-cols-2">
+						<article className="rounded-[24px] border border-slate-100 bg-white p-5 shadow-sm">
+							<div className="flex items-center justify-between gap-4">
+								<div className="flex items-center gap-3">
+									<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+										<Search size={20} aria-hidden="true" />
+									</span>
+
+									<h2 className="text-xl font-black text-slate-950">
+										Historique récent
+									</h2>
 								</div>
 
-								{history.length === 0 ? (
-									<div className="flex min-h-48 flex-col items-center justify-center text-center">
-										<Search size={38} className="text-slate-300" />
+								<Link
+									href={`/parent-dashboard/history?childId=${child.child_id}`}
+									className="text-sm font-black text-violet-600 hover:underline"
+								>
+									Voir tout
+								</Link>
+							</div>
 
-										<p className="mt-4 font-bold text-slate-500">
-											Aucune recherche enregistrée.
-										</p>
-									</div>
-								) : (
-									<ul className="mt-5 space-y-3">
-										{history.map((item) => (
-											<li
-												key={item.search_history_id}
-												className="rounded-2xl bg-blue-50 px-4 py-3"
-											>
-												<p className="font-black">{item.search_query}</p>
+							{history.length === 0 ? (
+								<div className="flex min-h-48 flex-col items-center justify-center text-center">
+									<Search
+										size={38}
+										aria-hidden="true"
+										className="text-slate-300"
+									/>
+
+									<p className="mt-4 font-bold text-slate-500">
+										Aucune recherche enregistrée.
+									</p>
+								</div>
+							) : (
+								<ul className="mt-5 space-y-3">
+									{history.map((item) => (
+										<li
+											key={item.search_history_id}
+											className="flex items-center justify-between gap-4 rounded-2xl bg-blue-50 px-4 py-3"
+										>
+											<div className="min-w-0">
+												<p className="truncate font-black text-slate-900">
+													{item.search_query}
+												</p>
 
 												<p className="mt-1 text-xs text-slate-500">
 													{formatDate(item.created_at)}
 												</p>
-											</li>
-										))}
-									</ul>
-								)}
-							</article>
+											</div>
 
-							<article className="min-h-72 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-								<div className="flex items-center justify-between gap-4">
-									<div className="flex items-center gap-3">
-										<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-100 text-orange-600">
-											<Bell size={21} />
-										</span>
+											<Search
+												size={17}
+												aria-hidden="true"
+												className="shrink-0 text-blue-500"
+											/>
+										</li>
+									))}
+								</ul>
+							)}
+						</article>
 
-										<h2 className="text-xl font-black">Alertes récentes</h2>
-									</div>
+						<article className="rounded-[24px] border border-slate-100 bg-white p-5 shadow-sm">
+							<div className="flex items-center justify-between gap-4">
+								<div className="flex items-center gap-3">
+									<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-100 text-orange-600">
+										<Bell size={20} aria-hidden="true" />
+									</span>
 
-									<Link
-										href="/parent-dashboard"
-										className="text-sm font-black text-violet-600 hover:underline"
-									>
-										Voir tout
-									</Link>
+									<h2 className="text-xl font-black text-slate-950">
+										Alertes récentes
+									</h2>
 								</div>
 
-								{alerts.length === 0 ? (
-									<div className="flex min-h-48 flex-col items-center justify-center text-center">
-										<Bell size={38} className="text-slate-300" />
+								<Link
+									href="/parent-dashboard"
+									className="text-sm font-black text-violet-600 hover:underline"
+								>
+									Voir tout
+								</Link>
+							</div>
 
-										<p className="mt-4 font-bold text-slate-500">
-											Aucune alerte pour le moment.
-										</p>
-									</div>
-								) : (
-									<ul className="mt-5 space-y-3">
-										{alerts.map((alert) => {
-											const severityClass =
-												alert.severity === "high"
-													? "bg-red-50 text-red-700"
-													: alert.severity === "medium"
-														? "bg-orange-50 text-orange-700"
-														: "bg-blue-50 text-blue-700";
+							{alerts.length === 0 ? (
+								<div className="flex min-h-48 flex-col items-center justify-center text-center">
+									<Bell
+										size={38}
+										aria-hidden="true"
+										className="text-slate-300"
+									/>
 
-											return (
-												<li
-													key={alert.alert_id}
-													className={`rounded-2xl px-4 py-3 ${severityClass}`}
-												>
-													<p className="font-black">{alert.message}</p>
+									<p className="mt-4 font-bold text-slate-500">
+										Aucune alerte pour le moment.
+									</p>
+								</div>
+							) : (
+								<ul className="mt-5 space-y-3">
+									{alerts.map((alert) => {
+										const config = getSeverityConfig(alert.severity);
 
-													<p className="mt-1 text-xs opacity-70">
-														{formatDate(alert.created_at)}
-													</p>
-												</li>
-											);
-										})}
-									</ul>
-								)}
-							</article>
-						</section>
-					</div>
-				</section>
+										return (
+											<li
+												key={alert.alert_id}
+												className={`rounded-2xl border px-4 py-3 ${config.containerClass}`}
+											>
+												<div className="flex items-start justify-between gap-3">
+													<div className="min-w-0">
+														<p className={`font-black ${config.textClass}`}>
+															{alert.message}
+														</p>
+
+														<p className="mt-1 text-xs text-slate-500">
+															{formatDate(alert.created_at)}
+														</p>
+													</div>
+
+													<span
+														className={`shrink-0 rounded-full px-3 py-1 text-[11px] font-black ${config.badgeClass}`}
+													>
+														{config.label}
+													</span>
+												</div>
+											</li>
+										);
+									})}
+								</ul>
+							)}
+						</article>
+					</section>
+				</div>
 			</section>
 		</main>
+	);
+}
+
+function StatCard({
+	icon,
+	value,
+	title,
+	description,
+	containerClass,
+	iconClass,
+	capitalize = false,
+}: {
+	icon: React.ReactNode;
+	value: number | string;
+	title: string;
+	description: string;
+	containerClass: string;
+	iconClass: string;
+	capitalize?: boolean;
+}) {
+	return (
+		<article className={`rounded-[24px] border p-5 ${containerClass}`}>
+			<div className="flex items-center justify-between gap-4">
+				<span
+					className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${iconClass}`}
+				>
+					{icon}
+				</span>
+
+				<strong
+					className={`text-2xl font-black text-slate-950 ${
+						capitalize ? "capitalize" : ""
+					}`}
+				>
+					{value}
+				</strong>
+			</div>
+
+			<h2 className="mt-4 font-black text-slate-900">{title}</h2>
+
+			<p className="mt-1 text-sm text-slate-500">{description}</p>
+		</article>
 	);
 }

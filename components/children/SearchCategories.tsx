@@ -71,13 +71,17 @@ export default function SearchCategories({ childId }: SearchCategoriesProps) {
 							type="button"
 							onClick={showPreviousPage}
 							aria-label="Afficher les catégories précédentes"
-							className="absolute left-0 top-1/2 z-20 flex h-12 w-12 -translate-x-2 -translate-y-1/2 items-center justify-center rounded-full border border-violet-100 bg-white text-violet-600 shadow-lg transition hover:scale-105 hover:bg-violet-50 sm:-translate-x-5"
+							className="absolute left-0 top-[46%] z-20 flex h-14 w-14 -translate-x-2 -translate-y-1/2 items-center justify-center rounded-full border border-violet-200 bg-white text-violet-600 shadow-xl transition-all duration-300 hover:scale-110 hover:bg-violet-50 sm:-translate-x-5"
 						>
-							<ChevronLeft size={28} aria-hidden="true" />
+							<ChevronLeft
+								size={34}
+								strokeWidth={2.5}
+								aria-hidden="true"
+							/>
 						</button>
 					)}
 
-					<div className="grid grid-cols-2 gap-4 px-8 sm:grid-cols-4 sm:gap-5 sm:px-10 xl:grid-cols-8">
+					<div className="grid grid-cols-2 gap-5 px-10 sm:grid-cols-4 sm:gap-6 sm:px-12 lg:grid-cols-6 xl:grid-cols-8">
 						{visibleCategories.map((category) => (
 							<SearchCategoryCard
 								key={category.title}
@@ -92,15 +96,19 @@ export default function SearchCategories({ childId }: SearchCategoriesProps) {
 							type="button"
 							onClick={showNextPage}
 							aria-label="Afficher les catégories suivantes"
-							className="absolute right-0 top-1/2 z-20 flex h-12 w-12 translate-x-2 -translate-y-1/2 items-center justify-center rounded-full border border-violet-100 bg-white text-violet-600 shadow-lg transition hover:scale-105 hover:bg-violet-50 sm:translate-x-5"
+							className="absolute right-0 top-[46%] z-20 flex h-14 w-14 translate-x-2 -translate-y-1/2 items-center justify-center rounded-full border border-violet-200 bg-white text-violet-600 shadow-xl transition-all duration-300 hover:scale-110 hover:bg-violet-50 sm:translate-x-5"
 						>
-							<ChevronRight size={28} aria-hidden="true" />
+							<ChevronRight
+								size={34}
+								strokeWidth={2.5}
+								aria-hidden="true"
+							/>
 						</button>
 					)}
 				</div>
 
 				{totalPages > 1 && (
-					<div className="mt-6 flex items-center justify-center gap-4">
+					<div className="mt-8 flex items-center justify-center gap-6">
 						<div className="flex items-center gap-2">
 							{paginationPages.map((page) => (
 								<button
@@ -111,16 +119,16 @@ export default function SearchCategories({ childId }: SearchCategoriesProps) {
 									aria-current={
 										page.pageNumber === currentPage ? "page" : undefined
 									}
-									className={`h-2.5 rounded-full transition-all ${
+									className={`h-3 rounded-full transition-all duration-300 ${
 										page.pageNumber === currentPage
-											? "w-7 bg-violet-600"
-											: "w-2.5 bg-violet-200 hover:bg-violet-300"
+											? "w-8 bg-violet-600"
+											: "w-3 bg-violet-200 hover:bg-violet-300"
 									}`}
 								/>
 							))}
 						</div>
 
-						<span className="rounded-full border border-violet-100 bg-white px-4 py-1.5 text-sm font-black text-violet-700 shadow-sm">
+						<span className="rounded-full bg-white px-5 py-2 text-sm font-black text-violet-700 shadow-md">
 							{currentPage + 1} / {totalPages}
 						</span>
 					</div>
