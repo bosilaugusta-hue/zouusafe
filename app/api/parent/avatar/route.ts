@@ -1,19 +1,32 @@
-import { access } from "node:fs/promises";
+import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { randomUUID } from "node:crypto";
 
 import { jwtVerify } from "jose";
-import type { ResultSetHeader } from "mysql2";
+import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
+export const runtime = "nodejs";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+const allowedFileTypes = {
+	"image/jpeg": "jpg",
+	"image/png": "png",
+	"image/webp": "webp",
+} as const;
+
+type AllowedMimeType = keyof typeof allowedFileTypes;
+
 type SessionPayload = {
 	parentId: number;
 };
 
-type AvatarBody = {
-	avatarUrl?: string;
+type ParentAvatarRow = RowDataPacket & {
+	avatar_url: string | null;
 };
 
 function getSecretKey() {
@@ -26,12 +39,32 @@ function getSecretKey() {
 	return new TextEncoder().encode(secret);
 }
 
-function isAllowedAvatarPath(avatarUrl: string) {
-	return (
-		avatarUrl.startsWith("/avatars-profil/") &&
-		!avatarUrl.includes("..") &&
-		/\.(png|jpe?g|webp)$/i.test(avatarUrl)
-	);
+function isAllowedMimeType(type: string): type is AllowedMimeType {
+	return type in allowedFileTypes;
+}
+
+async function removePreviousUploadedAvatar(
+	parentId: number,
+	avatarUrl: string | null,
+) {
+	if (!avatarUrl) {
+		return;
+	}
+
+	const expectedPrefix = `/avatars-profil/parent-${parentId}-`;
+
+	if (!avatarUrl.startsWith(expectedPrefix)) {
+		return;
+	}
+
+	const relativePath = avatarUrl.replace(/^\/+/, "");
+	const absolutePath = path.join(process.cwd(), "public", relativePath);
+
+	try {
+		await unlink(absolutePath);
+	} catch {
+		// L’ancienne image peut déjà avoir été supprimée.
+	}
 }
 
 export async function PATCH(request: Request) {
@@ -65,13 +98,13 @@ export async function PATCH(request: Request) {
 			);
 		}
 
-		const body = (await request.json()) as AvatarBody;
-		const avatarUrl = body.avatarUrl?.trim() ?? "";
+		const formData = await request.formData();
+		const avatar = formData.get("avatar");
 
-		if (!avatarUrl) {
+		if (!(avatar instanceof File)) {
 			return NextResponse.json(
 				{
-					message: "Veuillez sélectionner une photo de profil.",
+					message: "Veuillez sélectionner une photo.",
 				},
 				{
 					status: 400,
@@ -79,10 +112,10 @@ export async function PATCH(request: Request) {
 			);
 		}
 
-		if (!isAllowedAvatarPath(avatarUrl)) {
+		if (avatar.size === 0) {
 			return NextResponse.json(
 				{
-					message: "Le chemin de la photo n’est pas autorisé.",
+					message: "Le fichier sélectionné est vide.",
 				},
 				{
 					status: 400,
@@ -90,42 +123,75 @@ export async function PATCH(request: Request) {
 			);
 		}
 
-		const relativeAvatarPath = avatarUrl.replace(/^\/+/, "");
+		if (avatar.size > MAX_FILE_SIZE) {
+			return NextResponse.json(
+				{
+					message: "La photo ne doit pas dépasser 5 Mo.",
+				},
+				{
+					status: 400,
+				},
+			);
+		}
 
-		const publicDirectory = path.resolve(process.cwd(), "public");
-		const avatarsDirectory = path.resolve(
-			publicDirectory,
-			"avatars-profil",
+		if (!isAllowedMimeType(avatar.type)) {
+			return NextResponse.json(
+				{
+					message:
+						"Seuls les formats JPG, PNG et WebP sont autorisés.",
+				},
+				{
+					status: 400,
+				},
+			);
+		}
+
+		const [parents] = await db.query<ParentAvatarRow[]>(
+			`
+				SELECT avatar_url
+				FROM parent
+				WHERE parent_id = ?
+				LIMIT 1
+			`,
+			[parentId],
 		);
 
-		const absoluteAvatarPath = path.resolve(
-			publicDirectory,
-			relativeAvatarPath,
-		);
+		const parent = parents[0];
 
-		if (!absoluteAvatarPath.startsWith(`${avatarsDirectory}${path.sep}`)) {
+		if (!parent) {
 			return NextResponse.json(
 				{
-					message: "Le chemin de la photo n’est pas autorisé.",
-				},
-				{
-					status: 400,
-				},
-			);
-		}
-
-		try {
-			await access(absoluteAvatarPath);
-		} catch {
-			return NextResponse.json(
-				{
-					message: "La photo sélectionnée est introuvable.",
+					message: "Parent introuvable.",
 				},
 				{
 					status: 404,
 				},
 			);
 		}
+
+		const extension = allowedFileTypes[avatar.type];
+		const fileName = `parent-${parentId}-${randomUUID()}.${extension}`;
+
+		const avatarsDirectory = path.join(
+			process.cwd(),
+			"public",
+			"avatars-profil",
+		);
+
+		await mkdir(avatarsDirectory, {
+			recursive: true,
+		});
+
+		const absoluteFilePath = path.join(
+			avatarsDirectory,
+			fileName,
+		);
+
+		const fileBuffer = Buffer.from(await avatar.arrayBuffer());
+
+		await writeFile(absoluteFilePath, fileBuffer);
+
+		const avatarUrl = `/avatars-profil/${fileName}`;
 
 		const [result] = await db.execute<ResultSetHeader>(
 			`
@@ -137,15 +203,22 @@ export async function PATCH(request: Request) {
 		);
 
 		if (result.affectedRows === 0) {
+			await unlink(absoluteFilePath).catch(() => undefined);
+
 			return NextResponse.json(
 				{
-					message: "Parent introuvable.",
+					message: "La photo n’a pas pu être enregistrée.",
 				},
 				{
-					status: 404,
+					status: 500,
 				},
 			);
 		}
+
+		await removePreviousUploadedAvatar(
+			parentId,
+			parent.avatar_url,
+		);
 
 		return NextResponse.json({
 			message: "Votre photo de profil a été mise à jour.",
@@ -153,14 +226,14 @@ export async function PATCH(request: Request) {
 		});
 	} catch (error) {
 		console.error(
-			"Erreur lors de la modification de la photo :",
+			"Erreur lors de l’upload de la photo du parent :",
 			error,
 		);
 
 		return NextResponse.json(
 			{
 				message:
-					"Une erreur est survenue pendant la modification de la photo.",
+					"Une erreur est survenue pendant l’enregistrement de la photo.",
 			},
 			{
 				status: 500,
