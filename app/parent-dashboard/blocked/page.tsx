@@ -4,7 +4,6 @@ import {
 	CheckCircle2,
 	ShieldAlert,
 	ShieldCheck,
-	UserRound,
 	UsersRound,
 } from "lucide-react";
 import { cookies } from "next/headers";

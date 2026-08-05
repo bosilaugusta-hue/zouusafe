@@ -84,7 +84,7 @@ export default function QuickSettings({ settings }: QuickSettingsProps) {
 						</span>
 
 						<div className="flex-1">
-							<h3 className="font-black text-slate-900">Temps d'écran</h3>
+							<h3 className="font-black text-slate-900">Temps d&apos;écran</h3>
 
 							<p className="text-sm text-slate-500">
 								{screenTimeUsed} / {screenTimeLimit} min

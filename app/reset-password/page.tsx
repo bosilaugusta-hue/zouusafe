@@ -1,6 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
+
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
+
+function ResetPasswordFormFallback() {
+	return (
+		<div className="mt-6 space-y-4">
+			<div className="h-12 animate-pulse rounded-2xl bg-slate-100" />
+			<div className="h-12 animate-pulse rounded-2xl bg-slate-100" />
+			<div className="h-12 animate-pulse rounded-2xl bg-slate-100" />
+			<div className="h-12 animate-pulse rounded-2xl bg-violet-100" />
+		</div>
+	);
+}
 
 export default function ResetPasswordPage() {
 	return (
@@ -58,7 +71,9 @@ export default function ResetPasswordPage() {
 					</p>
 				</header>
 
-				<ResetPasswordForm />
+				<Suspense fallback={<ResetPasswordFormFallback />}>
+					<ResetPasswordForm />
+				</Suspense>
 
 				<p className="mt-7 text-center text-sm text-slate-600">
 					Vous n’avez pas demandé cette modification ?{" "}

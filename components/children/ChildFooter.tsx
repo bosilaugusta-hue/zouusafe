@@ -16,7 +16,7 @@ export default function ChildFooter() {
 					Protection active • Contenu adapté • Sans publicité
 				</p>
 
-				<p className="text-sm font-bold">Besoin d'aide ?</p>
+				<p className="text-sm font-bold">Besoin d&apos;aide ?</p>
 			</div>
 		</footer>
 	);
