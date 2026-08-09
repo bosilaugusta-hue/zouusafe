@@ -11,9 +11,11 @@ type ParentDashboardLayoutProps = {
 
 type DashboardLayoutResponse = {
 	parent: {
-		first_name: string;
-		avatar_url: string | null;
-	} | null;
+	first_name: string;
+	last_name: string | null;
+	email: string;
+	avatar_url: string | null;
+} | null;
 };
 
 async function getDashboardParent() {
@@ -83,9 +85,11 @@ export default async function ParentDashboardLayout({
 			/>
 
 			<MobileParentMenu
-				parentName={parent.first_name}
-				parentAvatar={parent.avatar_url}
-			/>
+	parentName={parent.first_name}
+	parentLastName={parent.last_name}
+	parentEmail={parent.email}
+	parentAvatar={parent.avatar_url}
+/>
 
 			<section className="relative mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
 				<Sidebar

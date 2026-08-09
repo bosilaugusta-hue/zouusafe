@@ -17,8 +17,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import ParentProfileModal from "@/components/dashboard/ParentProfileModal";
+
 type MobileParentMenuProps = {
 	parentName: string;
+	parentLastName?: string | null;
+	parentEmail?: string;
 	parentAvatar: string | null;
 };
 
@@ -65,12 +69,26 @@ const links = [
 	},
 ];
 
+function getImagePath(path: string) {
+	return path.startsWith("/") ? path : `/${path}`;
+}
+
 export default function MobileParentMenu({
 	parentName,
+	parentLastName,
+	parentEmail,
 	parentAvatar,
 }: MobileParentMenuProps) {
 	const pathname = usePathname();
+
 	const [isOpen, setIsOpen] = useState(false);
+	const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+	const safeParentName = parentName.trim() || "Parent";
+	const safeParentLastName = parentLastName?.trim() || "";
+	const safeParentEmail = parentEmail?.trim() || "";
+	const parentInitial =
+		safeParentName.charAt(0).toUpperCase() || "P";
 
 	useEffect(() => {
 		document.body.style.overflow = isOpen ? "hidden" : "";
@@ -85,22 +103,27 @@ export default function MobileParentMenu({
 			return pathname === href;
 		}
 
-		return pathname.startsWith(href);
+		return pathname === href || pathname.startsWith(`${href}/`);
+	}
+
+	function openProfile() {
+		setIsOpen(false);
+		setIsProfileOpen(true);
 	}
 
 	return (
 		<>
-			{!isOpen && (
-	<button
-		type="button"
-		onClick={() => setIsOpen(true)}
-		aria-label="Ouvrir le menu"
-		aria-expanded={isOpen}
-		className="fixed bottom-20 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-violet-600 text-white shadow-[0_12px_35px_rgba(124,58,237,0.35)] lg:hidden"
-	>
-		<Menu size={22} aria-hidden="true" />
-	</button>
-)}
+			{!isOpen && !isProfileOpen && (
+				<button
+					type="button"
+					onClick={() => setIsOpen(true)}
+					aria-label="Ouvrir le menu"
+					aria-expanded={isOpen}
+					className="fixed bottom-20 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-violet-600 text-white shadow-[0_12px_35px_rgba(124,58,237,0.35)] lg:hidden"
+				>
+					<Menu size={22} aria-hidden="true" />
+				</button>
+			)}
 
 			{isOpen && (
 				<div className="fixed inset-0 z-[100] lg:hidden">
@@ -126,36 +149,44 @@ export default function MobileParentMenu({
 								type="button"
 								onClick={() => setIsOpen(false)}
 								aria-label="Fermer le menu"
-								className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600"
+								className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200"
 							>
 								<X size={20} aria-hidden="true" />
 							</button>
 						</div>
 
-						<div className="mt-6 flex items-center gap-3 rounded-[22px] bg-gradient-to-r from-violet-50 to-blue-50 p-3">
-							{parentAvatar ? (
-								<Image
-									src={parentAvatar}
-									alt={`Photo de profil de ${parentName}`}
-									width={50}
-									height={50}
-									className="h-[50px] w-[50px] rounded-full object-cover"
-								/>
-							) : (
-								<div className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-violet-600 text-lg font-black text-white">
-									{parentName.charAt(0).toUpperCase()}
-								</div>
-							)}
+						<button
+							type="button"
+							onClick={openProfile}
+							aria-label="Ouvrir mon profil parent"
+							className="mt-6 flex w-full items-center gap-3 rounded-[22px] bg-gradient-to-r from-violet-50 to-blue-50 p-3 text-left transition hover:bg-violet-100"
+						>
+							<div className="shrink-0">
+								{parentAvatar ? (
+									<Image
+										src={getImagePath(parentAvatar)}
+										alt={`Photo de profil de ${safeParentName}`}
+										width={50}
+										height={50}
+										className="h-[50px] w-[50px] rounded-full border-2 border-white object-cover shadow-sm"
+									/>
+								) : (
+									<div className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-violet-600 text-lg font-black text-white">
+										{parentInitial}
+									</div>
+								)}
+							</div>
 
 							<div className="min-w-0">
 								<p className="truncate text-sm font-black text-slate-900">
-									Bonjour {parentName}
+									Bonjour {safeParentName}
 								</p>
+
 								<p className="text-xs font-semibold text-slate-500">
 									Compte parent
 								</p>
 							</div>
-						</div>
+						</button>
 
 						<nav
 							aria-label="Navigation parent mobile"
@@ -170,6 +201,9 @@ export default function MobileParentMenu({
 										key={link.href}
 										href={link.href}
 										onClick={() => setIsOpen(false)}
+										aria-current={
+											active ? "page" : undefined
+										}
 										className={`flex min-h-12 items-center gap-3 rounded-2xl px-4 text-sm font-black transition ${
 											active
 												? "bg-violet-600 text-white shadow-lg shadow-violet-200"
@@ -201,6 +235,17 @@ export default function MobileParentMenu({
 					</aside>
 				</div>
 			)}
+
+			<ParentProfileModal
+				isOpen={isProfileOpen}
+				onClose={() => setIsProfileOpen(false)}
+				parent={{
+					firstName: safeParentName,
+					lastName: safeParentLastName,
+					email: safeParentEmail,
+					avatarUrl: parentAvatar,
+				}}
+			/>
 		</>
 	);
 }
