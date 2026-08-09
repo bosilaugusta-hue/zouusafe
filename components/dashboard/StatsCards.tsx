@@ -80,7 +80,7 @@ export default function StatsCards({
 				return (
 					<article
 						key={stat.key}
-						className="group relative min-h-[150px] overflow-hidden rounded-[28px] border border-white/70 bg-white/85 p-4 shadow-[0_12px_32px_rgba(30,41,59,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(91,33,182,0.14)]"
+						className="group relative min-h-[132px] overflow-hidden rounded-[24px] border border-white/70 bg-white/85 p-3.5 shadow-[0_12px_32px_rgba(30,41,59,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(91,33,182,0.14)] md:min-h-[150px] md:rounded-[28px] md:p-4"
 					>
 						<div
 							aria-hidden="true"
@@ -90,13 +90,14 @@ export default function StatsCards({
 						<div className="relative flex h-full flex-col">
 							<div className="flex items-start justify-between gap-3">
 								<span
-									className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-[20px] shadow-md ring-4 ring-white transition-all duration-300 group-hover:scale-105 ${stat.iconStyle}`}
+									className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[17px] shadow-md ring-4 ring-white transition-all duration-300 group-hover:scale-105 md:h-14 md:w-14 md:rounded-[20px] ${stat.iconStyle}`}
 								>
 									<Icon
-										size={27}
-										strokeWidth={2.3}
-										aria-hidden="true"
-									/>
+	size={23}
+	strokeWidth={2.3}
+	aria-hidden="true"
+	className="md:h-[27px] md:w-[27px]"
+/>
 								</span>
 
 								<span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-black text-emerald-700">
@@ -109,8 +110,8 @@ export default function StatsCards({
 								</span>
 							</div>
 
-							<div className="mt-3">
-								<p className="text-3xl font-black leading-none tracking-tight text-slate-900">
+							<div className="mt-2 md:mt-3">
+								<p className="text-[26px] font-black leading-none tracking-tight text-slate-900 md:text-3xl">
 									{values[stat.key]}
 								</p>
 
@@ -123,7 +124,7 @@ export default function StatsCards({
 								</p>
 							</div>
 
-							<div className="mt-auto pt-3">
+							<div className="mt-auto pt-2 md:pt-3">
 								<div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
 									<div
 										className={`h-full rounded-full bg-gradient-to-r ${stat.progress} ${stat.progressStyle}`}

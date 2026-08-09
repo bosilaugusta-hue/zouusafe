@@ -27,20 +27,47 @@ function getSecretKey() {
 	return new TextEncoder().encode(secret);
 }
 
+function isValidEmail(email: string) {
+	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 export async function POST(request: Request) {
 	try {
 		const body = (await request.json()) as LoginBody;
 
-		const email = body.email?.trim().toLowerCase();
+		const email = body.email?.trim().toLowerCase() ?? "";
 		const password = body.password ?? "";
 
 		if (!email || !password) {
 			return NextResponse.json(
 				{
-					message: "L’adresse email et le mot de passe sont obligatoires.",
+					message:
+						"L’adresse e-mail et le mot de passe sont obligatoires.",
 				},
 				{
 					status: 400,
+				},
+			);
+		}
+
+		if (!isValidEmail(email) || email.length > 255) {
+			return NextResponse.json(
+				{
+					message: "Adresse e-mail ou mot de passe incorrect.",
+				},
+				{
+					status: 401,
+				},
+			);
+		}
+
+		if (password.length > 255) {
+			return NextResponse.json(
+				{
+					message: "Adresse e-mail ou mot de passe incorrect.",
+				},
+				{
+					status: 401,
 				},
 			);
 		}
@@ -64,7 +91,7 @@ export async function POST(request: Request) {
 		if (!parent) {
 			return NextResponse.json(
 				{
-					message: "Adresse email ou mot de passe incorrect.",
+					message: "Adresse e-mail ou mot de passe incorrect.",
 				},
 				{
 					status: 401,
@@ -72,12 +99,15 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const passwordIsValid = await bcrypt.compare(password, parent.password);
+		const passwordIsValid = await bcrypt.compare(
+			password,
+			parent.password,
+		);
 
 		if (!passwordIsValid) {
 			return NextResponse.json(
 				{
-					message: "Adresse email ou mot de passe incorrect.",
+					message: "Adresse e-mail ou mot de passe incorrect.",
 				},
 				{
 					status: 401,

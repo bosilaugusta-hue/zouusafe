@@ -2,6 +2,7 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
+import MobileParentMenu from "@/components/dashboard/MobileParentMenu";
 import Sidebar from "@/components/dashboard/Sidebar";
 
 type ParentDashboardLayoutProps = {
@@ -30,7 +31,8 @@ async function getDashboardParent() {
 		throw new Error("Impossible de déterminer l’adresse de l’application.");
 	}
 
-	const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+	const protocol =
+		process.env.NODE_ENV === "development" ? "http" : "https";
 
 	const response = await fetch(`${protocol}://${host}/api/dashboard`, {
 		cache: "no-store",
@@ -44,7 +46,9 @@ async function getDashboardParent() {
 	}
 
 	if (!response.ok) {
-		throw new Error("Impossible de récupérer les informations du parent.");
+		throw new Error(
+			"Impossible de récupérer les informations du parent.",
+		);
 	}
 
 	const data = (await response.json()) as DashboardLayoutResponse;
@@ -78,13 +82,20 @@ export default async function ParentDashboardLayout({
 				className="pointer-events-none absolute bottom-0 left-1/3 h-[320px] w-[320px] rounded-full bg-amber-200/20 blur-3xl"
 			/>
 
+			<MobileParentMenu
+				parentName={parent.first_name}
+				parentAvatar={parent.avatar_url}
+			/>
+
 			<section className="relative mx-auto grid w-full max-w-[1500px] gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
 				<Sidebar
 					parentName={parent.first_name}
 					parentAvatar={parent.avatar_url}
 				/>
 
-				<section className="min-w-0">{children}</section>
+				<section className="min-w-0">
+					{children}
+				</section>
 			</section>
 		</main>
 	);

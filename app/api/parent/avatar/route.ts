@@ -1,6 +1,6 @@
+import { randomUUID } from "node:crypto";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { randomUUID } from "node:crypto";
 
 import { jwtVerify } from "jose";
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
@@ -43,6 +43,56 @@ function isAllowedMimeType(type: string): type is AllowedMimeType {
 	return type in allowedFileTypes;
 }
 
+function isJpeg(buffer: Buffer) {
+	return (
+		buffer.length >= 3 &&
+		buffer[0] === 0xff &&
+		buffer[1] === 0xd8 &&
+		buffer[2] === 0xff
+	);
+}
+
+function isPng(buffer: Buffer) {
+	return (
+		buffer.length >= 8 &&
+		buffer[0] === 0x89 &&
+		buffer[1] === 0x50 &&
+		buffer[2] === 0x4e &&
+		buffer[3] === 0x47 &&
+		buffer[4] === 0x0d &&
+		buffer[5] === 0x0a &&
+		buffer[6] === 0x1a &&
+		buffer[7] === 0x0a
+	);
+}
+
+function isWebp(buffer: Buffer) {
+	return (
+		buffer.length >= 12 &&
+		buffer.toString("ascii", 0, 4) === "RIFF" &&
+		buffer.toString("ascii", 8, 12) === "WEBP"
+	);
+}
+
+function fileSignatureMatchesMimeType(
+	buffer: Buffer,
+	mimeType: AllowedMimeType,
+) {
+	if (mimeType === "image/jpeg") {
+		return isJpeg(buffer);
+	}
+
+	if (mimeType === "image/png") {
+		return isPng(buffer);
+	}
+
+	if (mimeType === "image/webp") {
+		return isWebp(buffer);
+	}
+
+	return false;
+}
+
 async function removePreviousUploadedAvatar(
 	parentId: number,
 	avatarUrl: string | null,
@@ -58,12 +108,17 @@ async function removePreviousUploadedAvatar(
 	}
 
 	const relativePath = avatarUrl.replace(/^\/+/, "");
-	const absolutePath = path.join(process.cwd(), "public", relativePath);
+
+	const absolutePath = path.join(
+		process.cwd(),
+		"public",
+		relativePath,
+	);
 
 	try {
 		await unlink(absolutePath);
 	} catch {
-		// L’ancienne image peut déjà avoir été supprimée.
+		
 	}
 }
 
@@ -146,6 +201,22 @@ export async function PATCH(request: Request) {
 			);
 		}
 
+		const fileBuffer = Buffer.from(
+			await avatar.arrayBuffer(),
+		);
+
+		if (!fileSignatureMatchesMimeType(fileBuffer, avatar.type)) {
+			return NextResponse.json(
+				{
+					message:
+						"Le contenu du fichier ne correspond pas à une image valide.",
+				},
+				{
+					status: 400,
+				},
+			);
+		}
+
 		const [parents] = await db.query<ParentAvatarRow[]>(
 			`
 				SELECT avatar_url
@@ -187,8 +258,6 @@ export async function PATCH(request: Request) {
 			fileName,
 		);
 
-		const fileBuffer = Buffer.from(await avatar.arrayBuffer());
-
 		await writeFile(absoluteFilePath, fileBuffer);
 
 		const avatarUrl = `/avatars-profil/${fileName}`;
@@ -203,11 +272,14 @@ export async function PATCH(request: Request) {
 		);
 
 		if (result.affectedRows === 0) {
-			await unlink(absoluteFilePath).catch(() => undefined);
+			await unlink(absoluteFilePath).catch(
+				() => undefined,
+			);
 
 			return NextResponse.json(
 				{
-					message: "La photo n’a pas pu être enregistrée.",
+					message:
+						"La photo n’a pas pu être enregistrée.",
 				},
 				{
 					status: 500,
@@ -221,7 +293,8 @@ export async function PATCH(request: Request) {
 		);
 
 		return NextResponse.json({
-			message: "Votre photo de profil a été mise à jour.",
+			message:
+				"Votre photo de profil a été mise à jour.",
 			avatarUrl,
 		});
 	} catch (error) {

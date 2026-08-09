@@ -15,10 +15,10 @@ export default function DashboardHeader({
 		<header className="relative z-20 min-h-[120px] px-2 pt-3">
 			<div className="flex items-start justify-between gap-6">
 				<div className="pt-2">
-					<h1 className="flex flex-wrap items-center gap-2 text-3xl font-black tracking-tight text-slate-950 lg:text-4xl">
-						Bonjour {parentName}
-						<span aria-hidden="true">👋</span>
-					</h1>
+					<h1 className="flex items-center gap-1 whitespace-nowrap text-[26px] font-black tracking-tight text-slate-950 sm:gap-2 sm:text-3xl lg:text-4xl">
+	Bonjour {parentName}
+	<span aria-hidden="true">👋</span>
+</h1>
 
 					<p className="mt-2 text-sm font-medium text-slate-600">
 						Voici un aperçu de la sécurité de {childName} aujourd’hui.
