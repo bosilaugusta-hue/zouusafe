@@ -12,6 +12,8 @@ type SessionPayload = {
 
 type ParentRow = RowDataPacket & {
 	first_name: string;
+	last_name: string;
+	email: string;
 	avatar_url: string | null;
 };
 
@@ -60,17 +62,19 @@ export async function GET() {
 			);
 		}
 
-		const [parents] = await db.query<ParentRow[]>(
-			`
-				SELECT
-					first_name,
-					avatar_url
-				FROM parent
-				WHERE parent_id = ?
-				LIMIT 1
-			`,
-			[parentId],
-		);
+const [parents] = await db.query<ParentRow[]>(
+	`
+		SELECT
+			first_name,
+			last_name,
+			email,
+			avatar_url
+		FROM parent
+		WHERE parent_id = ?
+		LIMIT 1
+	`,
+	[parentId],
+);
 
 		const parent = parents[0];
 

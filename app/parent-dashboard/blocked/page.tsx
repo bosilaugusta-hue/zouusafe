@@ -9,6 +9,8 @@ import {
 import { cookies } from "next/headers";
 import Image from "next/image";
 
+import BlockedSitesManager from "@/components/dashboard/BlockedSitesManager";
+
 type BlockedSite = {
 	blocked_content_id: number;
 	content_name: string;
@@ -225,6 +227,8 @@ export default async function BlockedSitesPage() {
 					trend="Stable"
 				/>
 			</section>
+
+			<BlockedSitesManager />
 
 			<section className="overflow-hidden rounded-[28px] border border-white/80 bg-white/90 shadow-[0_16px_45px_rgba(30,41,59,0.08)] backdrop-blur-xl">
 				<header className="flex flex-col gap-4 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">

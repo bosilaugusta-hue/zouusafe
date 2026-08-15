@@ -2,6 +2,7 @@ import { jwtVerify } from "jose";
 import type { ResultSetHeader } from "mysql2";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+
 import { db } from "@/lib/db";
 
 type SessionPayload = {
@@ -11,6 +12,7 @@ type SessionPayload = {
 type CreateChildBody = {
 	firstName?: string;
 	birthDate?: string;
+	gender?: string;
 	avatar?: string;
 };
 
@@ -53,13 +55,23 @@ export async function POST(request: Request) {
 
 		const firstName = body.firstName?.trim();
 		const birthDate = body.birthDate?.trim();
-		const avatar = body.avatar?.trim() || "/avatars_profil/fille_1.png";
+		const gender = body.gender?.trim();
+		const avatar =
+			body.avatar?.trim() || "/avatars-profil/fille-1.png";
 
-		if (!firstName || !birthDate) {
+		if (!firstName || !birthDate || !gender) {
 			return NextResponse.json(
 				{
-					message: "Le prénom et la date de naissance sont obligatoires.",
+					message:
+						"Le prénom, la date de naissance et le genre sont obligatoires.",
 				},
+				{ status: 400 },
+			);
+		}
+
+		if (!["female", "male", "other"].includes(gender)) {
+			return NextResponse.json(
+				{ message: "Le genre sélectionné est invalide." },
 				{ status: 400 },
 			);
 		}
@@ -76,7 +88,10 @@ export async function POST(request: Request) {
 		const parsedBirthDate = new Date(`${birthDate}T00:00:00`);
 		const today = new Date();
 
-		if (Number.isNaN(parsedBirthDate.getTime()) || parsedBirthDate > today) {
+		if (
+			Number.isNaN(parsedBirthDate.getTime()) ||
+			parsedBirthDate > today
+		) {
 			return NextResponse.json(
 				{ message: "La date de naissance est invalide." },
 				{ status: 400 },
@@ -86,18 +101,20 @@ export async function POST(request: Request) {
 		await connection.beginTransaction();
 		transactionStarted = true;
 
-		const [childResult] = await connection.execute<ResultSetHeader>(
-			`
+		const [childResult] =
+			await connection.execute<ResultSetHeader>(
+				`
 					INSERT INTO child (
 						first_name,
 						birth_date,
 						avatar_url,
-						parent_id
+						parent_id,
+						gender
 					)
-					VALUES (?, ?, ?, ?)
+					VALUES (?, ?, ?, ?, ?)
 				`,
-			[firstName, birthDate, avatar, parentId],
-		);
+				[firstName, birthDate, avatar, parentId, gender],
+			);
 
 		const childId = childResult.insertId;
 
@@ -126,6 +143,7 @@ export async function POST(request: Request) {
 					childId,
 					firstName,
 					birthDate,
+					gender,
 					avatar,
 				},
 			},
@@ -140,7 +158,8 @@ export async function POST(request: Request) {
 
 		return NextResponse.json(
 			{
-				message: "Une erreur est survenue pendant la création du profil.",
+				message:
+					"Une erreur est survenue pendant la création du profil.",
 			},
 			{ status: 500 },
 		);
@@ -148,6 +167,7 @@ export async function POST(request: Request) {
 		connection.release();
 	}
 }
+
 export async function GET() {
 	try {
 		const cookieStore = await cookies();
@@ -165,19 +185,20 @@ export async function GET() {
 
 		const [children] = await db.execute(
 			`
-			SELECT
-				c.child_id,
-				c.first_name,
-				c.birth_date,
-				c.avatar_url,
-				s.screen_time_limit,
-				s.screen_time_used,
-				s.filter_level
-			FROM child c
-			LEFT JOIN safety_setting s
-				ON s.child_id = c.child_id
-			WHERE c.parent_id = ?
-			ORDER BY c.first_name
+				SELECT
+					c.child_id,
+					c.first_name,
+					c.birth_date,
+					c.avatar_url,
+					c.gender,
+					s.screen_time_limit,
+					s.screen_time_used,
+					s.filter_level
+				FROM child c
+				LEFT JOIN safety_setting s
+					ON s.child_id = c.child_id
+				WHERE c.parent_id = ?
+				ORDER BY c.first_name
 			`,
 			[parentId],
 		);
@@ -189,12 +210,8 @@ export async function GET() {
 		console.error(error);
 
 		return NextResponse.json(
-			{
-				message: "Erreur serveur.",
-			},
-			{
-				status: 500,
-			},
+			{ message: "Erreur serveur." },
+			{ status: 500 },
 		);
 	}
 }

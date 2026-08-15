@@ -32,6 +32,7 @@ export default function ChildForm() {
 
 		const firstName = String(formData.get("firstName") ?? "").trim();
 		const birthDate = String(formData.get("birthDate") ?? "");
+		const gender = String(formData.get("gender") ?? "");
 
 		try {
 			const response = await fetch("/api/children", {
@@ -42,6 +43,7 @@ export default function ChildForm() {
 				body: JSON.stringify({
 					firstName,
 					birthDate,
+					gender,
 					avatar: selectedAvatar,
 				}),
 			});
@@ -94,6 +96,54 @@ export default function ChildForm() {
 				/>
 			</label>
 
+			<fieldset>
+				<legend className="mb-3 text-sm font-bold text-slate-700">
+					Genre
+				</legend>
+
+				<div className="grid grid-cols-3 gap-3">
+					<label className="cursor-pointer">
+						<input
+							type="radio"
+							name="gender"
+							value="female"
+							required
+							className="peer sr-only"
+						/>
+
+						<span className="block rounded-2xl border border-slate-200 px-4 py-3 text-center font-semibold text-slate-700 transition peer-checked:border-violet-500 peer-checked:bg-violet-50 peer-checked:text-violet-700">
+							Fille
+						</span>
+					</label>
+
+					<label className="cursor-pointer">
+						<input
+							type="radio"
+							name="gender"
+							value="male"
+							className="peer sr-only"
+						/>
+
+						<span className="block rounded-2xl border border-slate-200 px-4 py-3 text-center font-semibold text-slate-700 transition peer-checked:border-violet-500 peer-checked:bg-violet-50 peer-checked:text-violet-700">
+							Garçon
+						</span>
+					</label>
+
+					<label className="cursor-pointer">
+						<input
+							type="radio"
+							name="gender"
+							value="other"
+							className="peer sr-only"
+						/>
+
+						<span className="block rounded-2xl border border-slate-200 px-4 py-3 text-center font-semibold text-slate-700 transition peer-checked:border-violet-500 peer-checked:bg-violet-50 peer-checked:text-violet-700">
+							Autre
+						</span>
+					</label>
+				</div>
+			</fieldset>
+
 			<section>
 				<h2 className="mb-3 text-sm font-bold text-slate-700">
 					Choisir un avatar
@@ -110,7 +160,9 @@ export default function ChildForm() {
 					/>
 
 					<div>
-						<p className="font-black text-violet-700">Avatar sélectionné</p>
+						<p className="font-black text-violet-700">
+							Avatar sélectionné
+						</p>
 
 						<p className="mt-1 text-sm text-slate-600">
 							Cliquez sur une image pour la choisir.

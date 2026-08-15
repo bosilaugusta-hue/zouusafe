@@ -32,9 +32,9 @@ export default function QuickSettings({ settings }: QuickSettingsProps) {
 		<article className="rounded-[28px] border border-white/70 bg-white/90 p-5 shadow-xl backdrop-blur-xl">
 			<header className="mb-5 flex items-center justify-between">
 				<div>
-					<p className="text-xs font-bold uppercase tracking-[0.14em] text-violet-500">
-						Contrôle parental
-					</p>
+					<p className="text-xs font-black uppercase tracking-[0.18em] text-violet-600">
+	Contrôle parental
+</p>
 
 					<h2 className="mt-1 text-xl font-black text-slate-900">
 						Paramètres rapides
