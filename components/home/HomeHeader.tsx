@@ -66,7 +66,7 @@ export default function HomeHeader() {
 					/>
 				</Link>
 
-				<nav className="hidden items-center gap-10 lg:flex">
+				<nav className="hidden items-center gap-3 lg:flex">
 					{navLinks.map((link) => {
 						const isActive = activeSection === link.id;
 
@@ -75,10 +75,10 @@ export default function HomeHeader() {
 								key={link.id}
 								href={`#${link.id}`}
 								onClick={() => setActiveSection(link.id)}
-								className={`border-b-2 pb-1 text-sm transition ${
+								className={`rounded-full px-4 py-2 text-sm transition-all duration-300 ${
 									isActive
-										? "border-violet-600 font-bold text-violet-600"
-										: "border-transparent font-semibold text-slate-700 hover:text-violet-600"
+										? "bg-violet-100/80 font-bold text-violet-700 shadow-sm"
+										: "font-semibold text-slate-700 hover:bg-violet-50 hover:text-violet-600"
 								}`}
 							>
 								{link.label}

@@ -57,7 +57,9 @@ export default function LoginForm() {
 		} catch (error) {
 			console.error("Erreur de connexion :", error);
 
-			setError("Impossible de contacter le serveur. Veuillez réessayer.");
+			setError(
+				"Impossible de contacter le serveur. Veuillez réessayer.",
+			);
 		} finally {
 			setIsLoading(false);
 		}
@@ -106,7 +108,7 @@ export default function LoginForm() {
 						autoComplete="current-password"
 						placeholder="Votre mot de passe"
 						required
-						className="w-full bg-transparent py-3.5 outline-none"
+						className="password-input w-full bg-transparent py-3.5 outline-none"
 					/>
 
 					<button
@@ -117,10 +119,16 @@ export default function LoginForm() {
 								: "Afficher le mot de passe"
 						}
 						aria-pressed={showPassword}
-						onClick={() => setShowPassword((current) => !current)}
+						onClick={() =>
+							setShowPassword((current) => !current)
+						}
 						className="shrink-0 text-slate-400 transition hover:text-violet-600"
 					>
-						{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+						{showPassword ? (
+							<EyeOff size={20} aria-hidden="true" />
+						) : (
+							<Eye size={20} aria-hidden="true" />
+						)}
 					</button>
 				</span>
 			</label>

@@ -104,7 +104,7 @@ a {
 	background: linear-gradient(180deg, #7c3aed, #db2777);
 }
 
-/* Boutons communs */
+/* Shared buttons */
 
 .btn-primary {
 	display: inline-flex;
@@ -245,7 +245,7 @@ a {
 	box-shadow: var(--zouu-shadow);
 }
 
-/* Cartes communes */
+/* Shared cards */
 
 .zouu-card {
 	border: 1px solid rgba(255, 255, 255, 0.8);
@@ -267,7 +267,7 @@ a {
 	box-shadow: var(--zouu-shadow-hover);
 }
 
-/* Champs de formulaire */
+/* Form fields */
 
 .zouu-input {
 	width: 100%;
@@ -302,7 +302,7 @@ a {
 	font-weight: 700;
 }
 
-/* Badges communs */
+/* Shared badges */
 
 .badge-success {
 	display: inline-flex;
@@ -356,7 +356,7 @@ a {
 	font-weight: 700;
 }
 
-/* Titres communs */
+/* Shared titles */
 
 .zouu-eyebrow {
 	color: var(--zouu-primary);
@@ -436,4 +436,18 @@ a {
 	.zouu-card {
 		border-radius: 22px;
 	}
+}
+
+/* Hide the browser's native password reveal icon */
+
+.password-input::-ms-reveal,
+.password-input::-ms-clear {
+	display: none;
+}
+
+.password-input::-webkit-credentials-auto-fill-button,
+.password-input::-webkit-contacts-auto-fill-button {
+	display: none !important;
+	visibility: hidden;
+	pointer-events: none;
 }

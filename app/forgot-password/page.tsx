@@ -37,7 +37,6 @@ export default function ForgotPasswordPage() {
 				/>
 			</div>
 
-			{/* Robot avec ordinateur */}
 			<div className="absolute right-5 top-20 hidden h-[390px] w-[370px] xl:block 2xl:right-12">
 				<div className="absolute left-0 top-[155px] z-30 flex items-center gap-2 whitespace-nowrap rounded-2xl border border-white/80 bg-white/90 px-4 py-3 text-sm font-bold text-violet-700 shadow-xl backdrop-blur-xl">
 					<ShieldCheck size={18} aria-hidden="true" />

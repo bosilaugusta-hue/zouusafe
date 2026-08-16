@@ -15,7 +15,7 @@ export default function NewChildPage() {
 
 				<header className="mt-6 text-center">
 					<Image
-						src="/mascottes/Robot-zen.png"
+						src="/mascottes/Robot-ordinateur.png"
 						alt="Robot ZouuSafe"
 						width={150}
 						height={150}

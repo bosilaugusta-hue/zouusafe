@@ -216,34 +216,48 @@ export default async function ChildDashboardPage({
 			</section>
 
 			<section className="px-4 py-10 sm:px-6 sm:py-12">
-				<div className="mx-auto w-full max-w-[1450px]">
-					<div className="mb-6">
-						<p className="text-xs font-black uppercase tracking-[0.18em] text-violet-600">
-							Mon espace
-						</p>
+	<div className="mx-auto w-full max-w-[1450px]">
+		<section className="relative overflow-hidden rounded-[34px] border border-white/80 bg-gradient-to-r from-violet-100/80 via-fuchsia-50/80 to-orange-50/80 p-6 shadow-[0_18px_55px_rgba(91,33,182,0.10)] sm:p-8">
+			<div
+				aria-hidden="true"
+				className="pointer-events-none absolute -left-24 top-10 h-64 w-64 rounded-full bg-violet-200/25 blur-3xl"
+			/>
 
-						<h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">
-							Bonjour {child.first_name}, découvre ton activité
-						</h2>
+			<div
+				aria-hidden="true"
+				className="pointer-events-none absolute -right-24 bottom-0 h-64 w-64 rounded-full bg-orange-200/25 blur-3xl"
+			/>
 
-						<p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-							Retrouve tes dernières recherches, les conseils de sécurité et de
-							nouvelles idées à explorer.
-						</p>
-					</div>
+			<div className="relative">
+				<div className="mb-7">
+					<p className="text-xs font-black uppercase tracking-[0.18em] text-violet-600">
+						Mon espace
+					</p>
 
-					<div className="grid items-stretch gap-6 lg:grid-cols-2 xl:grid-cols-[1.35fr_0.8fr_1fr]">
-						<SearchHistory
-							childId={child.child_id}
-							childName={child.first_name}
-						/>
+					<h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">
+						Bonjour {child.first_name}, découvre ton activité
+					</h2>
 
-						<SafetyCard />
-
-						<IdeasCard />
-					</div>
+					<p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+						Retrouve tes dernières recherches, des idées adaptées à ton âge
+						et reste en sécurité avec ZouuSafe.
+					</p>
 				</div>
-			</section>
+
+				<div className="grid items-stretch gap-5 xl:grid-cols-[1fr_0.95fr_1fr]">
+					<SearchHistory
+						childId={child.child_id}
+						childName={child.first_name}
+					/>
+
+					<SafetyCard />
+
+					<IdeasCard />
+				</div>
+			</div>
+		</section>
+	</div>
+</section>
 
 			<ChildFooter />
 		</main>
